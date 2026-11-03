@@ -295,7 +295,7 @@ export const registration = {
 	closedBody: 'We’ve locked the headcount to book the house. If you can still make it, DM',
 	formKicker: 'Registration',
 	formTitle: 'You’re in.',
-	formSub: 'December 4–7, Palm Springs or the Coachella Valley. A few short sections. Travel can wait until you know.',
+	formSub: 'December 4–7, near Palm Springs. A few short sections. Travel can wait until you know.',
 	sections: {
 		contact: { head: 'Contact', name: 'Name', email: 'Email', phone: 'Phone', phoneHint: 'For day-of texts' },
 		food: { head: 'Food', hint: 'Pick any', other: 'Anything else about food', otherHint: 'Allergies, strong dislikes, coffee opinions' },
@@ -334,7 +334,7 @@ export const registration = {
 	submitHint: 'You can change everything later.',
 	saving: 'Saving…',
 	registeredTitle: 'You’re registered.',
-	registeredSub: 'December 4–7. We’ll email the venue and itinerary once the house is booked.',
+	registeredSub: 'December 4–7, near Palm Springs. The address and itinerary come by email.',
 	travelNudge: 'Update as plans firm up',
 	edit: 'Edit',
 	declineAfter: 'I can’t make it after all',
