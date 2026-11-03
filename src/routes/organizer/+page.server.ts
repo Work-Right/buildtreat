@@ -17,6 +17,7 @@ import {
 	setReopened
 } from '$lib/server/organizer/admin';
 import { listWaitlist, promoteFromWaitlist } from '$lib/server/waitlist';
+import { verifiedHandle } from '$lib/server/site/verified-handle';
 import {
 	listRegistrations,
 	noResponseHandles,
@@ -189,13 +190,19 @@ export const actions: Actions = {
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
 		const did = String((await request.formData()).get('did') ?? '');
 		if (!did) return fail(400, { message: 'Missing waitlist entry' });
-		const { ok, handle } = await promoteFromWaitlist(db, did);
-		if (!ok) {
-			return fail(400, {
-				message:
-					'Could not promote — no resolved handle yet. Ask them to reopen the survey while signed in; it refreshes their handle automatically, then Promote will work.'
-			});
+		// Re-verify against the appview: rows saved before join-time
+		// verification may hold a handle the waitlister merely claimed.
+		const result = await promoteFromWaitlist(db, did, (d) => verifiedHandle(d, platform?.env?.PROFILE_CACHE));
+		if (!result.ok) {
+			const message =
+				result.reason === 'unverified'
+					? `Couldn’t verify @${result.handle} with Bluesky — ask them to sign in again, then promote`
+					: result.reason === 'pinned-elsewhere'
+						? `@${result.handle} is already on the allowlist for a different account — not promoted`
+						: 'Could not promote — no resolved handle yet. Ask them to reopen the survey while signed in; it refreshes their handle automatically, then Promote will work.';
+			return fail(400, { message });
 		}
+		const { handle } = result;
 		return { message: `Promoted @${handle} — they’re on the survey now` };
 	},
 

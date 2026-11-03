@@ -82,7 +82,7 @@
 
 	<form
 		method="POST"
-		action="?/register"
+		action="?register&/register"
 		class="body"
 		use:enhance={() => {
 			saving = true;

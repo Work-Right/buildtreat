@@ -131,7 +131,7 @@
 			{#if regClosed}<p class="hint">Registration is closed to new sign-ups, but yours stays editable.</p>{/if}
 			<form
 				method="POST"
-				action="?/decline"
+				action="?register&/decline"
 				use:enhance={() => {
 					declining = true;
 					return async ({ update }) => {

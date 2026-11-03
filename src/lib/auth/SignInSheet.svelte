@@ -6,11 +6,15 @@
 	import type { KnownUser } from '$lib/types';
 
 	let {
-		open = $bindable(),
+		open,
+		onclose,
 		error,
 		knownUser = null
 	}: {
 		open: boolean;
+		/** The sheet asks to close (Escape, backdrop, ×). A callback, not
+		 * `bind:open` — a component binding drops the page's SSR <title>. */
+		onclose: () => void;
 		error?: string | null;
 		knownUser?: KnownUser | null;
 	} = $props();
@@ -92,18 +96,18 @@
 	}
 
 	function onkeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape' && !dropdownOpen) open = false;
+		if (open && e.key === 'Escape' && !dropdownOpen) onclose();
 	}
 </script>
 
 <svelte:window {onkeydown} />
 
 {#if open}
-	<div class="backdrop" onclick={() => (open = false)} aria-hidden="true"></div>
+	<div class="backdrop" onclick={onclose} aria-hidden="true"></div>
 	<div class="sheet" role="dialog" aria-modal="true" aria-label="Sign in with Atmosphere">
 		<div class="sheet-head">
 			<p class="kicker">Sign in with Atmosphere</p>
-			<button type="button" class="close" onclick={() => (open = false)} aria-label="Close">
+			<button type="button" class="close" onclick={onclose} aria-label="Close">
 				<Icon name="x" size={16} />
 			</button>
 		</div>
@@ -111,7 +115,7 @@
 		{#snippet errorNote()}
 			{#if deniedHandle}
 				<p class="error" role="alert">
-					This survey is invite-only — @{deniedHandle} isn’t on the list.
+					This retreat is invite-only — @{deniedHandle} isn’t on the list.
 					<a class="dm" href={retreat.organizerLink} target="_blank" rel="noopener">DM @{retreat.organizerHandle}</a>
 					if that seems wrong.
 				</p>

@@ -21,11 +21,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<!-- Fallback title only. The description lives with the page that has
+	     one to give (RetreatHome builds it from public content). -->
 	<title>The Atmospheric Builders’ Retreat</title>
-	<meta
-		name="description"
-		content="A 3-night retreat for atproto builders in Southern California, sometime between Sept 1 – Nov 15. Sponsored by Bluesky. Your answers pick the dates and the place."
-	/>
 </svelte:head>
 
 <!--

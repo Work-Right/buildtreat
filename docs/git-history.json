@@ -1,19 +1,75 @@
 [
   {
+    "hash": "9a586bca6b5a1a1e97d30460f9f1ae933335c697",
+    "short_hash": "9a586bc",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T17:00:40-08:00",
+    "message": "fix(site): re-verify the handle before promoting from the waitlist\n\nWaitlist rows saved before join-time verification may hold a\nPDS-claimed handle, and promotion inserts that handle into the\nallowlist pinned to the waitlister's DID, which could capture an\ninvitee's unpinned row. promoteFromWaitlist now takes a resolver\n(production: verifiedHandle) and refuses unless the appview confirms\nthe same handle, and refuses when the allowlist row for that handle is\nalready pinned to a different DID. Nothing is written on refusal.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 6
+  },
+  {
+    "hash": "4bca3c91a9256f3f88be065eb222da967c2b7599",
+    "short_hash": "4bca3c9",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T16:58:17-08:00",
+    "message": "fix(site): final review minors — no-JS register URL, organizer strip, preview ledgers\n\n- Registration forms post to ?register&/register and ?register&/decline\n  so a no-JS POST re-renders the registration flow with its errors.\n- An organizer off the allowlist no longer sees the waitlist strip.\n- BskyPost's \"View on Bluesky\" uses the arrow-right Icon.\n- The console live preview renders through the home's Prose, so lists\n  read as ledgers exactly as on `/`.\n- Updates' publish date gets a hint: the date is a label; updates appear\n  as soon as they're saved.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 10
+  },
+  {
+    "hash": "ee1d1609528ddb8649c60362909ee9396d544354",
+    "short_hash": "ee1d160",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T16:55:53-08:00",
+    "message": "fix(console): cap photo uploads at 6 files / 24 MB per request\n\nThe upload action now refuses an over-cap request (count or summed\nsize, plus an oversized declared Content-Length) before any file's\nbytes are read or stripped, with \"Upload at most 6 photos (24 MB) at a\ntime\". The PhotoManager hint names the cap.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 7
+  },
+  {
+    "hash": "2170174938ab8e8a65fd71f414b79049b264884f",
+    "short_hash": "2170174",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T16:54:41-08:00",
+    "message": "fix(security): match invites with an appview-verified handle only\n\nloadBskyProfile falls back to the user's own PDS when the appview says\nhandle.invalid, so its handle is a claim anyone running a PDS can make.\nThat claimed handle fed checkAllowlist (which pins the DID), late passes,\nthe gates, viewerTier and the photo route.\n\nNew verifiedHandle(did, kv?) (appview-only loadBskyProfiles, appview:\ncache, cleanHandle, 2.5 s timeout, never throws) now supplies the handle\nfor every allowlist / late-pass / tier / gate lookup: `/` load (gates,\ncheckAllowlist, siteFor, waitlist backfill), register, decline,\njoinWaitlist, /media/site/[id] and PUT /api/response. Null → DID-only.\nThe display profile stays as is. Resolves #125 for these call sites.\n\nAlso on `/`: cache-control private, no-store; loadOrganizer runs in\nparallel with the base gates behind a 2 s timeout.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 14
+  },
+  {
+    "hash": "9c6a7628eb1bd40fa13dec0fce01e006effc5f50",
+    "short_hash": "9c6a762",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T14:46:15-08:00",
+    "message": "feat(site): retreat home at /, registration flow at /?register\n\nComp A (\"Dusk to night\") in Svelte: golden-hour hero and sections over the\nhero's blurred light, the evening clock opening each section, the fact\nledger and pill, the time-of-day nav (sticky gutter ledger on desktop,\nrail under the hero on narrow screens), and the night ground closing on\nthe organizer credit. Invited view opens on a compact hero, the status\nstrip, then the invited sections. Blue-hour/night regions are reusable\nshells (EveningRegion) that render only once they have content.\nRegistrationFlow drops the survey link and gains a back link home.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 25
+  },
+  {
+    "hash": "0520f1ec68d1937a462a45e70e75ea45e8a26e98",
+    "short_hash": "0520f1e",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T14:34:38-08:00",
+    "message": "design(site): retreat home direction — Bryan picked A, dusk to night\n\nPublic comps for all three dealt structures (A approved; B and C kept as the\nround's spent hand). Invited comps stay local: they show the venue.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 14
+  },
+  {
+    "hash": "a47661e14d882d6bf4dab12fe52cc5343d99c999",
+    "short_hash": "a47661e",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T22:57:24-07:00",
+    "message": "docs: retreat site implementation plan\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 2
+  },
+  {
+    "hash": "b1f28f6f6e2869350eca2663ebb8a6973d4c02df",
+    "short_hash": "b1f28f6",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T21:10:16-07:00",
+    "message": "docs: retreat site design spec\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 3
+  },
+  {
     "hash": "f4a9d4c96e6561a7c26d143c128d4069b8d5a48d",
     "short_hash": "f4a9d4c",
     "author": "Bryan Guffey",
     "date": "2026-10-31T12:35:21-07:00",
     "message": "docs: point CLAUDE.md at src/AGENTS.md and fill the template TODOs\n\nAs in #27 (dd1dd46), plus the Bluesky DM channel in the summary.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
     "files_changed": 2
-  },
-  {
-    "hash": "c5ff882393b12a5de5829cc76238e56afb4bce19",
-    "short_hash": "c5ff882",
-    "author": "Bryan Guffey",
-    "date": "2026-10-31T12:35:16-07:00",
-    "message": "docs: add AGENTS.md to every feature folder under src/\n\nFrom #27 (60095f9), brought up to date with main: server/messaging\n(email + Bluesky DM, audiences), broadcast-actions, registrationGate,\ntravel support, the per-attendee registration edit route, the new\norganizer compose components, and the no-component-bind: rule.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
-    "files_changed": 14
   },
   {
     "hash": "9e0b290254c8f0b03276df7041ae42923dca4dea",
@@ -54,6 +110,14 @@
     "date": "2026-10-31T12:26:02-07:00",
     "message": "refactor: relocate lib into feature folders (ui, survey, auth, registration, organizer, server/{messaging,organizer})\n\nReplays the #27 move map on current main. Differences from #27:\n- server/email -> server/messaging: it now also holds the Bluesky DM\n  channel (bsky-dm.ts) that broadcasts fan out to.\n- dm-text.ts (client-importable grapheme limit) -> lib/organizer.\n- server/organizer.test.ts follows organizer.ts -> organizer/admin.test.ts.\nImport specifiers rewritten mechanically; check 0/0, tests 110/110.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
     "files_changed": 96
+  },
+  {
+    "hash": "3d249688301f6fbdaa57a2fcdd748687dd3067ad",
+    "short_hash": "3d24968",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T12:21:47-07:00",
+    "message": "chore(deps): vitest 4.1.10 → 5.0.5 (#47)\n\nSupersedes dependabot #30, whose lockfile predates the current pnpm\noverrides and fails a frozen install (would break Workers Builds).\n110/110 tests, svelte-check 0/0, build green.\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 3
   },
   {
     "hash": "3018fca4df86f9738b02c627328cdac3d62afffd",

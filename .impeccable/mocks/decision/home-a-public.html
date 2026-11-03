@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Comp A — Dusk to night (public)</title>
+<link rel="stylesheet" href="../reg-base.css" />
+<link rel="stylesheet" href="home-a.css" />
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+	<symbol id="bf" viewBox="0 0 24 24"><path fill="currentColor" d="M12 10.8c-.9-1.9-3.4-5.5-5.7-7.1C4.1 2.1 3.2 2.4 2.6 2.7c-.7.3-.8 1.4-.8 2 0 .7.4 5.5.6 6.3.8 2.6 3.4 3.5 5.8 3.2-3.5.5-6.6 1.8-2.5 6.3 4.5 4.7 6.2-1 6.3-2.3 0 1.3 1.8 7 6.3 2.3 4.1-4.5 1-5.8-2.5-6.3 2.4.3 5-.6 5.8-3.2.2-.8.6-5.6.6-6.3 0-.6-.1-1.7-.8-2-.6-.3-1.5-.6-3.7 1-2.3 1.6-4.8 5.2-5.7 7.1Z"/></symbol>
+</svg>
+
+<!-- the evening rail: sticky in the right gutter from the end of the hero down (desktop) -->
+<div class="rail-track" aria-hidden="false">
+	<nav aria-label="Sections">
+		<div class="rail">
+		<p class="sky" data-sky>Golden hour</p>
+		<ol>
+			<li><a href="#story" data-sec="story"><span class="dot"></span><span>Story</span><span class="t">4:10 PM</span></a></li>
+			<li><a href="#who" data-sec="who"><span class="dot"></span><span>Who's coming</span><span class="t">4:52 PM</span></a></li>
+			<li><a href="#posts" data-sec="posts"><span class="dot"></span><span>Posts</span><span class="t">5:40 PM</span></a></li>
+		</ol>
+		</div>
+	</nav>
+</div>
+
+<!-- ============ GOLDEN HOUR ============ -->
+<header class="hero" id="top">
+	<div class="layer grainy">
+		<picture>
+			<source media="(min-width: 700px)" srcset="../../../static/media/hero-landscape.png" />
+			<img src="../../../static/media/hero-portrait.png" alt="" />
+		</picture>
+	</div>
+	<div class="scrim"></div>
+	<div class="hero-top over">
+		<p class="kicker">For the (very cool) builders of the Atmosphere</p>
+		<span class="tag">Comp A · Dusk to night · sample copy</span>
+	</div>
+	<div class="breathe"></div>
+	<div class="hero-body over">
+		<h1 class="display"><span class="l1">Atmospheric</span><span class="l2">Builders' Retreat.</span></h1>
+		<ul class="ledger">
+			<li><span>December 4–7, 2026</span><span class="muted">3 nights · 2 full days</span></li>
+			<li><span>Near Palm Springs, California</span></li>
+			<li><span>Lodging &amp; food covered</span></li>
+		</ul>
+		<div class="pill-wrap"><a class="pill" href="#"><svg aria-hidden="true"><use href="#bf"/></svg>Sign in with Atmosphere</a></div>
+	</div>
+</header>
+
+<nav class="mrail" aria-label="Sections">
+	<a href="#story" data-sec="story" class="on"><span class="t">4:10 PM</span><span>Story</span></a>
+	<a href="#who" data-sec="who"><span class="t">4:52 PM</span><span>Who's coming</span></a>
+	<a href="#posts" data-sec="posts"><span class="t">5:40 PM</span><span>Posts</span></a>
+</nav>
+
+<main>
+	<!-- late golden: the hero's light, blurred and inverted, still warm under the story -->
+	<section class="story" id="story" data-light="Golden hour">
+		<div class="layer grainy"><img src="../../../static/media/hero-landscape.png" alt="" /></div>
+		<div class="scrim"></div>
+		<div class="over pad-rail">
+			<div class="story-grid">
+				<article class="story-block">
+					<p class="clock"><span class="t">4:10 PM</span><span class="light">Golden hour</span></p>
+					<h2 class="title">The retreat.</h2>
+					<p class="prose">Three nights and two full days with the builders of the Atmosphere — December 4–7, 2026, near Palm Springs, California.</p>
+					<p class="prose dim">Lodging and food are covered. You cover your travel; if that's a stretch, registration asks how we can help.</p>
+				</article>
+				<article class="story-block">
+					<p class="clock"><span class="t">4:31 PM</span><span class="light">Sun on the ridge</span></p>
+					<h2 class="title">Why it matters.</h2>
+					<p class="prose">The people building the open social web, in one house, with no conference schedule: long tables, whiteboards, the pool, and time to actually make things together.</p>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ BLUE HOUR ============ -->
+	<section class="blue" id="who" data-light="Blue hour">
+		<div class="layer grainy"><img src="../../../static/media/item-dates.png" alt="" /></div>
+		<div class="scrim"></div>
+		<div class="over pad-rail">
+			<div class="who-head">
+				<p class="clock"><span class="t">4:52 PM</span><span class="light">Blue hour</span><span class="micro-tag tag-r">Sample attendees</span></p>
+				<h2 class="title">Who's coming.</h2>
+				<p class="lede">The lights coming on, one house at a time. A few of the builders who'll be at the long table in December.</p>
+			</div>
+			<ul class="people">
+				<li class="person"><span class="ring-av">MC</span><span class="name">Maren Costa</span><span class="meta"><span class="h">maren.example</span> · building a feed-ranking lab</span></li>
+				<li class="person"><span class="ring-av">TA</span><span class="name">Theo Ames</span><span class="meta"><span class="h">theo.example</span> · ATProto backups for everyone</span></li>
+				<li class="person"><span class="ring-av">PN</span><span class="name">Priya Nandakumar</span><span class="meta"><span class="h">priya.example</span> · a labeler for local news</span></li>
+				<li class="person"><span class="ring-av">JR</span><span class="name">Jonah Reyes</span><span class="meta"><span class="h">jonah.example</span> · PDS hosting for small co-ops</span></li>
+				<li class="person"><span class="ring-av">IH</span><span class="name">Ines Halvorsen</span><span class="meta"><span class="h">ines.example</span> · custom feeds for birders</span></li>
+				<li class="person"><span class="ring-av">KM</span><span class="name">Kofi Mensah</span><span class="meta"><span class="h">kofi.example</span> · a lexicon for recipes</span></li>
+				<li class="person"><span class="ring-av">SL</span><span class="name">Sasha Lindqvist</span><span class="meta"><span class="h">sasha.example</span> · DMs that work across apps</span></li>
+				<li class="person"><span class="ring-av">RO</span><span class="name">Rafael Ortiz</span><span class="meta"><span class="h">rafa.example</span> · an AppView for long-form writing</span></li>
+				<li class="person"><span class="ring-av">WO</span><span class="name">Wren Okafor</span><span class="meta"><span class="h">wren.example</span> · moderation tools for small communities</span></li>
+				<li class="person"><span class="ring-av">DP</span><span class="name">Dev Patel</span><span class="meta"><span class="h">dev.example</span> · a firehose you can grep</span></li>
+				<li class="person"><span class="ring-av">LF</span><span class="name">Lucía Ferrer</span><span class="meta"><span class="h">lucia.example</span> · calendar events on the protocol</span></li>
+				<li class="person"><span class="ring-av">NH</span><span class="name">Noor Haddad</span><span class="meta"><span class="h">noor.example</span> · photo galleries with real alt text</span></li>
+			</ul>
+		</div>
+	</section>
+
+	<!-- ============ NIGHT ============ -->
+	<section class="night" id="posts" data-light="Night">
+		<div class="over pad-rail">
+			<div class="who-head">
+				<p class="clock"><span class="t">5:40 PM</span><span class="light">Night</span><span class="micro-tag tag-r">Sample posts</span></p>
+				<h2 class="title">Posts.</h2>
+			</div>
+			<ol class="stream">
+				<li class="entry">
+					<p class="when"><span class="d">Oct 21, 2026</span><span class="k">Update</span></p>
+					<div>
+						<h3 class="place">Travel help is sorted</h3>
+						<p class="prose">Everyone who asked for help getting here has heard from us. If your plans changed, reply to your confirmation email and we'll figure it out.</p>
+					</div>
+				</li>
+				<li class="entry">
+					<p class="when"><span class="d">Oct 14, 2026</span><span class="k">Bluesky</span></p>
+					<div class="bsky">
+						<p class="who"><span class="ring-av">BG</span><b>Bryan Guffey</b><span class="h">@chaosgreml.in</span><svg aria-hidden="true"><use href="#bf"/></svg></p>
+						<p class="text">Ordered an unreasonable number of whiteboards for December. No regrets.</p>
+						<a class="quiet-arrow" href="#">View on Bluesky →</a>
+					</div>
+				</li>
+				<li class="entry">
+					<p class="when"><span class="d">Oct 9, 2026</span><span class="k">Update</span></p>
+					<div>
+						<h3 class="place">The date is set</h3>
+						<p class="prose">You helped pick the days: December 4–7, 2026. Three nights, two full days, and nothing on the calendar but building together.</p>
+						<p class="prose dim">Invitations go out this week. If you filled in the survey, watch your inbox — and thank you for telling us when you could come.</p>
+					</div>
+				</li>
+				<li class="entry">
+					<p class="when"><span class="d">Oct 2, 2026</span><span class="k">Bluesky</span></p>
+					<div class="bsky">
+						<p class="who"><span class="ring-av">BG</span><b>Bryan Guffey</b><span class="h">@chaosgreml.in</span><svg aria-hidden="true"><use href="#bf"/></svg></p>
+						<p class="text">Registration for the Atmospheric Builders' Retreat is closed — and the list is incredible. Can't wait for December.</p>
+						<a class="quiet-arrow" href="#">View on Bluesky →</a>
+					</div>
+				</li>
+			</ol>
+			<footer class="foot">
+				<span>Organized by Bryan Guffey (@chaosgreml.in) in partnership with Bluesky PBC</span>
+				<span class="end">Good night · see you Dec 4</span>
+			</footer>
+		</div>
+	</section>
+</main>
+
+<script>
+	// Rail starts where the hero ends; active row follows the evening.
+	const hero = document.querySelector('.hero');
+	const setTop = () => document.documentElement.style.setProperty('--rail-top', hero.offsetHeight + 'px');
+	setTop(); addEventListener('resize', setTop);
+	const secs = [...document.querySelectorAll('main > section')];
+	const links = [...document.querySelectorAll('[data-sec]')];
+	const sky = document.querySelector('[data-sky]');
+	const update = () => {
+		const mid = innerHeight * 0.5;
+		let cur = secs[0];
+		for (const s of secs) if (s.getBoundingClientRect().top < mid) cur = s;
+		const idx = secs.indexOf(cur);
+		links.forEach((a) => {
+			const i = secs.findIndex((s) => s.id === a.dataset.sec);
+			a.classList.toggle('on', i === idx);
+			a.classList.toggle('past', i < idx);
+		});
+		if (sky) sky.textContent = cur.dataset.light;
+	};
+	update(); addEventListener('scroll', update, { passive: true });
+</script>
+</body>
+</html>

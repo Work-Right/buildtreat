@@ -1,9 +1,9 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { loadHandle } from '@svelte-atproto/oauth/helper';
 import { checkAllowlist, upsertResponse, validateDraft, ValidationError } from '$lib/server/db';
 import { surveyGate } from '$lib/server/organizer/admin';
 import { retreat } from '$lib/content';
+import { verifiedHandle } from '$lib/server/site/verified-handle';
 
 export const PUT: RequestHandler = async ({ request, locals, platform }) => {
 	if (!locals.did) {
@@ -29,11 +29,9 @@ export const PUT: RequestHandler = async ({ request, locals, platform }) => {
 		throw e;
 	}
 
-	const handle =
-		(await loadHandle(locals.did).catch((e) => {
-			console.error('handle load failed for', `${String(locals.did).slice(0, 14)}…`, e);
-			return null;
-		})) ?? null;
+	// Appview-verified handle only (null → DID-only match), the same source
+	// the page's gates and tier use, so the write path can't drift from them.
+	const handle = await verifiedHandle(locals.did, platform?.env?.PROFILE_CACHE);
 	const who = { did: locals.did as string, handle };
 
 	// The deadline check honors the organizer's overrides: the global reopen

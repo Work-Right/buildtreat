@@ -21,6 +21,8 @@ surface shares; feature folders own the rest.
 | `survey/` | availability-survey feed items + `SurveyState` | `survey/AGENTS.md` |
 | `auth/` | ATProto OAuth client config + sign-in sheet | `auth/AGENTS.md` |
 | `registration/` | Dec 4–7 registration model + feed items | `registration/AGENTS.md` |
+| `site/` | the retreat home at `/` (regions, sections, who's coming, posts stream) + `console/`, the `/organizer/retreat` editor | `site/AGENTS.md` |
+| `markdown/` | `renderMarkdown` for organizer-written sections (client preview + server render) | `markdown/AGENTS.md` |
 | `organizer/` | organizer console components + pure aggregates | `organizer/AGENTS.md` |
 | `server/` | D1 access and everything server-only | `server/AGENTS.md` |
 
@@ -33,7 +35,7 @@ surface shares; feature folders own the rest.
   `server/messaging/bsky-dm` re-exports the DM length limit from
   `organizer/dm-text.ts` (shared with the compose UI).
 - **Client → server direction only via routes.** Client folders (`ui`,
-  `survey`, `auth`, `registration`, `organizer`) never import values from
+  `survey`, `auth`, `registration`, `site`, `markdown`, `organizer`) never import values from
   `server/`. `import type` is fine. If a client component needs a derived
   server value, compute it in the route's `load` and pass it as data (see
   `server/organizer/page-data.ts` for the pattern).

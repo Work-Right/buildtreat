@@ -10,7 +10,7 @@ export const retreat = {
 	acknowledgment: ['The date is set.', 'December 4–7 — register to lock your spot.'] as [string, string],
 	facts: [
 		{ label: 'What', value: '3 nights · 2 full days' },
-		{ label: 'Where', value: 'Palm Springs or Coachella Valley' },
+		{ label: 'Where', value: 'Near Palm Springs, California' },
 		{ label: 'When', value: 'December 4–7, 2026' },
 		{ label: 'Your Costs', value: 'Travel only. Lodging & food all taken care of' }
 	],
@@ -154,9 +154,63 @@ export const retreatDates = {
 } as const;
 
 export const retreatLocation = {
-	display: 'Palm Springs',
+	display: 'Near Palm Springs',
 	pending: 'Exact address goes to registered attendees',
 	explainer: 'The house is booked, a short drive from Palm Springs. Registered attendees get the address and itinerary by email.'
+} as const;
+
+/** Copy for the retreat home `/`. Facts come from PRODUCT.md / the spec. */
+export const siteHome = {
+	fallbackDescription: 'Three nights and two full days with the builders of the Atmosphere — December 4–7, 2026, near Palm Springs.',
+	moreSoon: 'More details soon.',
+	registerCta: 'Register',
+	registeredLine: 'You’re registered',
+	editDetails: 'Edit details',
+	declinedLine: 'You said you can’t make it',
+	changeAnswer: 'Change that',
+	closedLine: 'Registration has closed — message Bryan if you still want to come.',
+	invitedOnlyLabel: 'For invited builders',
+	editInfo: 'Edit retreat info',
+	viewAsPublic: 'View as public',
+	viewAsInvited: 'View as invited',
+	/** The blue-hour region title (display caps; the comp's closing period). */
+	whosComing: 'Who’s coming.',
+	/** The night region (the posts stream): title, entry labels, the way out. */
+	posts: {
+		title: 'Posts.',
+		update: 'Update',
+		bluesky: 'Bluesky',
+		viewOnBluesky: 'View on Bluesky'
+	},
+	backHome: '← Retreat home',
+	registerBy: 'Register by',
+	registrationOpen: 'Registration is open for you',
+	notInvited: 'this retreat is invite-only.',
+	/**
+	 * The evening clock (design chrome from the approved comp A, "Dusk to
+	 * night"): each region opens on a time and a light. Golden-hour
+	 * sections share the stretch from the first golden stop to `goldenEnd`
+	 * (see `lib/site/evening.ts`); each takes the light of the latest stop
+	 * its time has reached.
+	 */
+	evening: {
+		golden: [
+			{ time: '4:10 PM', light: 'Golden hour' },
+			{ time: '4:31 PM', light: 'Sun on the ridge' },
+			{ time: '4:38 PM', light: 'Sunset' }
+		],
+		goldenEnd: '4:45 PM',
+		blue: { time: '4:52 PM', light: 'Blue hour' },
+		night: { time: '5:40 PM', light: 'Night' }
+	},
+	/** The time-of-day nav. */
+	nav: {
+		label: 'Sections',
+		plan: 'The plan',
+		story: 'Story',
+		who: 'Who’s coming',
+		posts: 'Posts'
+	}
 } as const;
 
 export const dietaryOptions = [
@@ -221,8 +275,8 @@ export const registration = {
 	ack: ['You helped pick the days.', 'Here they are.'] as [string, string],
 	dateLines: ['December', '4–7, 2026.'] as [string, string],
 	facts: [
-		{ label: 'Palm Springs or Coachella Valley', value: '' },
-		{ label: 'Venue locks with the headcount', value: '', muted: true },
+		{ label: 'Near Palm Springs, California', value: '' },
+		{ label: 'The house is booked — details on the retreat page', value: '', muted: true },
 		{ label: 'Lodging & food covered', value: 'Bluesky' }
 	] as { label: string; value: string; muted?: boolean }[],
 	registerBy: 'Register by',
@@ -241,7 +295,7 @@ export const registration = {
 	closedBody: 'We’ve locked the headcount to book the house. If you can still make it, DM',
 	formKicker: 'Registration',
 	formTitle: 'You’re in.',
-	formSub: 'December 4–7, Palm Springs or the Coachella Valley. A few short sections. Travel can wait until you know.',
+	formSub: 'December 4–7, near Palm Springs. A few short sections. Travel can wait until you know.',
 	sections: {
 		contact: { head: 'Contact', name: 'Name', email: 'Email', phone: 'Phone', phoneHint: 'For day-of texts' },
 		food: { head: 'Food', hint: 'Pick any', other: 'Anything else about food', otherHint: 'Allergies, strong dislikes, coffee opinions' },
@@ -280,7 +334,7 @@ export const registration = {
 	submitHint: 'You can change everything later.',
 	saving: 'Saving…',
 	registeredTitle: 'You’re registered.',
-	registeredSub: 'December 4–7. We’ll email the venue and itinerary once the house is booked.',
+	registeredSub: 'December 4–7, near Palm Springs. The address and itinerary come by email.',
 	travelNudge: 'Update as plans firm up',
 	edit: 'Edit',
 	declineAfter: 'I can’t make it after all',

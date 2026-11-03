@@ -8,6 +8,8 @@
 		| 'check'
 		| 'butterfly'
 		| 'chevron-down'
+		| 'arrow-left'
+		| 'arrow-right'
 		| 'plus'
 		| 'x';
 
@@ -48,6 +50,10 @@
 		<path d="m5 12.8 4.6 4.6L19 7.6" />
 	{:else if name === 'chevron-down'}
 		<path d="m6 9.5 6 6 6-6" />
+	{:else if name === 'arrow-left'}
+		<path d="M19 12H5m6-6-6 6 6 6" />
+	{:else if name === 'arrow-right'}
+		<path d="M5 12h14m-6-6 6 6-6 6" />
 	{:else if name === 'plus'}
 		<path d="M12 5v14M5 12h14" />
 	{:else if name === 'x'}

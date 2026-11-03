@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { dev } from '$app/environment';
-import { loadBskyProfile } from '@svelte-atproto/oauth/bsky';
+import { loadBskyProfile, loadBskyProfiles } from '@svelte-atproto/oauth/bsky';
 import { actorToDid } from '@svelte-atproto/oauth/helper';
 import { cloudflareKV } from '@svelte-atproto/oauth/server/stores/cloudflare';
 import { codeOfConduct, retreat, waiver, type TravelValue } from '$lib/content';
@@ -10,15 +10,14 @@ import { sendEmail } from '$lib/server/messaging/email';
 import { getRegistration, setDeclined, upsertConfirmed, type Registration } from '$lib/server/registration';
 import { confirmationEmail } from '$lib/server/messaging/registration-email';
 import { asksSupport, canConfirm, parseRegistrationForm, validateRegistration } from '$lib/registration/registration';
-import {
-	backfillWaitlistHandle,
-	getWaitlistEntry,
-	isValidWaitlistEmail,
-	joinWaitlist,
-	type WaitlistState
-} from '$lib/server/waitlist';
+import { backfillWaitlistHandle, getWaitlistEntry, isValidWaitlistEmail, joinWaitlist, type WaitlistState } from '$lib/server/waitlist';
 import type { SurveyDraft } from '$lib/survey/survey.svelte';
 import type { KnownUser } from '$lib/types';
+import { loadSite } from '$lib/server/site/page';
+import { appviewProfileCache } from '$lib/server/site/appview-cache';
+import { appviewFetch, kvLike } from '$lib/server/site/bsky-posts';
+import { previewRegistration } from '$lib/server/site/home-preview';
+import { verifiedHandle } from '$lib/server/site/verified-handle';
 import { registrationGate, surveyGate } from '$lib/server/organizer/admin';
 
 /** Enough of a DID to correlate log lines without logging the full identifier. */
@@ -51,52 +50,77 @@ function readKnownUser(raw: string | undefined): KnownUser | null {
 			handle: parsed.handle,
 			displayName: typeof parsed.displayName === 'string' ? parsed.displayName.slice(0, 64) : null,
 			avatar:
-				typeof parsed.avatar === 'string' && parsed.avatar.startsWith('https://') && parsed.avatar.length <= 512
-					? parsed.avatar
-					: null
+				typeof parsed.avatar === 'string' && parsed.avatar.startsWith('https://') && parsed.avatar.length <= 512 ? parsed.avatar : null
 		};
 	} catch {
 		return null;
 	}
 }
 
+/** Bound on the organizer-avatar lookup: a slow resolver must not stall `/`. */
+const ORGANIZER_TIMEOUT_MS = 2000;
+
 /** The organizer's avatar, resolved from the public appview and cached. */
 async function loadOrganizer(profileCache: ReturnType<typeof cloudflareKV> | undefined): Promise<Organizer> {
-	try {
+	const fallback: Organizer = { handle: retreat.organizerHandle, avatar: null };
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const lookup = (async (): Promise<Organizer> => {
 		const did = await actorToDid(retreat.organizerHandle);
-		if (!did) return { handle: retreat.organizerHandle, avatar: null };
+		if (!did) return fallback;
 		const profile = await loadBskyProfile(did, { cache: profileCache });
 		return { handle: retreat.organizerHandle, avatar: profile?.avatar ?? null };
-	} catch {
-		return { handle: retreat.organizerHandle, avatar: null };
+	})().catch(() => fallback);
+	const timeout = new Promise<Organizer>((resolve) => {
+		timer = setTimeout(() => resolve(fallback), ORGANIZER_TIMEOUT_MS);
+	});
+	try {
+		return await Promise.race([lookup, timeout]);
+	} finally {
+		clearTimeout(timer);
 	}
 }
 
-export const load: PageServerLoad = async ({ locals, platform, url, cookies }) => {
+export const load: PageServerLoad = async ({ locals, platform, url, cookies, setHeaders }) => {
+	// What `/` shows depends on who is asking (tier, invite state): never let
+	// a shared cache hand one visitor's page to another.
+	setHeaders({ 'cache-control': 'private, no-store' });
+
 	// The OAuth library redirects back with ?error=... when a login fails.
 	const authError = url.searchParams.get('error');
 
 	const db = platform?.env?.DB;
+	const profileCache = platform?.env?.PROFILE_CACHE ? cloudflareKV(platform.env.PROFILE_CACHE, { ttl: 3600 }) : undefined;
 
-	// Base gate (no respondent yet): deadline + the organizer's reopen switch.
-	// A signed-in respondent gets a second look below for a late pass.
-	const { deadline, closed } = await surveyGate(db, platform?.env?.DEADLINE, null);
-
-	// Registration era: its own deadline, same parsing as the survey's. This
-	// is the anonymous answer; a signed-in visitor gets it re-asked below so a
-	// late pass can lift it for them.
-	const reg = await registrationGate(db, platform?.env?.REG_DEADLINE, null);
+	// Base gates (no respondent yet): the survey's deadline + reopen switch,
+	// and registration's own deadline. A signed-in visitor gets both re-asked
+	// below so a late pass can lift them. The organizer avatar lookup runs
+	// alongside (bounded by a timeout) instead of in front.
+	const [{ deadline, closed }, reg, organizer] = await Promise.all([
+		surveyGate(db, platform?.env?.DEADLINE, null),
+		registrationGate(db, platform?.env?.REG_DEADLINE, null),
+		loadOrganizer(profileCache)
+	]);
 	let regBase = { regDeadline: reg.deadline, regDeadlineDisplay: reg.display, regClosed: reg.closed };
-	// `?survey` reopens the read-only survey feed for people who want to see
-	// what they answered; everything else lands on registration.
-	const wantsSurvey = url.searchParams.has('survey');
 
-	const profileCache = platform?.env?.PROFILE_CACHE
-		? cloudflareKV(platform.env.PROFILE_CACHE, { ttl: 3600 })
-		: undefined;
-
-	const organizer = await loadOrganizer(profileCache);
 	const knownUser = readKnownUser(cookies.get(KNOWN_COOKIE));
+	const registerMode = url.searchParams.has('register');
+	const origin = platform?.env?.ORIGIN ?? url.origin;
+	// Attendee cards use the batch appview call (no PDS fallback) with their
+	// own `appview:` cache namespace: the shared PROFILE_CACHE keys can hold
+	// a PDS fallback written by loadBskyProfile, whose handle is unverified.
+	const attendeeCache = platform?.env?.PROFILE_CACHE ? appviewProfileCache(platform.env.PROFILE_CACHE) : undefined;
+	const attendeeProfiles = (dids: string[]) => loadBskyProfiles(dids as `did:${string}:${string}`[], { cache: attendeeCache });
+	const siteFor = (who: { did: string; handle: string | null } | null) =>
+		loadSite({
+			db,
+			organizerDids: platform?.env?.ORGANIZER_DIDS,
+			origin,
+			who,
+			asParam: url.searchParams.get('as'),
+			profiles: attendeeProfiles,
+			// Fixed host only (public.api.bsky.app), KV-cached for an hour.
+			bsky: { fetch: appviewFetch, kv: kvLike(platform?.env?.PROFILE_CACHE) }
+		});
 
 	// Dev-only design preview; `dev` is compile-time false in production
 	// builds, so this path cannot ship. `?preview` = the signed-in survey;
@@ -105,36 +129,10 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies }) =
 		const variant = url.searchParams.get('preview');
 		const uninvited = variant === 'notinvited' || variant === 'member';
 		const regVariant = variant === 'register' || variant === 'registered' || variant === 'declined';
-		const previewReg: Registration | null =
-			variant === 'registered' || variant === 'declined'
-				? {
-						did: 'did:plc:preview',
-						handle: 'preview.bsky.social',
-						name: 'Preview Builder',
-						email: 'preview@example.com',
-						status: variant === 'declined' ? 'declined' : 'confirmed',
-						phone: '555-0100',
-						emergencyName: 'Sam Preview',
-						emergencyPhone: '555-0101',
-						dietary: ['vegetarian', 'nut_allergy'],
-						dietaryOther: '',
-						accessibility: variant === 'declined' ? '' : 'Ground-floor room if possible',
-						notes: '',
-						travelArrival: 'Fri afternoon, PSP',
-						travelDeparture: '',
-						travelMode: 'flying',
-						travelDetails: '',
-						supportNeed: variant === 'declined' ? null : 'partial',
-						supportAmount: variant === 'declined' ? null : 450,
-						supportContingent: variant === 'declined' ? null : false,
-						waiverVersion: variant === 'declined' ? null : 'v1',
-						cocVersion: variant === 'declined' ? null : 'v1',
-						agreedAt: variant === 'declined' ? null : '2026-08-30T18:00:00Z',
-						createdAt: '2026-08-30T18:00:00Z',
-						updatedAt: '2026-08-30T18:00:00Z'
-					}
-				: null;
+		const previewReg = previewRegistration(variant);
 		return {
+			site: await siteFor({ did: 'did:plc:preview', handle: 'preview.bsky.social' }),
+			registerMode,
 			user: {
 				did: 'did:plc:preview',
 				handle: uninvited ? 'newbuilder.bsky.social' : 'preview.bsky.social',
@@ -162,6 +160,8 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies }) =
 
 	if (!locals.did) {
 		return {
+			site: await siteFor(null),
+			registerMode,
 			user: null as PageUser | null,
 			allowed: true,
 			waitlistState: 'none' as WaitlistState,
@@ -181,10 +181,18 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies }) =
 		};
 	}
 
-	const profile = await loadBskyProfile(locals.did, { cache: profileCache }).catch((e) => {
-		console.error('profile load failed for', logDid(locals.did), e);
-		return undefined;
-	});
+	// Two lookups, two jobs. `profile` is for DISPLAY only: loadBskyProfile
+	// falls back to the user's own PDS, so its handle is merely claimed.
+	// Every allowlist / late-pass / tier match below uses `who`, whose handle
+	// the public appview has verified (null → DID-only matching).
+	const [profile, handle] = await Promise.all([
+		loadBskyProfile(locals.did, { cache: profileCache }).catch((e) => {
+			console.error('profile load failed for', logDid(locals.did), e);
+			return undefined;
+		}),
+		verifiedHandle(locals.did, platform?.env?.PROFILE_CACHE)
+	]);
+	const who = { did: locals.did, handle };
 
 	const user: PageUser = {
 		did: locals.did,
@@ -195,11 +203,10 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies }) =
 
 	// Late passes are per-respondent: only now that we know who this is can
 	// the gate answer for them specifically.
-	const userGate =
-		closed && db ? await surveyGate(db, platform?.env?.DEADLINE, { did: locals.did, handle: user.handle }) : null;
+	const userGate = closed && db ? await surveyGate(db, platform?.env?.DEADLINE, who) : null;
 	const closedForUser = userGate ? userGate.closed : closed;
 	if (reg.closed && db) {
-		const userReg = await registrationGate(db, platform?.env?.REG_DEADLINE, { did: locals.did, handle: user.handle });
+		const userReg = await registrationGate(db, platform?.env?.REG_DEADLINE, who);
 		// A late pass reopens the form for this person; the "register by" date
 		// is dropped so the hero doesn't advertise a deadline already behind them.
 		if (userReg.latePass) regBase = { regDeadline: reg.deadline, regDeadlineDisplay: null, regClosed: false };
@@ -214,7 +221,7 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies }) =
 	let allowed = true;
 	if (db) {
 		try {
-			allowed = await checkAllowlist(db, { did: locals.did, handle: user.handle });
+			allowed = await checkAllowlist(db, who);
 			if (!allowed && !profile) {
 				// Identity resolution failed above — a handle-less lookup can't
 				// confidently deny (DIDs are pre-pinned, but stay honest).
@@ -273,8 +280,9 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies }) =
 			// Self-heal a null/stale handle (transient profile failure at join,
 			// or a later handle change) so the row stays promotable. Silent,
 			// no user action — a plain revisit repairs it.
-			if (user.handle && entry.handle !== user.handle) {
-				await backfillWaitlistHandle(db, locals.did, user.handle).catch((e) =>
+			// Verified handle only: promotion allowlists (and pins) this handle.
+			if (handle && entry.handle !== handle) {
+				await backfillWaitlistHandle(db, locals.did, handle).catch((e) =>
 					console.error('waitlist handle backfill failed for', logDid(locals.did), e)
 				);
 			}
@@ -282,6 +290,8 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies }) =
 	}
 
 	return {
+		site: await siteFor(who),
+		registerMode,
 		user,
 		allowed,
 		waitlistState,
@@ -294,7 +304,7 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies }) =
 		knownUser,
 		authError,
 		...regBase,
-		registrationMode: allowed && !wantsSurvey,
+		registrationMode: allowed,
 		registration,
 		prefill: {
 			name: stored?.draft.name ?? user.displayName ?? '',
@@ -322,13 +332,12 @@ export const actions: Actions = {
 			return fail(400, { waitlistError: 'Enter a valid email so we can reach you.' });
 		}
 
-		const profileCache = platform?.env?.PROFILE_CACHE
-			? cloudflareKV(platform.env.PROFILE_CACHE, { ttl: 3600 })
-			: undefined;
-		const profile = await loadBskyProfile(locals.did, { cache: profileCache }).catch(() => undefined);
+		// Appview-verified only: promotion allowlists this handle pinned to
+		// this DID, so a PDS-claimed handle must never be stored here.
+		const handle = await verifiedHandle(locals.did, platform?.env?.PROFILE_CACHE);
 
 		try {
-			await joinWaitlist(db, { did: locals.did, handle: profile?.handle ?? null, email });
+			await joinWaitlist(db, { did: locals.did, handle, email });
 		} catch (e) {
 			console.error('waitlist join failed for', logDid(locals.did), e);
 			return fail(500, { waitlistError: 'Something went wrong adding you — please try again.' });
@@ -359,11 +368,9 @@ export const actions: Actions = {
 		const checked = validateRegistration(input, { support: asksSupport(surveyTravel) });
 		if (!checked.ok) return fail(400, { regErrors: checked.errors, regValues: input });
 
-		const profileCache = platform?.env?.PROFILE_CACHE
-			? cloudflareKV(platform.env.PROFILE_CACHE, { ttl: 3600 })
-			: undefined;
-		const profile = await loadBskyProfile(locals.did, { cache: profileCache }).catch(() => undefined);
-		const handle = profile?.handle ?? null;
+		// Appview-verified handle only (null → DID-only match): a PDS-claimed
+		// handle must not match or pin an invitee's row.
+		const handle = await verifiedHandle(locals.did, platform?.env?.PROFILE_CACHE);
 
 		try {
 			const allowed = await checkAllowlist(db, { did: locals.did, handle });
@@ -400,11 +407,12 @@ export const actions: Actions = {
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { regMessage: 'Storage is not available right now — try again shortly.' });
 
-		const profileCache = platform?.env?.PROFILE_CACHE
-			? cloudflareKV(platform.env.PROFILE_CACHE, { ttl: 3600 })
-			: undefined;
-		const profile = await loadBskyProfile(locals.did, { cache: profileCache }).catch(() => undefined);
-		const handle = profile?.handle ?? null;
+		const profileCache = platform?.env?.PROFILE_CACHE ? cloudflareKV(platform.env.PROFILE_CACHE, { ttl: 3600 }) : undefined;
+		// Display name fallback only; matching uses the appview-verified handle.
+		const [profile, handle] = await Promise.all([
+			loadBskyProfile(locals.did, { cache: profileCache }).catch(() => undefined),
+			verifiedHandle(locals.did, platform?.env?.PROFILE_CACHE)
+		]);
 
 		try {
 			const allowed = await checkAllowlist(db, { did: locals.did, handle });

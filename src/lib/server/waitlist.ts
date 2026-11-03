@@ -80,31 +80,51 @@ export async function listWaitlist(db: D1Database): Promise<WaitlistEntry[]> {
 	}));
 }
 
+export type PromoteResult =
+	| { ok: true; handle: string }
+	| { ok: false; reason: 'no-handle' | 'unverified' | 'pinned-elsewhere'; handle: string | null };
+
 /**
- * Promote a waitlist entry into the allowlist. Inserts the (lowercased)
- * handle — pinning the DID so a later handle change can't lock them out —
- * and stamps promoted_at. The existing survey gate then admits them with
- * the identity they already have. No-op-safe on a missing/handleless row.
+ * Promote a waitlist entry into the allowlist, pinned to the waitlister's
+ * DID, and stamp promoted_at. The stored handle is only a hint: rows saved
+ * before join-time verification may hold a PDS-claimed handle, so `verify`
+ * (production: `verifiedHandle`, appview-only) must confirm the same handle
+ * now, or nothing is written. An allowlist row for that handle already
+ * pinned to a different DID is refused rather than silently kept.
  */
-export async function promoteFromWaitlist(db: D1Database, did: string): Promise<{ ok: boolean; handle: string | null }> {
+export async function promoteFromWaitlist(
+	db: D1Database,
+	did: string,
+	verify: (did: string) => Promise<string | null>
+): Promise<PromoteResult> {
 	const entry = await getWaitlistEntry(db, did);
-	if (!entry || !entry.handle) return { ok: false, handle: entry?.handle ?? null };
-	const handle = entry.handle.replace(/^@/, '').toLowerCase();
+	if (!entry || !entry.handle) return { ok: false, reason: 'no-handle', handle: null };
+	const stored = entry.handle.replace(/^@/, '').toLowerCase();
+	const verified = (await verify(entry.did))?.replace(/^@/, '').toLowerCase() ?? null;
+	if (!verified || verified !== stored) return { ok: false, reason: 'unverified', handle: stored };
+	const existing = await db
+		.prepare(`SELECT did FROM allowlist WHERE lower(handle) = ?1 LIMIT 1`)
+		.bind(verified)
+		.first<{ did: string | null }>();
+	if (existing?.did && existing.did !== entry.did) {
+		console.error('waitlist promote refused: allowlist handle pinned to another DID', `${entry.did.slice(0, 14)}…`);
+		return { ok: false, reason: 'pinned-elsewhere', handle: verified };
+	}
 	const now = new Date().toISOString();
 	await db.batch([
-		// Pin the DID; if the handle is already allowlisted, keep any existing DID.
+		// Pin the DID (the row is new, unpinned, or already this DID's).
 		db
 			.prepare(
 				`INSERT INTO allowlist (handle, did) VALUES (?1, ?2)
 				 ON CONFLICT(handle) DO UPDATE SET did = COALESCE(allowlist.did, excluded.did)`
 			)
-			.bind(handle, entry.did),
+			.bind(verified, entry.did),
 		// COALESCE: a re-promote (retry / double-click) keeps the first
 		// timestamp, so promoted_at stays an accurate audit of when they
 		// were first admitted.
 		db.prepare(`UPDATE waitlist SET promoted_at = COALESCE(promoted_at, ?1) WHERE did = ?2`).bind(now, did)
 	]);
-	return { ok: true, handle };
+	return { ok: true, handle: verified };
 }
 
 /** Validate a submitted waitlist email. Mirrors the survey's rule. */

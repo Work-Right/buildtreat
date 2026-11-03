@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-07T00:00:00Z",
+  "generatedAt": "2026-11-01T00:00:00Z",
   "title": "Design System: The Atmospheric Builders' Retreat",
   "extensions": {
     "colorMeta": {
@@ -8,81 +8,264 @@
         "role": "primary",
         "displayName": "Ink",
         "canonical": "#ffffff",
-        "tonalRamp": ["oklch(15% 0 0)", "oklch(27% 0 0)", "oklch(39% 0 0)", "oklch(51% 0 0)", "oklch(63% 0 0)", "oklch(75% 0 0)", "oklch(87% 0 0)", "oklch(97% 0 0)"]
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(27% 0 0)",
+          "oklch(39% 0 0)",
+          "oklch(51% 0 0)",
+          "oklch(63% 0 0)",
+          "oklch(75% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(97% 0 0)"
+        ]
       },
       "ground": {
         "role": "neutral",
         "displayName": "Dusk Ground",
         "canonical": "#0b0908",
-        "tonalRamp": ["oklch(13% 0.008 55)", "oklch(24% 0.01 55)", "oklch(36% 0.012 55)", "oklch(48% 0.012 55)", "oklch(60% 0.012 55)", "oklch(72% 0.01 55)", "oklch(84% 0.008 55)", "oklch(95% 0.005 55)"]
+        "tonalRamp": [
+          "oklch(13% 0.008 55)",
+          "oklch(24% 0.01 55)",
+          "oklch(36% 0.012 55)",
+          "oklch(48% 0.012 55)",
+          "oklch(60% 0.012 55)",
+          "oklch(72% 0.01 55)",
+          "oklch(84% 0.008 55)",
+          "oklch(95% 0.005 55)"
+        ]
       },
       "ink-70": {
         "role": "neutral",
         "displayName": "Ink 70 — secondary text",
         "canonical": "rgba(255, 255, 255, 0.7)",
-        "tonalRamp": ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.12)", "rgba(255,255,255,0.14)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.45)", "rgba(255,255,255,0.7)", "rgba(255,255,255,1)"]
+        "tonalRamp": [
+          "rgba(255,255,255,0.07)",
+          "rgba(255,255,255,0.12)",
+          "rgba(255,255,255,0.14)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.45)",
+          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,1)"
+        ]
       },
       "ink-45": {
         "role": "neutral",
         "displayName": "Ink 45 — faint strokes",
         "canonical": "rgba(255, 255, 255, 0.45)",
-        "tonalRamp": ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.12)", "rgba(255,255,255,0.14)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.45)", "rgba(255,255,255,0.7)", "rgba(255,255,255,1)"]
+        "tonalRamp": [
+          "rgba(255,255,255,0.07)",
+          "rgba(255,255,255,0.12)",
+          "rgba(255,255,255,0.14)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.45)",
+          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,1)"
+        ]
       },
       "ink-35": {
         "role": "neutral",
         "displayName": "Ink 35 — the hairline",
         "canonical": "rgba(255, 255, 255, 0.35)",
-        "tonalRamp": ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.12)", "rgba(255,255,255,0.14)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.45)", "rgba(255,255,255,0.7)", "rgba(255,255,255,1)"]
+        "tonalRamp": [
+          "rgba(255,255,255,0.07)",
+          "rgba(255,255,255,0.12)",
+          "rgba(255,255,255,0.14)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.45)",
+          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,1)"
+        ]
       },
       "ink-14": {
         "role": "neutral",
         "displayName": "Ink 14 — the data hairline",
         "canonical": "rgba(255, 255, 255, 0.14)",
-        "tonalRamp": ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.12)", "rgba(255,255,255,0.14)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.45)", "rgba(255,255,255,0.7)", "rgba(255,255,255,1)"]
+        "tonalRamp": [
+          "rgba(255,255,255,0.07)",
+          "rgba(255,255,255,0.12)",
+          "rgba(255,255,255,0.14)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.45)",
+          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,1)"
+        ]
       },
       "ink-12": {
         "role": "neutral",
         "displayName": "Ink 12 — quiet fills",
         "canonical": "rgba(255, 255, 255, 0.12)",
-        "tonalRamp": ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.12)", "rgba(255,255,255,0.14)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.45)", "rgba(255,255,255,0.7)", "rgba(255,255,255,1)"]
+        "tonalRamp": [
+          "rgba(255,255,255,0.07)",
+          "rgba(255,255,255,0.12)",
+          "rgba(255,255,255,0.14)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.45)",
+          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,1)"
+        ]
       },
       "ink-07": {
         "role": "neutral",
         "displayName": "Ink 07 — the cell keyline",
         "canonical": "rgba(255, 255, 255, 0.07)",
-        "tonalRamp": ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.12)", "rgba(255,255,255,0.14)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.45)", "rgba(255,255,255,0.7)", "rgba(255,255,255,1)"]
+        "tonalRamp": [
+          "rgba(255,255,255,0.07)",
+          "rgba(255,255,255,0.12)",
+          "rgba(255,255,255,0.14)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.45)",
+          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,1)"
+        ]
       },
       "on-pill": {
         "role": "neutral",
         "displayName": "On Pill (Dusk Ground on white)",
         "canonical": "#0b0908",
-        "tonalRamp": ["oklch(13% 0.008 55)", "oklch(24% 0.01 55)", "oklch(36% 0.012 55)", "oklch(48% 0.012 55)", "oklch(60% 0.012 55)", "oklch(72% 0.01 55)", "oklch(84% 0.008 55)", "oklch(95% 0.005 55)"]
+        "tonalRamp": [
+          "oklch(13% 0.008 55)",
+          "oklch(24% 0.01 55)",
+          "oklch(36% 0.012 55)",
+          "oklch(48% 0.012 55)",
+          "oklch(60% 0.012 55)",
+          "oklch(72% 0.01 55)",
+          "oklch(84% 0.008 55)",
+          "oklch(95% 0.005 55)"
+        ]
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "The stacked retreat name on the hero; line 1 at clamp(3.4rem, 13.5vw, 6rem), line 2 at clamp(2.55rem, 10vw, 4.5rem). Always uppercase, line-height 0.92. The organizer rail title reuses the atom at a one-off rail scale." },
-      "headline": { "displayName": "Headline", "purpose": "Question titles ('ARE YOU IN?') and the review title." },
-      "title": { "displayName": "Title", "purpose": "Denser interactive items: dates calendar and location ranking. Reused verbatim by the organizer's sign-in gate title (a mini hero)." },
-      "stat": { "displayName": "Stat", "purpose": "The organizer rail's display numerals: the title ramp's endpoints (2.2rem–3.6rem) interpolated on viewport HEIGHT (3.2vh) so the full stat stack fits the first viewport. Tabular numerals, min-width 1.6ch." },
-      "place": { "displayName": "Place / Section", "purpose": "Location names on the survey; reused verbatim by the organizer's section titles ('When can they come', 'Responses', 'Allowlist')." },
-      "body": { "displayName": "Body", "purpose": "Prompts and explanatory copy, 38-46ch measure. The hero acknowledgment scales up to clamp(1rem, 1.6vw + 0.7rem, 1.375rem)." },
-      "label": { "displayName": "Kicker / Label", "purpose": "Uppercase field labels, rail section heads, table headers, window rank labels, and the status chip (0.6875rem, 0.18em tracking). KEPT by explicit user decision 2026-08-04 as a documented exception to the craft-floor kicker ban; on /organizer it is labels and section heads only, never an eyebrow — the survey hero's kicker is the sole eyebrow use. Ledger facts use the sibling 0.8125rem / 0.14em style." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "The stacked retreat name on the hero; line 1 at clamp(3.4rem, 13.5vw, 6rem), line 2 at clamp(2.55rem, 10vw, 4.5rem). Always uppercase, line-height 0.92. The organizer rail title reuses the atom at a one-off rail scale."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Question titles ('ARE YOU IN?') and the review title."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Denser interactive items: dates calendar and location ranking. Reused verbatim by the organizer's sign-in gate title (a mini hero)."
+      },
+      "stat": {
+        "displayName": "Stat",
+        "purpose": "The organizer rail's display numerals: the title ramp's endpoints (2.2rem–3.6rem) interpolated on viewport HEIGHT (3.2vh) so the full stat stack fits the first viewport. Tabular numerals, min-width 1.6ch."
+      },
+      "place": {
+        "displayName": "Place / Section",
+        "purpose": "Location names on the survey; reused verbatim by the organizer's section titles ('When can they come', 'Responses', 'Allowlist')."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prompts and explanatory copy, 38-46ch measure. The hero acknowledgment scales up to clamp(1rem, 1.6vw + 0.7rem, 1.375rem)."
+      },
+      "label": {
+        "displayName": "Kicker / Label",
+        "purpose": "Uppercase field labels, rail section heads, table headers, window rank labels, and the status chip (0.6875rem, 0.18em tracking). KEPT by explicit user decision 2026-08-04 as a documented exception to the craft-floor kicker ban; on /organizer it is labels and section heads only, never an eyebrow — the survey hero's kicker is the sole eyebrow use. Ledger facts use the sibling 0.8125rem / 0.14em style."
+      },
+      "reading": {
+        "displayName": "Reading",
+        "purpose": "Organizer-written prose on the home (44ch; 48ch under lead photos, 60ch in posts)."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Figure captions, nav times and current light, clock tags."
+      },
+      "rail-title": {
+        "displayName": "Rail title",
+        "purpose": "Stacked console rail titles."
+      }
     },
     "shadows": [],
     "motion": [
-      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The only easing in the world; every transition and the settle use it." },
-      { "name": "settle", "value": "opacity 0.7s + translate 0 28px -> 0, on snap-in", "purpose": "The one authored motion, survey-only: item content settles upward when it enters (IntersectionObserver threshold 0.4). Gated on html.js; neutralized under prefers-reduced-motion. The organizer has zero entrances." },
-      { "name": "pill-press", "value": "transform 0.35s (hover scale 1.015, active scale 0.985)", "purpose": "Pill hover/press feedback." },
-      { "name": "chrome", "value": "opacity/transform 0.3s", "purpose": "Rail stops, progress dots, and the organizer's tally-bar scale." },
-      { "name": "sheet-rise", "value": "0.45s rise (translate 0 30% + fade)", "purpose": "Sign-in sheet entrance." },
-      { "name": "state-micro", "value": "0.15-0.25s background/color/translate/rotate", "purpose": "Calendar cells, chips, option rows, switch knob, filter segments, table-row expanders." }
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing in the world; every transition and the settle use it."
+      },
+      {
+        "name": "settle",
+        "value": "opacity 0.7s + translate 0 28px -> 0, on snap-in",
+        "purpose": "The one authored motion, feed-only (survey items, registration flow): item content settles upward when it enters (IntersectionObserver threshold 0.4). Gated on html.js; neutralized under prefers-reduced-motion. The home and the organizer have zero entrances."
+      },
+      {
+        "name": "pill-press",
+        "value": "transform 0.35s (hover scale 1.015, active scale 0.985)",
+        "purpose": "Pill hover/press feedback."
+      },
+      {
+        "name": "chrome",
+        "value": "opacity/transform 0.3s",
+        "purpose": "Rail stops, progress dots, and the organizer's tally-bar scale."
+      },
+      {
+        "name": "sheet-rise",
+        "value": "0.45s rise (translate 0 30% + fade)",
+        "purpose": "Sign-in sheet entrance."
+      },
+      {
+        "name": "state-micro",
+        "value": "0.15-0.25s background/color/translate/rotate",
+        "purpose": "Calendar cells, chips, option rows, switch knob, filter segments, table-row expanders."
+      },
+      {
+        "name": "nav-yield",
+        "value": "opacity 0.35s",
+        "purpose": "The home gutter nav fades out while a lead photograph passes beneath it; keyboard focus brings it back."
+      },
+      {
+        "name": "smooth-anchor",
+        "value": "scroll-behavior: smooth (no-preference only)",
+        "purpose": "In-page jumps from the time-of-day nav on the home."
+      }
     ],
     "breakpoints": [
-      { "name": "table-collapse", "value": "640px" },
-      { "name": "sheet-centers", "value": "700px" },
-      { "name": "desktop-column-and-rail-fold", "value": "900px" },
-      { "name": "table-shed-city", "value": "1100px" },
-      { "name": "landscape-art", "value": "(min-aspect-ratio: 1/1)" }
+      {
+        "name": "table-collapse",
+        "value": "640px"
+      },
+      {
+        "name": "sheet-centers",
+        "value": "700px"
+      },
+      {
+        "name": "desktop-column-and-rail-fold",
+        "value": "900px"
+      },
+      {
+        "name": "table-shed-city",
+        "value": "1100px"
+      },
+      {
+        "name": "landscape-art",
+        "value": "(min-aspect-ratio: 1/1)"
+      },
+      {
+        "name": "home-gutter-nav",
+        "value": "1180px"
+      },
+      {
+        "name": "figure-pairs",
+        "value": "700px"
+      }
+    ],
+    "scrims": [
+      {
+        "name": "hero",
+        "value": "linear-gradient(to bottom, rgb(11 9 8/.35) 0, rgb(11 9 8/0) 16%, rgb(11 9 8/0) 34%, rgb(11 9 8/.55) 52%, rgb(11 9 8/.88) 70%, rgb(11 9 8/.97) 100%)"
+      },
+      {
+        "name": "golden",
+        "value": "linear-gradient(to bottom, rgb(11 9 8/.97) 0, rgb(11 9 8/.86) 22%, rgb(11 9 8/.74) 70%, rgb(11 9 8/.62) 100%)"
+      },
+      {
+        "name": "lead",
+        "value": "linear-gradient(to bottom, rgb(11 9 8/.55) 0, rgb(11 9 8/0) 28%, rgb(11 9 8/.15) 48%, rgb(11 9 8/.7) 66%, rgb(11 9 8/.92) 84%, #0b0908 100%)"
+      },
+      {
+        "name": "blue",
+        "value": "linear-gradient(to bottom, rgb(11 9 8/.62) 0, rgb(11 9 8/.5) 12%, rgb(11 9 8/.62) 40%, rgb(11 9 8/.84) 72%, #0b0908 100%)"
+      }
     ]
   },
   "components": [
@@ -153,7 +336,7 @@
     {
       "name": "Rail Stop",
       "kind": "nav",
-      "description": "A stop on the survey's fixed right-edge glyph rail: 1.75-stroke outline icon, active left dot, filled tick badge when answered.",
+      "description": "Feed rail stop (survey items, registration flow).",
       "html": "<nav class=\"ds-rail\"><button class=\"ds-stop ds-stop-active\" aria-label=\"You\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8\" r=\"3.6\"/><path d=\"M5.2 20c.9-3.4 3.6-5.2 6.8-5.2s5.9 1.8 6.8 5.2\"/></svg><span class=\"ds-tick\"><svg width=\"9\" height=\"9\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5 12.8 4.6 4.6L19 7.6\"/></svg></span></button><button class=\"ds-stop\" aria-label=\"Interest\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20.2 4.9 13a4.6 4.6 0 0 1 0-6.4 4.4 4.4 0 0 1 6.3 0l.8.8.8-.8a4.4 4.4 0 0 1 6.3 0 4.6 4.6 0 0 1 0 6.4Z\"/></svg></button></nav>",
       "css": ".ds-rail { display: flex; flex-direction: column; gap: 1.15rem; background: #0b0908; padding: 1.25rem; width: fit-content; } .ds-stop { position: relative; display: grid; place-items: center; width: 2.4rem; height: 2.4rem; background: none; border: none; cursor: pointer; color: #ffffff; opacity: 0.62; transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-stop:hover { opacity: 1; transform: scale(1.12); } .ds-stop:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; } .ds-stop-active { opacity: 1; } .ds-stop-active::after { content: ''; position: absolute; left: -0.55rem; top: 50%; translate: 0 -50%; width: 3px; height: 3px; border-radius: 999px; background: #ffffff; } .ds-tick { position: absolute; right: 0.05rem; top: 0.05rem; display: grid; place-items: center; width: 0.85rem; height: 0.85rem; border-radius: 999px; background: #ffffff; color: #0b0908; }"
     },
@@ -163,46 +346,154 @@
       "description": "Seven bottom-center dots marking feed position; the active dot brightens and scales.",
       "html": "<nav class=\"ds-dots\"><button class=\"ds-dot\" aria-label=\"Welcome\"></button><button class=\"ds-dot ds-dot-on\" aria-label=\"You\"></button><button class=\"ds-dot\" aria-label=\"Interest\"></button><button class=\"ds-dot\" aria-label=\"Travel\"></button><button class=\"ds-dot\" aria-label=\"Dates\"></button><button class=\"ds-dot\" aria-label=\"Location\"></button><button class=\"ds-dot\" aria-label=\"Review\"></button></nav>",
       "css": ".ds-dots { display: flex; gap: 0.7rem; background: #0b0908; padding: 1.25rem; width: fit-content; } .ds-dot { width: 0.5rem; height: 0.5rem; border: none; border-radius: 999px; background: #ffffff; opacity: 0.35; cursor: pointer; padding: 0; transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-dot:hover { opacity: 0.7; } .ds-dot:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; } .ds-dot-on { opacity: 1; transform: scale(1.25); }"
+    },
+    {
+      "name": "Evening Clock",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "The ruled ledger line that opens every home region: time and light.",
+      "html": "<p class=\"ds-clock\"><span class=\"ds-t\">4:52 PM</span><span class=\"ds-l\">Blue hour</span></p>",
+      "css": ".ds-clock{display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .9rem;padding:.65rem 0;border-top:1px solid var(--ink-35,rgba(255,255,255,.35));border-bottom:1px solid var(--ink-35,rgba(255,255,255,.35));font-family:var(--font-body);font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:#fff;background:#0b0908}.ds-t{font-variant-numeric:tabular-nums}.ds-l{color:rgba(255,255,255,.7)}"
+    },
+    {
+      "name": "Time-of-day Nav",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "Slim gutter ledger: current light, then label over time per region; current gets a dot.",
+      "html": "<nav class=\"ds-tnav\"><p class=\"ds-sky\">Blue hour</p><ol><li><a href=\"#\" class=\"ds-past\"><span class=\"ds-dot\"></span><span>Story</span><span class=\"ds-tt\">4:10 PM</span></a></li><li><a href=\"#\" class=\"ds-on\"><span class=\"ds-dot\"></span><span>Who’s coming</span><span class=\"ds-tt\">4:52 PM</span></a></li><li><a href=\"#\"><span class=\"ds-dot\"></span><span>Posts</span><span class=\"ds-tt\">5:40 PM</span></a></li></ol></nav>",
+      "css": ".ds-tnav{width:11.5rem;background:#0b0908;font-family:var(--font-body);padding:1rem}.ds-tnav ol{list-style:none;margin:0;padding:0}.ds-tnav li{border-top:1px solid rgba(255,255,255,.35)}.ds-tnav li:last-child{border-bottom:1px solid rgba(255,255,255,.35)}.ds-tnav a{display:grid;grid-template-columns:.75rem 1fr;gap:.15rem .5rem;padding:.65rem 0;color:rgba(255,255,255,.45);text-decoration:none;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;transition:color .3s cubic-bezier(.16,1,.3,1)}.ds-tnav a:hover,.ds-tnav a.ds-on{color:#fff}.ds-tnav a.ds-past{color:rgba(255,255,255,.7)}.ds-tnav a:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:2px}.ds-dot{grid-row:span 2;align-self:center;width:5px;height:5px;border-radius:999px;background:currentColor;opacity:0}.ds-on .ds-dot{opacity:1}.ds-tt{grid-column:2;font-size:.6875rem;letter-spacing:.12em;font-variant-numeric:tabular-nums}.ds-sky{font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);padding:0 0 .6rem 1.25rem;margin:0}"
+    },
+    {
+      "name": "Outline Pill",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The console's secondary action and file chooser.",
+      "html": "<button class=\"ds-outline\">Choose photos</button>",
+      "css": ".ds-outline{background:#0b0908;color:#fff;border:1.5px solid rgba(255,255,255,.45);border-radius:999px;padding:.45rem 1.1rem;font-family:var(--font-body);font-size:.8125rem;font-weight:600;cursor:pointer;transition:border-color .15s cubic-bezier(.16,1,.3,1)}.ds-outline:hover{border-color:#fff}.ds-outline:focus-visible{outline:2px solid #fff;outline-offset:3px}"
+    },
+    {
+      "name": "Prose Ledger Pair",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "A markdown `**Label** — value` list item rendered as a schedule row.",
+      "html": "<ul class=\"ds-pl\"><li><span>Thu Dec 4</span><span class=\"ds-v\">Arrivals from 3 PM</span></li><li><span>Fri Dec 5</span><span class=\"ds-v\">Build day</span></li></ul>",
+      "css": ".ds-pl{list-style:none;margin:0;padding:0;border-bottom:1px solid rgba(255,255,255,.35);background:#0b0908;color:#fff;font-family:var(--font-body);max-width:46rem}.ds-pl li{display:flex;align-items:baseline;justify-content:space-between;gap:1.125rem;padding:.65rem 0;border-top:1px solid rgba(255,255,255,.35);font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500}.ds-v{color:rgba(255,255,255,.7);text-align:right}"
+    },
+    {
+      "name": "Attendee Row",
+      "kind": "custom",
+      "refersTo": "avatar-ring",
+      "description": "Who's coming ledger row: ringed avatar, Place-ramp name, handle · blurb.",
+      "html": "<div class=\"ds-person\"><span class=\"ds-ring\">AB</span><span class=\"ds-name\">Ada Builder</span><span class=\"ds-meta\"><a href=\"#\">@ada.example</a> · building a feed generator</span></div>",
+      "css": ".ds-person{display:grid;grid-template-columns:auto 1fr;gap:.3rem 1rem;align-items:center;padding:1rem 0;border-top:1px solid rgba(255,255,255,.35);border-bottom:1px solid rgba(255,255,255,.35);background:#0b0908;color:#fff;font-family:var(--font-body)}.ds-ring{grid-row:span 2;display:grid;place-items:center;width:3rem;height:3rem;border-radius:999px;border:1px solid rgba(255,255,255,.45);font-size:.75rem;font-weight:600;letter-spacing:.08em;color:rgba(255,255,255,.7)}.ds-name{align-self:end;font-family:var(--font-display);font-weight:650;letter-spacing:.01em;font-size:1.9rem;line-height:1;text-transform:uppercase}.ds-meta{align-self:start;font-size:.875rem;color:rgba(255,255,255,.7)}.ds-meta a{color:rgba(255,255,255,.7);text-decoration:none;transition:color .15s}.ds-meta a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}"
     }
   ],
   "narrative": {
     "northStar": "The Dusk Feed",
-    "overview": "Every screen is one full-viewport photograph of Southern California at dusk, and the interface is a single voice speaking over it in pure white. The survey refuses the centered-card stepper on a gray ground: it is a feed you flick through, one item per viewport, snap-scrolled like the social product its audience lives in. The photography — real Wikimedia location shots and labeled synthetic desert-modern atmosphere — carries all of the color; the UI contributes exactly one ink.\n\nDensity is low and bottom-weighted. Each item breathes at the top and settles its content toward the bottom edge, where a scrim gradient darkens the photograph to near-black so text never negotiates with the image. Structure is drawn, not boxed: hairline rules at 35% white separate ledger rows; the only filled container in the world is the fully-rounded white pill. A film-grain tile at 7% overlay unifies photographic sources into one material.\n\nThe world now has a second surface: the organizer room (/organizer) is the same night at Operate density. The photographs stay home — the ground is the solid dusk near-black carrying the same grain at its flat-surface blend — and the one ink does data work: a command rail of condensed display numerals on the left, an availability heatmap whose cells are computed white alpha, hairline ledgers and tables in the content column. It refuses the KPI-card dashboard-on-gray the way the survey refuses the stepper. Density rises; the material does not change.",
+    "overview": "Every surface is the Southern California dusk — photographed, or the near-black ground the photographs settle into — and the interface is a single voice speaking over it in pure white. The feed (the original survey, and now the registration flow at `/?register`) refuses the centered-card stepper on a gray ground: it is a feed you flick through, one item per viewport, snap-scrolled like the social product its audience lives in. The photography — real Wikimedia location shots and labeled synthetic desert-modern atmosphere — carries all of the color; the UI contributes exactly one ink.\n\nDensity is low and bottom-weighted. Each item breathes at the top (a flex spacer, `min-height: 8–12vh`) and settles its content toward the bottom edge, where a scrim gradient darkens the photograph to near-black so text never negotiates with the image. Structure is drawn, not boxed: hairline rules at 35% white separate ledger rows; the only filled container in the world is the fully-rounded white pill. A film-grain tile at 7% overlay unifies photographic sources into one material.\n\nThe world now has a second surface: the organizer room (`/organizer`) is the same night at **Operate density**. The photographs stay home — the ground is the solid dusk near-black carrying the same grain at its flat-surface blend — and the one ink does data work: a command rail of condensed display numerals on the left, an availability heatmap whose cells are computed white alpha, hairline ledgers and tables in the content column. It refuses the KPI-card dashboard-on-gray the way the survey refuses the stepper. Density rises; the material does not change.\n\nThe world's third surface is the retreat home at `/`: **one long evening**. It no longer snaps a feed; it scrolls freely through stacked regions of light that deepen as you go — golden hour (the hero, then organizer-written story and plan sections over a blurred, inverted copy of the hero's own light), blue hour (Who's coming, over a dusk photograph), and night (the posts stream on the solid ground). Regions overlap and fade into one another through masked photographs and ground-colored scrims, so the light changes with no seam. Each region opens on an **evening-clock line** — a ruled ledger row reading a time and a light (\"4:52 PM · Blue hour\") — and a slim time-of-day nav tracks where you are in the evening. Sections that carry photographs become regions of their own: the lead photo full-bleed at the hero's strength, the copy settling onto its scrimmed lower edge. Everything else the home lists — schedules, packing lists, people, posts — is a hairline ledger.\n\nThe world was chosen deliberately over the assigned direction (user-chosen challenger, seed `9380440b`) and its finish bar is written into the layout contract: unreviewed and undocumented is unfinished.",
     "keyCharacteristics": [
       "One UI color: white, stepped only by opacity (100 / 70 / 45 / 35 / 12 — plus 14 and 7 as data-density steps).",
-      "Full-bleed photographic grounds under a bottom-heavy scrim on the survey; solid #0b0908 ground on operate surfaces; the grain tile on both.",
+      "Full-bleed photographic grounds under ground-colored scrims on the feed and the home's light regions; solid `#0b0908` ground at night and on operate surfaces; the grain tile everywhere.",
       "Ultra-condensed stacked display caps (Big Shoulders) against a quiet grotesk body (Hanken Grotesk).",
       "Hairline ledger rows for facts, options, and data; the white pill as the single filled action.",
-      "Two densities, one world: the feed snap-scrolls one item per viewport; the organizer scrolls freely under a sticky command rail.",
-      "One authored motion: content settles upward 28px when a feed item snaps in. The organizer has zero entrances.",
-      "1.75-stroke outline icon rail; the filled Bluesky butterfly is the lone deliberate outsider."
+      "Three cadences, one world: the feed snap-scrolls one item per viewport; the home scrolls freely through regions of deepening light; the organizer scrolls freely under a sticky command rail.",
+      "Evening-clock lines open every home region; time of day is the home's navigation.",
+      "One authored motion: content settles upward 28px when a feed item snaps in. The home and the organizer have zero entrances.",
+      "1.75-stroke outline icon system; the filled Bluesky butterfly is the lone deliberate outsider."
     ],
     "rules": [
-      { "name": "The One Ink Rule", "body": "The interface owns exactly one color: white. Hierarchy is opacity (70/45/35/14/12/7), never a second hue. If a design needs another color, it comes from a photograph.", "section": "colors" },
-      { "name": "The Computed Ink Rule", "body": "When ink encodes data (the availability heatmap), intensity is white alpha computed from the data — 0.05 + 0.95 × (count / peak), floored so a single person stays visible against zero — and the cell numeral flips from ink to ground when the cell's mean alpha exceeds 0.5, so contrast is computed, not blended. Data never gets a color scale; it gets more or less of the one ink.", "section": "colors" },
-      { "name": "The Scrim Guarantee Rule", "body": "Text never sits on raw photography. Every feed item carries a bottom-weighted gradient from transparent to 90-98% #0b0908 (a darker variant exists for dense items like the calendar); location cards carry a left-to-right equivalent. Contrast is guaranteed by the scrim, not negotiated per photo. The organizer's flat ground needs no scrim; the guarantee there is the ground itself.", "section": "colors" },
-      { "name": "The Stacked Caps Rule", "body": "Display type is always uppercase, always line-height 0.92, and multi-line titles stack as separate spans that may differ in size. Never letter-space display caps beyond 0.005em.", "section": "typography" },
-      { "name": "The Kicker Exception", "body": "The uppercase kicker/eyebrow (.kicker) is normally banned by the craft floor, but it is KEPT in this world by explicit user decision (2026-08-04), which overrides the ban. It is a documented exception scoped to this project: use the .kicker atom exactly as defined; do not invent additional eyebrow variants. On /organizer the kicker appears only as field labels and section heads, never as an eyebrow above a heading — the gate's eyebrow was removed per the craft floor, and the survey hero's kicker remains the sole eyebrow use in the world.", "section": "typography" },
-      { "name": "The One Viewport Rule", "body": "One feed item owns the entire viewport. Nothing scrolls inside an item on the feed axis; if content grows, it earns density (the darker scrim), never a second screen. This rule is scoped to the survey feed: the organizer is the world's one freely-scrolling surface — Operate density earns a normal document scroll under the sticky command rail.", "section": "layout" },
-      { "name": "The Flat World Rule", "body": "No drop shadows, ever. Layering is expressed with scrims, hairlines, backdrop blur, and opacity — never with a shadow vocabulary.", "section": "elevation" },
-      { "name": "The Grain Rule", "body": "Every ground carries the grain tile (/media/grain.png, background-size: 340px), blended per surface: photographic grounds at opacity: 0.07; mix-blend-mode: overlay; flat #0b0908 grounds at opacity: 0.05; mix-blend-mode: screen. Overlay needs photographic midtones beneath it and vanishes on near-black; screen at the lower opacity is the same grain made visible on a solid ground. Never omit the grain, and never use any other opacity/blend pair.", "section": "elevation" },
-      { "name": "The One Container Rule", "body": "The fully-rounded white pill is the only filled container in the interface. Round controls (chips, filter segments, the switch) may invert to solid ink in their selected state — that reads as state, not surface. Text content is never boxed or carded; it sits directly on the ground, structured by hairlines.", "section": "shapes" },
-      { "name": "The One Settle Rule", "body": "The caption settle is the only authored entrance in the world. New components may transition state (opacity, transform, ≤0.45s, --ease-out) but never add a second choreographed entrance. The organizer surface holds this at zero: nothing on it animates in.", "section": "components" },
-      { "name": "The Butterfly Exception", "body": "The Bluesky butterfly is a filled brand mark, deliberately outside the 1.75-stroke system — it is a wordmark, not an icon. No other filled glyph is permitted.", "section": "components" }
+      {
+        "name": "The One Ink Rule",
+        "body": "The interface owns exactly one color: white. Hierarchy is opacity (70/45/35/14/12/7), never a second hue. If a design needs another color, it comes from a photograph.",
+        "section": "colors"
+      },
+      {
+        "name": "The Computed Ink Rule",
+        "body": "When ink encodes data (the availability heatmap), intensity is white alpha computed from the data — `0.05 + 0.95 × (count / peak)`, floored so a single person stays visible against zero — and the cell numeral flips from ink to ground when the cell's mean alpha exceeds 0.5, so contrast is computed, not blended. Data never gets a color scale; it gets more or less of the one ink.",
+        "section": "colors"
+      },
+      {
+        "name": "The Scrim Guarantee Rule",
+        "body": "Text never sits on raw photography. Every feed item carries a bottom-weighted gradient from transparent to 90–98% `#0b0908` (a `darker` variant exists for dense items like the calendar); location cards carry a left-to-right equivalent. On the home, the hero clears through its middle and closes at 0.97 ground; a lead photo's scrim clears through its upper half and reaches the solid ground at the photo's foot, where the copy sits; the golden region holds 0.97 → 0.62 over its blurred light (0.9 at the foot when it runs straight into night); blue hour runs 0.62 → solid ground. Contrast is guaranteed by the scrim, not negotiated per photo. The flat ground needs no scrim; the guarantee there is the ground itself.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ground-Stop Rule",
+        "body": "Every scrim is the Dusk Ground at stepped alpha (`rgb(11 9 8 / a)`), never `#000` or a tinted overlay, and the stop where one region ends meets the stop where the next begins (the hero's last 0.97 is golden's first). The night is the same ground at full strength; the light going out is the ground's alpha rising.",
+        "section": "colors"
+      },
+      {
+        "name": "The Stacked Caps Rule",
+        "body": "Display type is always uppercase, always `line-height: 0.92`, and multi-line titles stack as separate spans that may differ in size. Never letter-space display caps beyond 0.005em.",
+        "section": "typography"
+      },
+      {
+        "name": "The Kicker Exception",
+        "body": "The uppercase kicker/eyebrow (`.kicker`) is normally banned by the craft floor, but it is KEPT in this world by explicit user decision (2026-08-04), which overrides the ban. It is a documented exception scoped to this project: use the `.kicker` atom exactly as defined; do not invent additional eyebrow variants. On the organizer surfaces (`/organizer`, `/organizer/retreat`, `/organizer/retreat/attendees`) the kicker appears only as field labels, list/group heads (\"Sections\", \"On the site\", \"Not shown\"), and stat labels — never as an eyebrow above a heading. The one sanctioned eyebrow is the hero's retreat kicker, which moved with the hero from the survey to the home at `/`; no other surface gets one.",
+        "section": "typography"
+      },
+      {
+        "name": "The Clock Is a Ledger Rule",
+        "body": "The evening-clock line that opens a home region is a ledger row, not an eyebrow: hairline top and bottom, Fact metrics, time in tabular Ink, light in Ink 70. Its words come only from the evening table in content (time + light, plus the \"Invited only\" tag on invited lead sections) — never an invented label, and never on a surface that is not the home's evening.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Viewport Rule",
+        "body": "One feed item owns the entire viewport. Nothing scrolls inside an item on the feed axis; if content grows, it earns density (the `darker` scrim), never a second screen. This rule is scoped to the feed — the registration flow at `/?register` and the survey feed items — which `/` itself no longer renders. The home and the organizer scroll freely.",
+        "section": "layout"
+      },
+      {
+        "name": "The Pairs Not Orphans Rule",
+        "body": "On the home, short sections pair two-up; an odd last one takes the whole row and splits title-left / body-right, and the console's stat ledger closes square the same way. Nothing sits alone in half a row.",
+        "section": "layout"
+      },
+      {
+        "name": "The Seamless Evening Rule",
+        "body": "Home regions never meet at a hard edge: each light runs under the next, photographs fade through masks, and scrim stops meet at matching alphas. Night is reached by the ground's alpha rising, never by a cut.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat World Rule",
+        "body": "No drop shadows, ever. Layering is expressed with scrims, hairlines, backdrop blur, and opacity — never with a shadow vocabulary.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Grain Rule",
+        "body": "Every ground carries the grain tile (`/media/grain.png`, `background-size: 340px`), blended per surface: photographic grounds at `opacity: 0.07; mix-blend-mode: overlay` (home hero, region light layers, lead photos, every figure frame); flat `#0b0908` grounds at `opacity: 0.05; mix-blend-mode: screen` (status strip, mobile nav, night region — masked in over `12rem` — footer, console pages sized to the whole document). Overlay needs photographic midtones beneath it and vanishes on near-black; screen at the lower opacity is the same grain made visible on a solid ground. Never omit the grain, and never use any other opacity/blend pair.",
+        "section": "elevation"
+      },
+      {
+        "name": "The One Container Rule",
+        "body": "The fully-rounded white pill is the only filled container in the interface. Round controls (chips, filter segments, the switch) may invert to solid ink in their *selected* state — that reads as state, not surface. Text content is never boxed or carded; it sits directly on the ground, structured by hairlines.",
+        "section": "shapes"
+      },
+      {
+        "name": "The One Settle Rule",
+        "body": "The caption settle is the only authored entrance in the world. New components may transition state (opacity, transform, ≤0.45s, `--ease-out`) but never add a second choreographed entrance. The home and the organizer hold this at zero: nothing on them animates in.",
+        "section": "components"
+      },
+      {
+        "name": "The Butterfly Exception",
+        "body": "The Bluesky butterfly is a filled brand mark, deliberately outside the 1.75-stroke system — it is a wordmark, not an icon. No other filled glyph is permitted.",
+        "section": "components"
+      }
     ],
     "dos": [
-      "Do put every surface on the dusk ground — full-bleed photography with the scrim on the survey, solid #0b0908 on operate surfaces — always with the grain tile at its surface's blend (0.07 overlay on photographs, 0.05 screen on flat ground).",
-      "Do express all hierarchy as white opacity steps: 1 / 0.7 / 0.45 / 0.35 / 0.12, plus the two data-density steps (0.14 row separators, 0.07 cell keylines) on dense data surfaces — no other alphas.",
-      "Do set display type in Big Shoulders, 700 (650 for the place/section ramp), uppercase, line-height: 0.92, sized with the established clamps — including the height-interpolated Stat ramp for rail numerals.",
-      "Do structure data as hairline ledgers and tables (1px solid var(--ink-35), 0.14 inside dense tables) and reserve the solid white pill for the single primary action per item or section.",
-      "Do honor prefers-reduced-motion, env(safe-area-inset-*), and the html.js gate on anything that starts hidden."
+      "**Do** put every surface on the dusk ground — full-bleed photography with the scrim on the feed and the home's light regions, solid `#0b0908` on the night region and operate surfaces — always with the grain tile at its surface's blend (0.07 overlay on photographs, 0.05 screen on flat ground).",
+      "**Do** open every home region with an evening-clock line from the content's evening table, and let regions overlap and fade so the light changes without a seam.",
+      "**Do** render organizer-written lists as ledgers (`**Label** — value` pairs, `Label — aside` items) and render third-party posts natively in the one ink.",
+      "**Do** express all hierarchy as white opacity steps: 1 / 0.7 / 0.45 / 0.35 / 0.12, plus the two data-density steps (0.14 row separators, 0.07 cell keylines) on dense data surfaces — no other alphas.",
+      "**Do** set display type in Big Shoulders, 700 (650 for the place/section ramp), uppercase, `line-height: 0.92`, sized with the established clamps — including the height-interpolated Stat ramp for rail numerals.",
+      "**Do** structure data as hairline ledgers and tables (`1px solid var(--ink-35)`, 0.14 inside dense tables) and reserve the solid white pill for the single primary action per item or section; secondary actions are the 1.5px outline pill or a quiet link.",
+      "**Do** honor `prefers-reduced-motion`, `env(safe-area-inset-*)`, and the `html.js` gate on anything that starts hidden."
     ],
     "donts": [
-      "Don't introduce a second UI color, a gray ramp, or tinted surfaces — even data visualization is computed white alpha, never a color scale.",
-      "Don't use box-shadows, filled cards, or bordered boxes around text; the pill is the only filled container, and KPI cards are refused on the organizer.",
-      "Don't add icons outside the 1.75-stroke/round-join/24-grid system, and don't fill any glyph except the Bluesky butterfly.",
-      "Don't author new entrance animations; the snap-in settle is the world's one moment, and the organizer proves screens work with none.",
-      "Don't let text sit on unscrimmed photography, shrink the gutter/rail clearance (--gutter + 2.4rem right on the feed), or use the kicker as an eyebrow anywhere except the survey hero."
+      "**Don't** introduce a second UI color, a gray ramp, or tinted surfaces — even data visualization is computed white alpha, never a color scale.",
+      "**Don't** use box-shadows, filled cards, or bordered boxes around text; the pill is the only filled container, KPI cards are refused on the organizer, and Bluesky posts are never embedded or carded.",
+      "**Don't** let the home's nav labels sit over a photograph; it yields while a lead photo passes.",
+      "**Don't** add icons outside the 1.75-stroke/round-join/24-grid system, and don't fill any glyph except the Bluesky butterfly.",
+      "**Don't** author new entrance animations; the snap-in settle is the world's one moment, and the organizer proves screens work with none.",
+      "**Don't** let text sit on unscrimmed photography, shrink the gutter/rail clearance (`--gutter` + 2.4rem right on the feed; `11.5rem + --space-5` beside the home's gutter nav), or use the kicker as an eyebrow anywhere except the hero."
     ]
   }
 }

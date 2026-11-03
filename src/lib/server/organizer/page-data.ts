@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import {
 	isOrganizer,
 	type AllowlistEntry,
@@ -98,6 +98,17 @@ export function requireOrganizer(locals: App.Locals, platform: App.Platform | un
 	if (!locals.did || !isOrganizer(platform?.env?.ORGANIZER_DIDS, locals.did)) {
 		error(404, { message: 'Not found' });
 	}
+}
+
+/**
+ * For organizer sub-pages (`/organizer/retreat`, `/organizer/registrations/[did]`…):
+ * signed out → redirect to the `/organizer` gate; signed in but not an
+ * organizer → 404. Returns the organizer's DID.
+ */
+export function requireOrganizerOrGate(locals: App.Locals, platform: App.Platform | undefined): string {
+	if (!locals.did) redirect(303, '/organizer');
+	if (!isOrganizer(platform?.env?.ORGANIZER_DIDS, locals.did)) error(404, { message: 'Not found' });
+	return locals.did;
 }
 
 export function broadcastMessage(run: { sent: number; failed: number; stopped: string | null }): string {

@@ -9,7 +9,7 @@ Plan: `docs/superpowers/plans/2026-08-29-registration.md`.
 |---|---|
 | `registration.ts` | **Pure** form model: `RegistrationInput`, `emptyRegistration()`, `parseRegistrationForm(FormData)`, `validateRegistration()`, `canConfirm()`, the dietary/travel-mode guards. No SvelteKit or D1 imports — it runs under vitest as-is and is shared by the server action and the UI. |
 | `registration.test.ts` | Covers parsing, validation, and the confirm gate. Extend it whenever you touch the model. |
-| `RegistrationFlow.svelte` | Chooses which state to render from `PageData` (announcement → form → summary) and hosts the `?/register` / `?/decline` forms. |
+| `RegistrationFlow.svelte` | Rendered at `/?register`. Chooses which state to render from `PageData` (announcement → form → summary), hosts the `?register&/register` / `?register&/decline` forms (the `register` param keeps a no-JS POST on the registration flow), and puts a "← Retreat home" link on every state. |
 | `AnnouncementItem.svelte` | Locked dates, venue-pending line, deadline, "I'm in" / "Can't make it". |
 | `RegistrationForm.svelte` | Contact, dietary (checkboxes + other), emergency contact, accessibility, notes, optional travel section with the travel-support ask (need, amount, contingency), two agreements. |
 | `AgreementRow.svelte` | One checkbox + expandable waiver / code-of-conduct text. |

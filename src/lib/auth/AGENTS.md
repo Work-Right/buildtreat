@@ -9,7 +9,7 @@ KV on Cloudflare and fall back to in-memory stores in local dev.
 | File | Role |
 |---|---|
 | `atproto.ts` | `createAtprotoAuth(...)` config exported as `atproto`. Session store `cloudflareKV('OAUTH_SESSIONS')`, state store `cloudflareKV('OAUTH_STATES', { ttl: 600 })`. `hooks.server.ts` mounts `atproto.handle` last in its `sequence`. |
-| `SignInSheet.svelte` | The modal sheet. Props: `open` (bindable), `error`, `knownUser`. Two states: **welcome-back** (a known DID from the `abr_known` cookie, one Continue button) and **type a handle**. Before calling `login()` it hits `GET /api/invited?handle=…` so an uninvited handle finds out here rather than after a round trip to their PDS. Owns modal focus management (remember trigger, focus primary control, restore on close). |
+| `SignInSheet.svelte` | The modal sheet. Props: `open`, `onclose` (callback — not `bind:`, which drops the page's SSR `<title>`), `error`, `knownUser`. Two states: **welcome-back** (a known DID from the `abr_known` cookie, one Continue button) and **type a handle**. Before calling `login()` it hits `GET /api/invited?handle=…` so an uninvited handle finds out here rather than after a round trip to their PDS. Owns modal focus management (remember trigger, focus primary control, restore on close). |
 | `HandleTypeahead.svelte` | The combobox. Props: `id`, `value` (bindable), `dropdownOpen` (bindable, mirrored so the sheet knows Escape should close the list first), `oninput`, `onsubmit(handle?)`. Exports `focus()` and `invalidateSearch()`. Debounced search against typeahead.waow.tech with a sequence counter so stale responses never apply. `onDestroy(invalidateSearch)` is load-bearing — see below. |
 
 ## Boundaries

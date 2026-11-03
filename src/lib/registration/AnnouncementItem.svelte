@@ -76,7 +76,7 @@
 			<button class="pill" onclick={onconfirm} disabled={busy}>{registration.confirm}</button>
 			<form
 				method="POST"
-				action="?/decline"
+				action="?register&/decline"
 				use:enhance={() => {
 					declining = true;
 					return async ({ update }) => {

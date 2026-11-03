@@ -131,7 +131,8 @@
 	<div class="rail-end">
 		<a class="pill export" href="/organizer/responses.csv" download>Export CSV</a>
 		<a class="quiet-link" href="/organizer/availability.csv" download>availability ranges →</a>
-		<a class="quiet-link" href="/">← the survey</a>
+		<a class="quiet-link" href="/organizer/retreat">retreat info →</a>
+		<a class="quiet-link" href="/">← the retreat site</a>
 	</div>
 </aside>
 

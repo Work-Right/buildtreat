@@ -3,7 +3,7 @@
 import type { OAuthSession } from '@atcute/oauth-node-client';
 import type { Client } from '@atcute/client';
 import type { Did } from '@atcute/lexicons';
-import type { CfProperties, D1Database, ExecutionContext, KVNamespace } from '@cloudflare/workers-types';
+import type { CfProperties, D1Database, ExecutionContext, KVNamespace, R2Bucket } from '@cloudflare/workers-types';
 
 declare global {
 	namespace App {
@@ -28,6 +28,8 @@ declare global {
 				OAUTH_STATES: KVNamespace;
 				PROFILE_CACHE: KVNamespace;
 				DB: D1Database;
+				/** Retreat-site photos (private bucket; served via /media/site/[id]). Optional until provisioned. */
+				SITE_MEDIA?: R2Bucket;
 			};
 			cf: CfProperties;
 			ctx: ExecutionContext;

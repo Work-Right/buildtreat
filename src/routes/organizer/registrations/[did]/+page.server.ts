@@ -1,6 +1,6 @@
-import { error, fail, redirect } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { isOrganizer } from '$lib/server/organizer/admin';
+import { requireOrganizerOrGate } from '$lib/server/organizer/page-data';
 import { getRegistration, updateRegistrationFields, type Registration } from '$lib/server/registration';
 import { parseRegistrationForm, validateRegistration } from '$lib/registration/registration';
 
@@ -11,13 +11,8 @@ import { parseRegistrationForm, validateRegistration } from '$lib/registration/r
  * the agreement record stay the attendee's own (see updateRegistrationFields).
  */
 
-function requireOrganizer(locals: App.Locals, platform: App.Platform | undefined): void {
-	if (!locals.did) redirect(303, '/organizer');
-	if (!isOrganizer(platform?.env?.ORGANIZER_DIDS, locals.did)) error(404, { message: 'Not found' });
-}
-
 export const load: PageServerLoad = async ({ locals, platform, params }): Promise<{ registration: Registration }> => {
-	requireOrganizer(locals, platform);
+	requireOrganizerOrGate(locals, platform);
 	const db = platform?.env?.DB;
 	if (!db) error(503, { message: 'Storage is not available right now' });
 	const registration = await getRegistration(db, params.did);
@@ -27,7 +22,7 @@ export const load: PageServerLoad = async ({ locals, platform, params }): Promis
 
 export const actions: Actions = {
 	save: async ({ locals, platform, params, request }) => {
-		requireOrganizer(locals, platform);
+		requireOrganizerOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
 

@@ -47,6 +47,15 @@
         ],
         "createdAt": "2026-09-02T22:45:43.256Z",
         "reason": "email mobile step; inside the documented title clamp range"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#000",
+        "files": [
+          ".impeccable/mocks/decision/home-a.css"
+        ],
+        "createdAt": "2026-11-01T22:47:36.782Z",
+        "reason": "Claude: approved comp A reference artifact (never shipped); the build in src/lib/site uses --ground tokens, no #000"
       }
     ]
   }

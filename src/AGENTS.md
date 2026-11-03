@@ -2,11 +2,12 @@
 
 SvelteKit 2 + Svelte 5 (runes) on Cloudflare Workers, D1 for storage, KV for
 OAuth session state, comail.at for outbound email, the Bluesky chat service
-for organizer DMs. Two surfaces, one worker:
+for organizer DMs. Three surfaces, one worker:
 
 | Surface | Route | Who | What |
 |---|---|---|---|
-| Survey + registration | `/` | invited builders (ATProto sign-in) | the full-bleed feed: availability survey, then the Dec 4–7 registration flow |
+| Retreat home + registration | `/` (`/?register`) | everyone; invited builders (ATProto sign-in) see more | the "Dusk to night" retreat home (`lib/site/`): organizer-edited sections (public / invited), status strip, who's coming, posts stream (updates + Bluesky posts); the Dec 4–7 registration flow at `/?register` |
+| Retreat info editor | `/organizer/retreat` (+ `/attendees`) | DIDs in `ORGANIZER_DIDS` | sections, updates, photos, Bluesky posts in the stream; who's coming curation (`lib/site/console/`, `lib/server/site/`) |
 | Organizer console | `/organizer` | DIDs in `ORGANIZER_DIDS` | heatmap, windows, responses, allowlist, late passes, waitlist, registrations (+ per-attendee edit), email and Bluesky DM broadcasts |
 
 ## Map
@@ -24,6 +25,8 @@ src/
     survey/          availability survey feed items + SurveyState     → lib/survey/AGENTS.md
     auth/            ATProto OAuth config + sign-in sheet             → lib/auth/AGENTS.md
     registration/    Dec 4–7 registration model + feed items          → lib/registration/AGENTS.md
+    site/            the retreat home at `/` (regions, sections, nav) + console/ editor → lib/site/AGENTS.md
+    markdown/        section markdown renderer (markdown-it, html off) → lib/markdown/AGENTS.md
     organizer/       organizer console components + pure aggregates  → lib/organizer/AGENTS.md
     server/          D1 access + server-only logic ($lib/server guard) → lib/server/AGENTS.md
 ```
