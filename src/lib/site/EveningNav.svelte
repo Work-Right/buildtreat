@@ -84,7 +84,13 @@
 		top: 0;
 		z-index: 20;
 		display: flex;
+		justify-content: space-between;
+		gap: var(--space-3);
 		padding: 0 var(--gutter);
+		/* Labels never squeeze into each other: on the narrowest phones the
+		   rail scrolls sideways instead. */
+		overflow-x: auto;
+		scrollbar-width: none;
 		/* Ground (#0b0908) at near-full alpha so the light still reads through. */
 		background: linear-gradient(to bottom, rgb(11 9 8 / 0.97), rgb(11 9 8 / 0.9));
 		border-bottom: var(--hairline);
@@ -104,7 +110,8 @@
 		mix-blend-mode: screen;
 	}
 	.mrail a {
-		flex: 1;
+		flex: none;
+		white-space: nowrap;
 		position: relative;
 		display: grid;
 		gap: 0.15rem;
@@ -124,8 +131,8 @@
 		content: '';
 		position: absolute;
 		left: 0;
-		right: 0.75rem;
-		bottom: -1px;
+		right: 0;
+		bottom: 0;
 		height: 1px;
 		background: var(--ink);
 	}
