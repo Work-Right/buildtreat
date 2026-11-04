@@ -23,18 +23,22 @@
 	let overPhoto = $state(false);
 	let rail = $state<HTMLElement | null>(null);
 	let mrail = $state<HTMLElement | null>(null);
+	let mrailWidth = $state(0);
 
-	// Narrow rail: when it scrolls sideways, keep the active entry in view.
-	// Moves only the rail's own scrollLeft, never the page.
+	// Narrow rail: when it scrolls sideways, keep the active entry in view —
+	// on a new section and when the rail's width changes. Moves only the
+	// rail's own scrollLeft, never the page.
 	$effect(() => {
 		const el = mrail;
+		const width = mrailWidth;
 		const link = el?.children[active] as HTMLElement | undefined;
-		if (!el || !link) return;
+		if (!el || !link || !width) return;
 		const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
 		const start = link.offsetLeft - pad;
-		const end = link.offsetLeft + link.offsetWidth + pad - el.clientWidth;
-		if (el.scrollLeft > start) el.scrollTo({ left: start, behavior: 'smooth' });
-		else if (el.scrollLeft < end) el.scrollTo({ left: end, behavior: 'smooth' });
+		const end = link.offsetLeft + link.offsetWidth + pad - width;
+		const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+		if (el.scrollLeft > start) el.scrollTo({ left: start, behavior });
+		else if (el.scrollLeft < end) el.scrollTo({ left: end, behavior });
 	});
 
 	$effect(() => {
@@ -82,7 +86,7 @@
 		</nav>
 	</div>
 {:else}
-	<nav class="mrail" aria-label={siteHome.nav.label} bind:this={mrail}>
+	<nav class="mrail" aria-label={siteHome.nav.label} bind:this={mrail} bind:clientWidth={mrailWidth}>
 		{#each entries as e, i (e.id)}
 			<a href={`#${e.id}`} class:on={i === active} aria-current={i === active ? 'location' : undefined}>
 				<span class="t">{e.time}</span><span>{e.label}</span>

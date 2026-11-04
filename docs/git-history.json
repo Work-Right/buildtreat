@@ -8,12 +8,12 @@
     "files_changed": 3
   },
   {
-    "hash": "3035beb88de0ae867865634d95b17bfe8b7b9d14",
-    "short_hash": "3035beb",
+    "hash": "0fe24cccf3876cfa5fb789d826f6fd1969723ac7",
+    "short_hash": "0fe24cc",
     "author": "Bryan Guffey",
-    "date": "2026-11-02T22:36:48-08:00",
-    "message": "feat(site): the retreat site — public story, invited logistics, organizer console (#49)\n\n* feat(site): the retreat site — public story, invited logistics, organizer console\n\n`/` becomes the retreat home (comp A, \"dusk to night\"):\n- Public view: organizer story sections, curated Who's coming (appview-\n  verified identities only), and a posts stream of organizer updates +\n  picked Bluesky posts rendered natively.\n- Invited view (allowlist or late pass, strict, read-only, fail-closed):\n  logistics first — lead-photo sections, ledger-rendered lists — then the\n  public story. Registration flow unchanged at /?register.\n- Photos live in a private R2 bucket (SITE_MEDIA), served only through\n  /media/site/[id] after a visibility check; metadata stripped server-side\n  (allowlist parsers) and re-encoded client-side; dimensions derived from\n  the bytes.\n- Organizer console at /organizer/retreat (sections, updates, photos,\n  Bluesky posts) and /organizer/retreat/attendees (curation + blurbs).\n- Security: every invite/allowlist/late-pass/tier check now uses an\n  appview-verified handle only (a PDS-claimed handle can no longer match\n  or pin an invitee's row); waitlist promotion re-verifies.\n- Migrations 0010 (site content) and 0011 (featured attendees, Bluesky\n  posts, section kinds). Markdown via markdown-it (web only).\n\nSpec: docs/superpowers/specs/2026-10-31-retreat-site-design.md\nPlan: docs/superpowers/plans/2026-10-31-retreat-site.md\nSquashed from local feat/retreat-site (51 reviewed commits).\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n* fix(site): match registration copy to the booked venue\n\nThe sign-up form subtitle still said \"Palm Springs or the Coachella\nValley\" and the registered screen still said the house wasn't booked.\nBoth now say \"near Palm Springs\" like the rest of the site.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
-    "files_changed": 115
+    "date": "2026-11-02T22:56:41-08:00",
+    "message": "fix(site): stop mobile nav labels running together\n\nThe phone nav split its width into equal columns, so \"Who's coming\"\noverflowed into \"Posts\". Entries now size to their labels with a gap\nbetween them, spread across the rail; on the narrowest phones the rail\nscrolls sideways instead of overlapping.\n\nCloses chainlink #128.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 3
   },
   {
     "hash": "3035beb88de0ae867865634d95b17bfe8b7b9d14",
