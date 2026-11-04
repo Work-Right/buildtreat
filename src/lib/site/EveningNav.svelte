@@ -22,6 +22,20 @@
 	/** Gutter variant: the rail sits over a full-bleed photograph right now. */
 	let overPhoto = $state(false);
 	let rail = $state<HTMLElement | null>(null);
+	let mrail = $state<HTMLElement | null>(null);
+
+	// Narrow rail: when it scrolls sideways, keep the active entry in view.
+	// Moves only the rail's own scrollLeft, never the page.
+	$effect(() => {
+		const el = mrail;
+		const link = el?.children[active] as HTMLElement | undefined;
+		if (!el || !link) return;
+		const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+		const start = link.offsetLeft - pad;
+		const end = link.offsetLeft + link.offsetWidth + pad - el.clientWidth;
+		if (el.scrollLeft > start) el.scrollTo({ left: start, behavior: 'smooth' });
+		else if (el.scrollLeft < end) el.scrollTo({ left: end, behavior: 'smooth' });
+	});
 
 	$effect(() => {
 		const targets = entries.map((e) => document.getElementById(e.id));
@@ -68,7 +82,7 @@
 		</nav>
 	</div>
 {:else}
-	<nav class="mrail" aria-label={siteHome.nav.label}>
+	<nav class="mrail" aria-label={siteHome.nav.label} bind:this={mrail}>
 		{#each entries as e, i (e.id)}
 			<a href={`#${e.id}`} class:on={i === active} aria-current={i === active ? 'location' : undefined}>
 				<span class="t">{e.time}</span><span>{e.label}</span>
