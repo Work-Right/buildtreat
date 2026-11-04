@@ -2595,6 +2595,28 @@
       "created_at": "2026-11-01T17:00:52.998026-08:00",
       "updated_at": "2026-11-01T17:00:52.998026-08:00",
       "metadata_json": "{\"branch\":\"feat/retreat-site\",\"commit\":\"9a586bc\",\"confidence\":90}"
+    },
+    {
+      "id": 237,
+      "change_id": "ba8b4844-17c4-4105-84b8-b90ddccec760",
+      "node_type": "outcome",
+      "title": "Retreat site deployed (PR #49 merged, 3035beb); prod privacy checks pass",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-11-02T22:38:17.293098-08:00",
+      "updated_at": "2026-11-02T22:38:17.293098-08:00",
+      "metadata_json": "{\"branch\":\"main\",\"commit\":\"3035beb\",\"confidence\":90}"
+    },
+    {
+      "id": 238,
+      "change_id": "08332eed-71ee-48db-a3be-e90f45d66dc3",
+      "node_type": "action",
+      "title": "Fix mobile nav label collision (#128)",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-11-02T22:56:49.918697-08:00",
+      "updated_at": "2026-11-02T22:56:49.918697-08:00",
+      "metadata_json": "{\"branch\":\"fix/mobile-nav-labels\",\"commit\":\"0fe24cc\",\"confidence\":90}"
     }
   ],
   "edges": [
@@ -5160,6 +5182,28 @@
       "weight": 1.0,
       "rationale": "Follow-up security fix",
       "created_at": "2026-11-01T17:00:53.003687-08:00"
+    },
+    {
+      "id": 236,
+      "from_node_id": 214,
+      "to_node_id": 237,
+      "from_change_id": "6993b37a-0545-475d-acf6-f89d0268e0ba",
+      "to_change_id": "ba8b4844-17c4-4105-84b8-b90ddccec760",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Shipped",
+      "created_at": "2026-11-02T22:38:19.646701-08:00"
+    },
+    {
+      "id": 237,
+      "from_node_id": 214,
+      "to_node_id": 238,
+      "from_change_id": "6993b37a-0545-475d-acf6-f89d0268e0ba",
+      "to_change_id": "08332eed-71ee-48db-a3be-e90f45d66dc3",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Follow-up fix",
+      "created_at": "2026-11-02T22:56:52.524541-08:00"
     }
   ]
 }
