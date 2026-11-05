@@ -1,10 +1,10 @@
 [
   {
-    "hash": "0fe24cccf3876cfa5fb789d826f6fd1969723ac7",
-    "short_hash": "0fe24cc",
+    "hash": "c1e0ca2e13b0796017a2a1fffd79208e9fd0fbd5",
+    "short_hash": "c1e0ca2",
     "author": "Bryan Guffey",
-    "date": "2026-11-02T22:56:41-08:00",
-    "message": "fix(site): stop mobile nav labels running together\n\nThe phone nav split its width into equal columns, so \"Who's coming\"\noverflowed into \"Posts\". Entries now size to their labels with a gap\nbetween them, spread across the rail; on the narrowest phones the rail\nscrolls sideways instead of overlapping.\n\nCloses chainlink #128.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "date": "2026-11-03T17:06:15-08:00",
+    "message": "fix(site): keep the active entry visible in the scrolling mobile nav\n\nOn the narrowest phones the nav scrolls sideways, but nothing followed\nthe active entry, so a later section could be active while its label\nsat clipped off the edge. The rail now scrolls itself to the active\nentry. It moves only the rail's scrollLeft — not scrollIntoView, which\ncould jump the page down to the rail on first load.\n\nAddresses CodeRabbit review on #50.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
     "files_changed": 3
   },
   {

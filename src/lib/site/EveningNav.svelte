@@ -36,9 +36,12 @@
 		const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
 		const start = link.offsetLeft - pad;
 		const end = link.offsetLeft + link.offsetWidth + pad - width;
-		const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-		if (el.scrollLeft > start) el.scrollTo({ left: start, behavior });
-		else if (el.scrollLeft < end) el.scrollTo({ left: end, behavior });
+		const now = el.scrollLeft;
+		const left = now > start ? start : now < end ? end : now;
+		// Always scroll, even in place: a new scrollTo cancels a smooth scroll
+		// still heading for the previous entry.
+		const smooth = left !== now && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+		el.scrollTo({ left, behavior: smooth ? 'smooth' : 'auto' });
 	});
 
 	$effect(() => {
