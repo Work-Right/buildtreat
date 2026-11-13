@@ -1,11 +1,11 @@
 [
   {
-    "hash": "3b0a59cc4e46e63b5c6a412335bc9ef6fde3a18d",
-    "short_hash": "3b0a59c",
+    "hash": "efc6650c66ce5639c36040134d957efc61db4485",
+    "short_hash": "efc6650",
     "author": "Bryan Guffey",
-    "date": "2026-11-13T12:11:11-08:00",
-    "message": "docs: add CONTRIBUTING.md; pin pnpm 10 via packageManager\n\nCONTRIBUTING.md walks a human web developer through setup, local\nsign-in and data, code layout, conventions, checks, migrations and the\nPR-to-deploy path, plus the public-repo/venue rules.\n\npackageManager pins pnpm@10.33.0: pnpm 12 no longer reads the\n\"pnpm.overrides\" field in package.json and refuses to run scripts here\n(ERR_PNPM_VERIFY_DEPS_BEFORE_RUN). With the pin, newer pnpm installs\nswitch to 10.33.0 automatically, matching the pnpm 10 that Workers\nBuilds uses.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
-    "files_changed": 3
+    "date": "2026-11-13T12:12:11-08:00",
+    "message": "docs: clone URL points at Work-Right/buildtreat\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 2
   },
   {
     "hash": "0fe24cccf3876cfa5fb789d826f6fd1969723ac7",
