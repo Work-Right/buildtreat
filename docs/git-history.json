@@ -1,11 +1,11 @@
 [
   {
-    "hash": "532035ceae37786a41d67ba377341574b387d86c",
-    "short_hash": "532035c",
+    "hash": "a011a3d14391798010df923aad91b905b511b9df",
+    "short_hash": "a011a3d",
     "author": "Bryan Guffey",
-    "date": "2026-11-03T19:24:14-08:00",
-    "message": "fix(site): recheck the mobile nav on resize; honor reduced motion\n\nThe rail now re-runs its keep-active-in-view check when its width\nchanges (bind:clientWidth), not only when the section changes, and\nscrolls instantly instead of smoothly when the reader prefers reduced\nmotion.\n\nAddresses CodeRabbit review on #50.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
-    "files_changed": 2
+    "date": "2026-11-04T19:32:29-08:00",
+    "message": "fix(deps): patch Dependabot alerts in the app's dependency tree (#51)",
+    "files_changed": 4
   },
   {
     "hash": "0fe24cccf3876cfa5fb789d826f6fd1969723ac7",
