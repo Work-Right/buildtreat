@@ -32,12 +32,5 @@
 	"dependencies": {
 		"@svelte-atproto/oauth": "^0.3.0",
 		"markdown-it": "^15.0.3"
-	},
-	"pnpm": {
-		"overrides": {
-			"nanoid@3": "^3.3.18",
-			"undici@>=7.0.0 <7.29.0": "~7.29.0",
-			"cookie@0.6.0": "^0.7.0"
-		}
 	}
 }

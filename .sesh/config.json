@@ -1,0 +1,10 @@
+{
+  "copy": [
+    ".env",
+    ".claude/settings.local.json",
+    ".hookenv"
+  ],
+  "setup": "pnpm install --frozen-lockfile",
+  "ports": 0,
+  "sessionSetup": "bash scripts/link-shared-dbs.sh"
+}

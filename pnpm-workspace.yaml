@@ -4,5 +4,20 @@
 packages:
   - '.'
 
+# Which dependencies may run install scripts. pnpm 10.11 (Workers Builds)
+# reads onlyBuiltDependencies; pnpm 11+ reads allowBuilds and fails a frozen
+# install on any dependency it lists neither way. Keep the two in step.
 onlyBuiltDependencies:
   - esbuild
+allowBuilds:
+  cloudflared: false
+  esbuild: true
+  workerd: false
+
+# Dependabot patches (PR #51). These live here, not in package.json's `pnpm`
+# field: pnpm 11+ no longer reads that field, so a local install silently
+# dropped them and a frozen install failed on the mismatch.
+overrides:
+  nanoid@3: ^3.3.18
+  'undici@>=7.0.0 <7.29.0': ~7.29.0
+  cookie@0.6.0: ^0.7.0
