@@ -1,11 +1,11 @@
 [
   {
-    "hash": "a011a3d14391798010df923aad91b905b511b9df",
-    "short_hash": "a011a3d",
+    "hash": "119b3d11787fdba780bbf97478685c72477db968",
+    "short_hash": "119b3d1",
     "author": "Bryan Guffey",
-    "date": "2026-11-04T19:32:29-08:00",
-    "message": "fix(deps): patch Dependabot alerts in the app's dependency tree (#51)",
-    "files_changed": 4
+    "date": "2026-11-12T18:12:20-08:00",
+    "message": "fix(site): stop mobile nav labels running together (#50)",
+    "files_changed": 2
   },
   {
     "hash": "0fe24cccf3876cfa5fb789d826f6fd1969723ac7",
