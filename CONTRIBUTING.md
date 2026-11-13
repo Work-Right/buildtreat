@@ -241,8 +241,9 @@ pnpm test    # vitest
 pnpm build   # production build for Cloudflare
 ```
 
-There's no CI that runs these on GitHub yet, so please run them yourself.
-The pre-push hook runs the type check and tests for you.
+GitHub Actions also runs all three on every PR (the **CI** check), so a
+red X there means one of them failed. Running them locally first is
+faster. The pre-push hook runs the type check and tests for you.
 
 **Tests** sit next to the code they test (`*.test.ts`). Database code is
 tested against a real SQLite database with every migration applied:

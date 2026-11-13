@@ -1,0 +1,44 @@
+name: CI
+
+# The same three checks CONTRIBUTING.md asks for before a PR, run on every
+# PR and on main. Deploys are separate: Cloudflare Workers Builds deploys
+# main after merge.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-test-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # Version comes from "packageManager" in package.json.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      # Frozen, like Workers Builds: a stale lockfile fails here first.
+      - run: pnpm install --frozen-lockfile
+
+      - name: Type check (svelte-check)
+        run: pnpm check
+
+      - name: Tests (vitest)
+        run: pnpm test
+
+      - name: Build (Cloudflare adapter)
+        run: pnpm build
