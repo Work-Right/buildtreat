@@ -22,6 +22,27 @@
 	/** Gutter variant: the rail sits over a full-bleed photograph right now. */
 	let overPhoto = $state(false);
 	let rail = $state<HTMLElement | null>(null);
+	let mrail = $state<HTMLElement | null>(null);
+	let mrailWidth = $state(0);
+
+	// Narrow rail: when it scrolls sideways, keep the active entry in view —
+	// on a new section and when the rail's width changes. Moves only the
+	// rail's own scrollLeft, never the page.
+	$effect(() => {
+		const el = mrail;
+		const width = mrailWidth;
+		const link = el?.children[active] as HTMLElement | undefined;
+		if (!el || !link || !width) return;
+		const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+		const start = link.offsetLeft - pad;
+		const end = link.offsetLeft + link.offsetWidth + pad - width;
+		const now = el.scrollLeft;
+		const left = now > start ? start : now < end ? end : now;
+		// Always scroll, even in place: a new scrollTo cancels a smooth scroll
+		// still heading for the previous entry.
+		const smooth = left !== now && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+		el.scrollTo({ left, behavior: smooth ? 'smooth' : 'auto' });
+	});
 
 	$effect(() => {
 		const targets = entries.map((e) => document.getElementById(e.id));
@@ -68,7 +89,7 @@
 		</nav>
 	</div>
 {:else}
-	<nav class="mrail" aria-label={siteHome.nav.label}>
+	<nav class="mrail" aria-label={siteHome.nav.label} bind:this={mrail} bind:clientWidth={mrailWidth}>
 		{#each entries as e, i (e.id)}
 			<a href={`#${e.id}`} class:on={i === active} aria-current={i === active ? 'location' : undefined}>
 				<span class="t">{e.time}</span><span>{e.label}</span>
@@ -84,7 +105,13 @@
 		top: 0;
 		z-index: 20;
 		display: flex;
+		justify-content: space-between;
+		gap: var(--space-3);
 		padding: 0 var(--gutter);
+		/* Labels never squeeze into each other: on the narrowest phones the
+		   rail scrolls sideways instead. */
+		overflow-x: auto;
+		scrollbar-width: none;
 		/* Ground (#0b0908) at near-full alpha so the light still reads through. */
 		background: linear-gradient(to bottom, rgb(11 9 8 / 0.97), rgb(11 9 8 / 0.9));
 		border-bottom: var(--hairline);
@@ -104,7 +131,8 @@
 		mix-blend-mode: screen;
 	}
 	.mrail a {
-		flex: 1;
+		flex: none;
+		white-space: nowrap;
 		position: relative;
 		display: grid;
 		gap: 0.15rem;
@@ -124,8 +152,8 @@
 		content: '';
 		position: absolute;
 		left: 0;
-		right: 0.75rem;
-		bottom: -1px;
+		right: 0;
+		bottom: 0;
 		height: 1px;
 		background: var(--ink);
 	}
