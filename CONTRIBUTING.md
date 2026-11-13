@@ -55,7 +55,7 @@ simulated D1, KV and R2.
 ### First-time setup
 
 ```sh
-git clone https://github.com/musicjunkieg/buildtreat.git
+git clone https://github.com/Work-Right/buildtreat.git
 cd buildtreat
 pnpm install
 ```
