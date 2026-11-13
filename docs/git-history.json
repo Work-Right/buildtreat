@@ -1,11 +1,11 @@
 [
   {
-    "hash": "a011a3d14391798010df923aad91b905b511b9df",
-    "short_hash": "a011a3d",
+    "hash": "f24b6add50102b7c58c00537472f236a4d5309c5",
+    "short_hash": "f24b6ad",
     "author": "Bryan Guffey",
-    "date": "2026-11-04T19:32:29-08:00",
-    "message": "fix(deps): patch Dependabot alerts in the app's dependency tree (#51)",
-    "files_changed": 4
+    "date": "2026-11-12T20:35:22-08:00",
+    "message": "chore(hooks): allow git merge so Claude can merge main into its branches (#52)\n\nConcurrent PRs always conflict on the regenerated docs exports\n(docs/git-history.json, docs/graph-data.json). .gitattributes already\nresolves them locally with the keep-ours driver, but GitHub's check\nignores custom drivers, so each PR waited on a manual merge of main.\nWith git merge unblocked, Claude can `git fetch && git merge\norigin/main` on its own feature branch and push.\n\nRebase, reset, cherry-pick and the rest stay blocked; the hooks still\nrefuse commits and pushes on main. Mirrors Work-Right/project-template#55.\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 2
   },
   {
     "hash": "0fe24cccf3876cfa5fb789d826f6fd1969723ac7",
