@@ -1,0 +1,626 @@
+[
+  {
+    "hash": "15a0b68b2c495e4822231cd6e93202d1f8e8b4dd",
+    "short_hash": "15a0b68",
+    "author": "Bryan Guffey",
+    "date": "2026-11-13T12:25:15-08:00",
+    "message": "ci: run pnpm check, test and build on every PR (#55)\n\n* docs: add CONTRIBUTING.md; pin pnpm 10 via packageManager\n\nCONTRIBUTING.md walks a human web developer through setup, local\nsign-in and data, code layout, conventions, checks, migrations and the\nPR-to-deploy path, plus the public-repo/venue rules.\n\npackageManager pins pnpm@10.33.0: pnpm 12 no longer reads the\n\"pnpm.overrides\" field in package.json and refuses to run scripts here\n(ERR_PNPM_VERIFY_DEPS_BEFORE_RUN). With the pin, newer pnpm installs\nswitch to 10.33.0 automatically, matching the pnpm 10 that Workers\nBuilds uses.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n* docs: clone URL points at Work-Right/buildtreat\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n* ci: run pnpm check, test and build on every PR and on main\n\nFrozen-lockfile install (like Workers Builds), Node 24, pnpm from the\npackageManager pin. Read-only token; plain pull_request trigger, so fork\nPRs run without secrets. CONTRIBUTING.md now points at the CI check.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 3
+  },
+  {
+    "hash": "0fe24cccf3876cfa5fb789d826f6fd1969723ac7",
+    "short_hash": "0fe24cc",
+    "author": "Bryan Guffey",
+    "date": "2026-11-02T22:56:41-08:00",
+    "message": "fix(site): stop mobile nav labels running together\n\nThe phone nav split its width into equal columns, so \"Who's coming\"\noverflowed into \"Posts\". Entries now size to their labels with a gap\nbetween them, spread across the rail; on the narrowest phones the rail\nscrolls sideways instead of overlapping.\n\nCloses chainlink #128.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 3
+  },
+  {
+    "hash": "3035beb88de0ae867865634d95b17bfe8b7b9d14",
+    "short_hash": "3035beb",
+    "author": "Bryan Guffey",
+    "date": "2026-11-02T22:36:48-08:00",
+    "message": "feat(site): the retreat site — public story, invited logistics, organizer console (#49)\n\n* feat(site): the retreat site — public story, invited logistics, organizer console\n\n`/` becomes the retreat home (comp A, \"dusk to night\"):\n- Public view: organizer story sections, curated Who's coming (appview-\n  verified identities only), and a posts stream of organizer updates +\n  picked Bluesky posts rendered natively.\n- Invited view (allowlist or late pass, strict, read-only, fail-closed):\n  logistics first — lead-photo sections, ledger-rendered lists — then the\n  public story. Registration flow unchanged at /?register.\n- Photos live in a private R2 bucket (SITE_MEDIA), served only through\n  /media/site/[id] after a visibility check; metadata stripped server-side\n  (allowlist parsers) and re-encoded client-side; dimensions derived from\n  the bytes.\n- Organizer console at /organizer/retreat (sections, updates, photos,\n  Bluesky posts) and /organizer/retreat/attendees (curation + blurbs).\n- Security: every invite/allowlist/late-pass/tier check now uses an\n  appview-verified handle only (a PDS-claimed handle can no longer match\n  or pin an invitee's row); waitlist promotion re-verifies.\n- Migrations 0010 (site content) and 0011 (featured attendees, Bluesky\n  posts, section kinds). Markdown via markdown-it (web only).\n\nSpec: docs/superpowers/specs/2026-10-31-retreat-site-design.md\nPlan: docs/superpowers/plans/2026-10-31-retreat-site.md\nSquashed from local feat/retreat-site (51 reviewed commits).\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n* fix(site): match registration copy to the booked venue\n\nThe sign-up form subtitle still said \"Palm Springs or the Coachella\nValley\" and the registered screen still said the house wasn't booked.\nBoth now say \"near Palm Springs\" like the rest of the site.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 115
+  },
+  {
+    "hash": "9a586bca6b5a1a1e97d30460f9f1ae933335c697",
+    "short_hash": "9a586bc",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T17:00:40-08:00",
+    "message": "fix(site): re-verify the handle before promoting from the waitlist\n\nWaitlist rows saved before join-time verification may hold a\nPDS-claimed handle, and promotion inserts that handle into the\nallowlist pinned to the waitlister's DID, which could capture an\ninvitee's unpinned row. promoteFromWaitlist now takes a resolver\n(production: verifiedHandle) and refuses unless the appview confirms\nthe same handle, and refuses when the allowlist row for that handle is\nalready pinned to a different DID. Nothing is written on refusal.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 6
+  },
+  {
+    "hash": "4bca3c91a9256f3f88be065eb222da967c2b7599",
+    "short_hash": "4bca3c9",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T16:58:17-08:00",
+    "message": "fix(site): final review minors — no-JS register URL, organizer strip, preview ledgers\n\n- Registration forms post to ?register&/register and ?register&/decline\n  so a no-JS POST re-renders the registration flow with its errors.\n- An organizer off the allowlist no longer sees the waitlist strip.\n- BskyPost's \"View on Bluesky\" uses the arrow-right Icon.\n- The console live preview renders through the home's Prose, so lists\n  read as ledgers exactly as on `/`.\n- Updates' publish date gets a hint: the date is a label; updates appear\n  as soon as they're saved.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 10
+  },
+  {
+    "hash": "ee1d1609528ddb8649c60362909ee9396d544354",
+    "short_hash": "ee1d160",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T16:55:53-08:00",
+    "message": "fix(console): cap photo uploads at 6 files / 24 MB per request\n\nThe upload action now refuses an over-cap request (count or summed\nsize, plus an oversized declared Content-Length) before any file's\nbytes are read or stripped, with \"Upload at most 6 photos (24 MB) at a\ntime\". The PhotoManager hint names the cap.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 7
+  },
+  {
+    "hash": "2170174938ab8e8a65fd71f414b79049b264884f",
+    "short_hash": "2170174",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T16:54:41-08:00",
+    "message": "fix(security): match invites with an appview-verified handle only\n\nloadBskyProfile falls back to the user's own PDS when the appview says\nhandle.invalid, so its handle is a claim anyone running a PDS can make.\nThat claimed handle fed checkAllowlist (which pins the DID), late passes,\nthe gates, viewerTier and the photo route.\n\nNew verifiedHandle(did, kv?) (appview-only loadBskyProfiles, appview:\ncache, cleanHandle, 2.5 s timeout, never throws) now supplies the handle\nfor every allowlist / late-pass / tier / gate lookup: `/` load (gates,\ncheckAllowlist, siteFor, waitlist backfill), register, decline,\njoinWaitlist, /media/site/[id] and PUT /api/response. Null → DID-only.\nThe display profile stays as is. Resolves #125 for these call sites.\n\nAlso on `/`: cache-control private, no-store; loadOrganizer runs in\nparallel with the base gates behind a 2 s timeout.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 14
+  },
+  {
+    "hash": "9c6a7628eb1bd40fa13dec0fce01e006effc5f50",
+    "short_hash": "9c6a762",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T14:46:15-08:00",
+    "message": "feat(site): retreat home at /, registration flow at /?register\n\nComp A (\"Dusk to night\") in Svelte: golden-hour hero and sections over the\nhero's blurred light, the evening clock opening each section, the fact\nledger and pill, the time-of-day nav (sticky gutter ledger on desktop,\nrail under the hero on narrow screens), and the night ground closing on\nthe organizer credit. Invited view opens on a compact hero, the status\nstrip, then the invited sections. Blue-hour/night regions are reusable\nshells (EveningRegion) that render only once they have content.\nRegistrationFlow drops the survey link and gains a back link home.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 25
+  },
+  {
+    "hash": "0520f1ec68d1937a462a45e70e75ea45e8a26e98",
+    "short_hash": "0520f1e",
+    "author": "Bryan Guffey",
+    "date": "2026-11-01T14:34:38-08:00",
+    "message": "design(site): retreat home direction — Bryan picked A, dusk to night\n\nPublic comps for all three dealt structures (A approved; B and C kept as the\nround's spent hand). Invited comps stay local: they show the venue.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 14
+  },
+  {
+    "hash": "a47661e14d882d6bf4dab12fe52cc5343d99c999",
+    "short_hash": "a47661e",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T22:57:24-07:00",
+    "message": "docs: retreat site implementation plan\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 2
+  },
+  {
+    "hash": "b1f28f6f6e2869350eca2663ebb8a6973d4c02df",
+    "short_hash": "b1f28f6",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T21:10:16-07:00",
+    "message": "docs: retreat site design spec\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 3
+  },
+  {
+    "hash": "f4a9d4c96e6561a7c26d143c128d4069b8d5a48d",
+    "short_hash": "f4a9d4c",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T12:35:21-07:00",
+    "message": "docs: point CLAUDE.md at src/AGENTS.md and fill the template TODOs\n\nAs in #27 (dd1dd46), plus the Bluesky DM channel in the summary.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 2
+  },
+  {
+    "hash": "9e0b290254c8f0b03276df7041ae42923dca4dea",
+    "short_hash": "9e0b290",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T12:32:21-07:00",
+    "message": "refactor(messaging): split audience resolution out of broadcasts.ts\n\n493 -> 217 (+ audiences.ts 286). New since #27: the audience/channel/\nextras logic is pure and testable on its own; broadcasts.ts keeps D1\nstorage and the send loop, and re-exports audiences so importers and\nbroadcasts.test.ts are unchanged.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 3
+  },
+  {
+    "hash": "1b0d7585b121674192d05f59e32fca2c59564c63",
+    "short_hash": "1b0d758",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T12:29:09-07:00",
+    "message": "refactor(organizer): split the console page into section components\n\nTakes #27's split (fff875a) with its <title> fix folded in (b499dad: the\nall/yes filter goes down as prop + onfilter callback, not bind:, which\nwraps SSR in a $settled copy that drops the page title). Re-applies\nmain's two changes since: the late-pass hint copy (now in OrganizerRail)\nand EmailPanel's channel/audience props.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 8
+  },
+  {
+    "hash": "9ad652a769bfac7e89f30373622550638de533b0",
+    "short_hash": "9ad652a",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T12:28:35-07:00",
+    "message": "refactor(organizer): split page.server into page-data, preview, broadcast-actions\n\n737 -> 238 lines. page-data + preview follow #27 (d95fd89). New since\n#27: the email/DM broadcast actions main grew (audiences, extras, DM\ntest/send, channel-aware retry) move to broadcast-actions.ts, spread\ninto the route's actions. Bodies are line-for-line unchanged; drops an\nunused surveyGate import.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 6
+  },
+  {
+    "hash": "a0548e92fa355430c8254802dce20a6278290049",
+    "short_hash": "a0548e9",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T12:26:40-07:00",
+    "message": "refactor(auth): split HandleTypeahead out of SignInSheet\n\nTaken verbatim from #27 (99c3dd7): SignInSheet is unchanged on main since.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 3
+  },
+  {
+    "hash": "db64542aba45b619a85464624d5d3e9c891475be",
+    "short_hash": "db64542",
+    "author": "Bryan Guffey",
+    "date": "2026-10-31T12:26:02-07:00",
+    "message": "refactor: relocate lib into feature folders (ui, survey, auth, registration, organizer, server/{messaging,organizer})\n\nReplays the #27 move map on current main. Differences from #27:\n- server/email -> server/messaging: it now also holds the Bluesky DM\n  channel (bsky-dm.ts) that broadcasts fan out to.\n- dm-text.ts (client-importable grapheme limit) -> lib/organizer.\n- server/organizer.test.ts follows organizer.ts -> organizer/admin.test.ts.\nImport specifiers rewritten mechanically; check 0/0, tests 110/110.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "files_changed": 96
+  },
+  {
+    "hash": "3018fca4df86f9738b02c627328cdac3d62afffd",
+    "short_hash": "3018fca",
+    "author": "Bryan Guffey",
+    "date": "2026-10-10T16:03:56-07:00",
+    "message": "feat(organizer): add individual people to a broadcast beyond the picked audience (#44)\n\n* feat(organizer): add individual people to a broadcast beyond the picked audience\n\nAn 'Also include' dropdown on the compose form lists everyone the panel\nknows (survey, registrations of either status, waitlist) who the chosen\naudience doesn't already reach; picks post as repeated 'extra' DIDs. The\nserver resolves them against the same people list, unions them with the\naudience under the channel's dedupe rules (audience row wins a DID clash;\nemail drops blank/shared addresses), and rejects unknown DIDs with a\nreload hint. The audience column is unchanged — extras live in the\nrecipient snapshot.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\n* fix(organizer): per-channel coverage for the broadcast picker; fill blank audience emails\n\nCoverage is now what actually delivers on the chosen channel: DM is\nmembership, email is membership with an address or the address already\nbeing mailed under another DID. A respondent with a blank survey email and\na confirmed registration therefore shows in the picker on email, and\nmergeRecipients takes the extra's address when the audience row's is\nblank instead of discarding them. The count collapses shared addresses on\nemail so two picked extras at one address read as one send.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\n---------\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+    "files_changed": 7
+  },
+  {
+    "hash": "9f3a7ad87d1de922410b5b4a8e06cdb617ddd465",
+    "short_hash": "9f3a7ad",
+    "author": "Bryan Guffey",
+    "date": "2026-10-09T17:11:17-07:00",
+    "message": "fix(organizer): per-channel coverage for the broadcast picker; fill blank audience emails\n\nCoverage is now what actually delivers on the chosen channel: DM is\nmembership, email is membership with an address or the address already\nbeing mailed under another DID. A respondent with a blank survey email and\na confirmed registration therefore shows in the picker on email, and\nmergeRecipients takes the extra's address when the audience row's is\nblank instead of discarding them. The count collapses shared addresses on\nemail so two picked extras at one address read as one send.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 5
+  },
+  {
+    "hash": "72a8133e17041104e88f4a365ed4079c0c31836e",
+    "short_hash": "72a8133",
+    "author": "Bryan Guffey",
+    "date": "2026-10-09T15:44:57-07:00",
+    "message": "feat(organizer): add individual people to a broadcast beyond the picked audience\n\nAn 'Also include' dropdown on the compose form lists everyone the panel\nknows (survey, registrations of either status, waitlist) who the chosen\naudience doesn't already reach; picks post as repeated 'extra' DIDs. The\nserver resolves them against the same people list, unions them with the\naudience under the channel's dedupe rules (audience row wins a DID clash;\nemail drops blank/shared addresses), and rejects unknown DIDs with a\nreload hint. The audience column is unchanged — extras live in the\nrecipient snapshot.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 7
+  },
+  {
+    "hash": "d354cd4480c937ef8399256fdc8a8c0c5bd9fe4d",
+    "short_hash": "d354cd4",
+    "author": "Bryan Guffey",
+    "date": "2026-10-09T15:01:16-07:00",
+    "message": "fix: registration honors late passes after REG_DEADLINE\n\nRegistration closed on Sep 20 with a hard deadline check — an invited\nbuilder who missed it (Chris Shank) had no way in, even though the\norganizer panel already grants per-person late passes for the survey.\nregistrationGate() applies the same pass to sign-ups: the page load\nre-asks the gate for the signed-in user and the register action enforces\nit. The survey's global reopen switch is intentionally not consulted.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 6
+  },
+  {
+    "hash": "86a15d560f490449a843111aedbae5dc5cae827a",
+    "short_hash": "86a15d5",
+    "author": "Bryan Guffey",
+    "date": "2026-10-09T14:57:52-07:00",
+    "message": "feat: single venue photo in email templates, replacing the two contender shots\n\nBermuda Dunes has no usable open-licensed photography, so the email\nimage row now carries one full-width shot of the La Quinta Resort a few\nmiles east (Digimint, CC BY-SA 3.0, credited in static/media/CREDITS.md)\nlabeled 'Bermuda Dunes'. Both broadcasts and the registration\nconfirmation pick it up via locationImages(); the public site is\nuntouched and still says Palm Springs.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 8
+  },
+  {
+    "hash": "5bb1810cd14e9e11c2b45a430f449d3158153c86",
+    "short_hash": "5bb1810",
+    "author": "Bryan Guffey",
+    "date": "2026-10-09T14:34:15-07:00",
+    "message": "feat: venue copy — \"Palm Springs\", address goes to registered attendees\n\nThe house is booked, but the exact property stays off the public site\nand out of broadcast fact rows. `retreatLocation.display` is now\n\"Palm Springs\" (was \"Palm Springs or Coachella Valley\"), the pending\nline becomes \"Exact address goes to registered attendees\", and the\nregistration confirmation drops \"once it's booked\". Scenery photos in\nthe broadcast template are unchanged.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 6
+  },
+  {
+    "hash": "8df13352cf332f9c903d6c1a724b5b2f90faeae4",
+    "short_hash": "8df1335",
+    "author": "Bryan Guffey",
+    "date": "2026-10-09T14:16:26-07:00",
+    "message": "feat: markdown headings + lists in broadcast emails; named From\n\nThe branded email body only knew paragraphs, soft breaks, bold, italic\nand links, so `## Location` and `- bullet` lines went out as literal\ntext. The body renderer now parses blocks: `#`–`###` lines become\ndisplay-voice h2 / kicker-style h3, blocks opening with `- `, `* `, `• `\nor `1. ` become ul/ol (unmarked lines continue the item as soft breaks),\neverything else stays a paragraph. `##Travel` without a space counts;\n`#1 priority` does not. Markers are stripped from the preheader. The\nplain-text alternative is still the author's text as typed.\n\nFrom header: EMAIL_FROM_NAME (\"Bryan Guffey, Atmospheric Builders'\nRetreat\") is wrapped as a quoted RFC 5322 mailbox around EMAIL_FROM,\nwith quotes/backslashes/CRLF stripped so nothing can break out of the\ndisplay name. Unset → bare address as before.\n\nCompose panel: body label drops \"(plain text)\" and gains a one-line\nmarkup hint.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 9
+  },
+  {
+    "hash": "b14c725cb7dd8eb5e2799356a574a4ca748b99d3",
+    "short_hash": "b14c725",
+    "author": "Bryan Guffey",
+    "date": "2026-09-18T11:49:33-07:00",
+    "message": "feat: Bluesky DM channel for organizer broadcasts\n\nThe broadcast panel can now send to an audience as Bluesky DMs as well\nas email. DMs go out from a dedicated sending account signed in with an\napp password (BSKY_DM_HANDLE + BSKY_DM_APP_PASSWORD secrets) — the\norganizer's own OAuth session is pinned to the `atproto` scope, so chat\ncan't ride on it. Each send is getConvoForMembers → sendMessage through\nthe PDS with the chat-service proxy header; URLs become link facets.\n\n- src/lib/server/bsky-dm.ts: session, handle resolution, sendDm with the\n  same SendResult shape as email so runBroadcast is channel-agnostic.\n  Recipient-side refusals (MessagesDisabled, NotFollowedBySender, blocks,\n  …) mark the row failed; 401/429/5xx/network pause the run for Retry.\n- broadcasts.ts: `channel` on broadcasts, `handle` on recipient rows\n  (migration 0009). Audience resolution is split into audienceMembers\n  (one per DID) and a per-channel recipient list — email still dedupes by\n  address; DM keeps everyone, so people with no or shared emails are\n  reachable. Counts are per channel.\n- Organizer: dmTest / dmBroadcast actions; emailRetry becomes\n  retryBroadcast and branches on the stored channel.\n- EmailPanel: Email / Bluesky DM toggle, subject hidden for DMs, live\n  1000-grapheme counter (shared src/lib/dm-text.ts), test-by-handle,\n  channel-aware counts and history.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 13
+  },
+  {
+    "hash": "931b8b6379c22bc8eaf97e9d03cbca46dc821b9d",
+    "short_hash": "931b8b6",
+    "author": "Bryan Guffey",
+    "date": "2026-09-18T11:32:07-07:00",
+    "message": "feat: 'Registered' + 'not registered' broadcast audiences; Everyone reaches survey-less registrants (#38)\n\nThree new audiences for the compose selector:\n\n- 'Yes, not registered' / 'Maybe, not registered': survey interest with\n  no registration row of any status — the \"you said you're in, please\n  register\" nudges. A decline counts as answered and drops them.\n- 'Registered': confirmed registrations at their registration email.\n\n'Everyone' now also includes confirmed registrants who never took the\nsurvey (currently one person, invited late and sent straight to the\nform). Previously every audience was derived from survey rows, so such\na person was unreachable from the panel entirely.\n\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+    "files_changed": 4
+  },
+  {
+    "hash": "65d79bc9ff27fde515b0d74d7059a1ed57f2c5f0",
+    "short_hash": "65d79bc",
+    "author": "Bryan Guffey",
+    "date": "2026-09-18T11:26:08-07:00",
+    "message": "feat: 'Registered' + 'not registered' broadcast audiences; Everyone reaches survey-less registrants\n\nThree new audiences for the compose selector:\n\n- 'Yes, not registered' / 'Maybe, not registered': survey interest with\n  no registration row of any status — the \"you said you're in, please\n  register\" nudges. A decline counts as answered and drops them.\n- 'Registered': confirmed registrations at their registration email.\n\n'Everyone' now also includes confirmed registrants who never took the\nsurvey (currently one person, invited late and sent straight to the\nform). Previously every audience was derived from survey rows, so such\na person was unreachable from the panel entirely.\n\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+    "files_changed": 4
+  },
+  {
+    "hash": "0825f0e941299238a3cd404d9179af49263ec53c",
+    "short_hash": "0825f0e",
+    "author": "Bryan Guffey",
+    "date": "2026-09-18T10:38:00-07:00",
+    "message": "feat: 'Travel help' broadcast audience for the support-questions nudge (#37)\n\nSurvey respondents who said they could cover only some or none of their\ntravel, minus anyone who has already answered the registration's support\nquestions or declined. Mailed at the registration email when there is\none. Counts show in the compose selector like the other audiences.\n\n\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+    "files_changed": 5
+  },
+  {
+    "hash": "20069e32870e1c5d2e46a42ce4b9dd27fb5405a4",
+    "short_hash": "20069e3",
+    "author": "Bryan Guffey",
+    "date": "2026-09-18T10:18:55-07:00",
+    "message": "feat: 'Travel help' broadcast audience for the support-questions nudge\n\nSurvey respondents who said they could cover only some or none of their\ntravel, minus anyone who has already answered the registration's support\nquestions or declined. Mailed at the registration email when there is\none. Counts show in the compose selector like the other audiences.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 5
+  },
+  {
+    "hash": "43f3396102b9749a134994d5c9943b9bd756514a",
+    "short_hash": "43f3396",
+    "author": "Bryan Guffey",
+    "date": "2026-09-18T09:40:52-07:00",
+    "message": "feat: travel-support amount + contingency in registration (migration 0008)\n\nAnyone whose survey travel answer wasn't \"I can cover it\" now gets a\nTravel support section in registration: level (cover it / some / can't),\na whole-dollar estimate, and whether attending depends on the fund. The\nlevel is pre-seeded from the survey answer. Organizer roster gets a\nsupport rollup (people, requested $, contingent N · $, covering own),\na Support column, CSV columns, and an edit form section; confirmation\nemail echoes the request.\n\nRequires migrations/0008_travel_support.sql on prod D1 before deploy —\nthe SELECT column list includes the new columns.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 19
+  },
+  {
+    "hash": "e210e3302a07209be412d7f408973d0604135bab",
+    "short_hash": "e210e33",
+    "author": "Bryan Guffey",
+    "date": "2026-09-15T22:13:58-07:00",
+    "message": "fix: anonymous hero offers sign-in while registration is open (#34)\n\n* fix: anonymous hero offers sign-in while registration is open\n\nSigned-out visitors were still shown the survey's state: \"Respond by\nAugust 15\" in the ledger and \"Responses closed August 15 — thanks to\neveryone who answered\" in place of the CTA. The closed branch beat the\nsign-in button, so there was no path from the landing page into\nregistration at all — an invitee read it as \"registration ended the\n15th\".\n\nHeroItem now takes registrationOpen/regDeadlineDisplay. While\nregistration is open, the ledger shows \"Register by September 20\" and\nan anonymous visitor gets the sign-in pill with registration-worded\ncopy; the survey-closed note only remains for the signed-in ?survey\nview and after registration closes.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\n* fix: never fall back to the survey deadline while registration is open\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\n---------\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+    "files_changed": 5
+  },
+  {
+    "hash": "3286df3f9fa281ace482c1c5079b7527c70110af",
+    "short_hash": "3286df3",
+    "author": "Bryan Guffey",
+    "date": "2026-09-13T16:11:22-07:00",
+    "message": "chore: attribution — Organized by Bryan Guffey (@chaosgreml.in) in partnership with Bluesky PBC\n\nWas \"Organized by Bluesky, in partnership with @chaosgreml.in\". The\nhandle now sits mid-sentence, so organizerLine splits into\norganizerLead / organizerTail around the linked handle. Same copy in\nall four places it renders: hero, announcement, form footer,\nregistered summary.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 7
+  },
+  {
+    "hash": "7381c07049f19d04cdd0f6d8251f61a96adadcf5",
+    "short_hash": "7381c07",
+    "author": "Bryan Guffey",
+    "date": "2026-09-13T16:05:10-07:00",
+    "message": "chore: reopen registration through Sep 20 (#32)",
+    "files_changed": 3
+  },
+  {
+    "hash": "edc5a8a2a6e445209b0616c39276abeb3be6dbbb",
+    "short_hash": "edc5a8a",
+    "author": "Bryan Guffey",
+    "date": "2026-09-12T20:09:26-07:00",
+    "message": "feat: organizer edits any registration + broadcast audience selector (#29)\n\n* feat: organizer edits any registration + broadcast audience selector\n\nTwo organizer-console additions:\n\n- Edit any registration. New route /organizer/registrations/[did]\n  (organizer-only, 404 for anyone else) with a fields-only editor:\n  contact, dietary, emergency, accessibility, notes, travel. Status and\n  the attendee's own waiver/CoC agreement record are never touched —\n  nobody agrees on someone else's behalf. validateRegistration gains an\n  `agreements: false` option for this path; updateRegistrationFields\n  writes the field columns only. Edit links from the registrations\n  table and the declined list.\n\n- Broadcast audience. Email panel gets a \"Send to\" chip row: Everyone /\n  Yes / Maybe / No (survey interest) / Waitlist (entries not yet\n  promoted), each with a live recipient count. The choice is persisted\n  on broadcasts.audience (migration 0007, additive, default 'all') and\n  shown in the history meta. Server re-derives the recipient list from\n  the audience at send time, so a stale count can't widen delivery.\n\nTests cover audienceRecipients/audienceCounts/isAudience and the\nagreements:false validation path.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\n* fix: let the organizer edit declined registrations\n\nA declined row never collected an emergency contact (and may have no\nemail), so the editor's confirmation rules returned 400 on it. The save\naction now reads the row first and passes `confirmation: false` for a\ndeclined status — emergency contact optional, email checked for shape\nonly when typed. The page mirrors that in its `required` markers.\n\nAddresses CodeRabbit review on #29.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\n* chore: align generated exports with main so #29 merges cleanly\n\nMain untracked .chainlink/issues-export.json in #31 and carries newer\ndocs/graph-data.json + git-history.json; take main's state for all three\nso the only files #28/#31 and this branch both touched merge as identical.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX\n\n---------\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+    "files_changed": 12
+  },
+  {
+    "hash": "5ce0e1cb8623963f1e1e3210e7a0da3395e66445",
+    "short_hash": "5ce0e1c",
+    "author": "Bryan Guffey",
+    "date": "2026-09-10T13:38:50-07:00",
+    "message": "feat: organizer edits any registration + broadcast audience selector\n\nTwo organizer-console additions:\n\n- Edit any registration. New route /organizer/registrations/[did]\n  (organizer-only, 404 for anyone else) with a fields-only editor:\n  contact, dietary, emergency, accessibility, notes, travel. Status and\n  the attendee's own waiver/CoC agreement record are never touched —\n  nobody agrees on someone else's behalf. validateRegistration gains an\n  `agreements: false` option for this path; updateRegistrationFields\n  writes the field columns only. Edit links from the registrations\n  table and the declined list.\n\n- Broadcast audience. Email panel gets a \"Send to\" chip row: Everyone /\n  Yes / Maybe / No (survey interest) / Waitlist (entries not yet\n  promoted), each with a live recipient count. The choice is persisted\n  on broadcasts.audience (migration 0007, additive, default 'all') and\n  shown in the history meta. Server re-derives the recipient list from\n  the audience at send time, so a stale count can't widen delivery.\n\nTests cover audienceRecipients/audienceCounts/isAudience and the\nagreements:false validation path.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 15
+  },
+  {
+    "hash": "351f967b5bca51e78bf0745d3baca7e0848870a8",
+    "short_hash": "351f967",
+    "author": "Bryan Guffey",
+    "date": "2026-09-08T18:36:07-07:00",
+    "message": "fix(email): lift links out before emphasis; keep balanced parens in urls\n\nAddresses CodeRabbit on #28: labeled and bare links are held as placeholders\nwhile **bold**/_italic_ run, so markers inside an href can't break the\nanchor; a trailing \")\" is only trimmed from a bare URL when it doesn't\nbalance one inside it, and labeled-link destinations accept one level of\nparentheses. The #104 follow-up note now uses src/lib/… paths.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 5
+  },
+  {
+    "hash": "210f834614d7af1866273ebe7671278de634e5bb",
+    "short_hash": "210f834",
+    "author": "Bryan Guffey",
+    "date": "2026-09-08T14:00:44-07:00",
+    "message": "feat: waiver row becomes a commit-to-sign checkbox (v2); inline markup in email bodies\n\nRegistration agreements: the inline draft liability waiver is gone. The row\nnow reads \"I agree to complete the waivers provided to me in a timely manner\nto attend the Builders' Retreat\" with no expandable text, versioned v2 so\nexisting registrants re-affirm on their next edit. Code of conduct unchanged.\n\nBroadcast/confirmation bodies now understand **bold**, _italic_, and\n[label](https://url) on top of bare-URL autolinking; trailing sentence\npunctuation no longer gets swallowed into an autolinked URL.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 8
+  },
+  {
+    "hash": "dd1dd46044ac2ed7dbddb79e1aac81b851b4ab5b",
+    "short_hash": "dd1dd46",
+    "author": "Bryan Guffey",
+    "date": "2026-09-06T12:57:07-07:00",
+    "message": "docs: point CLAUDE.md at src/AGENTS.md and fill the template TODOs\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 4
+  },
+  {
+    "hash": "60095f986abe1d14d9f1863d7517325d3c960296",
+    "short_hash": "60095f9",
+    "author": "Bryan Guffey",
+    "date": "2026-09-06T12:56:09-07:00",
+    "message": "docs: add AGENTS.md to every feature folder under src/\n\nTwelve folder guides: what lives in the folder, the boundaries that\nmatter there (server-only imports, scoped-style duplication, D1\nparameterization, the bind:/title SSR trap), the props each component\ntakes, and what to run before calling a change done. src/AGENTS.md is\nthe map that points at the rest.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 13
+  },
+  {
+    "hash": "4c523a53a0fc8d79317d011b952dd0171dca3a20",
+    "short_hash": "4c523a5",
+    "author": "Bryan Guffey",
+    "date": "2026-09-06T12:44:07-07:00",
+    "message": "refactor(organizer): move csv module under lib/server/organizer\n\ncsv.ts imports a runtime value from $lib/server/registration, so it was\nalready server-only in practice; only the three CSV endpoints import it.\nMoving it keeps lib/organizer purely client-importable.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 10
+  },
+  {
+    "hash": "fff875a4e71be0e4913910a2c52ae4c55834fb02",
+    "short_hash": "fff875a",
+    "author": "Bryan Guffey",
+    "date": "2026-09-06T12:43:39-07:00",
+    "message": "refactor(organizer): split the console page into section components\n\nroutes/organizer/+page.svelte (1556 → 293) keeps composition, the shared\nanchor state (toggleAnchor/clearAnchors used by both the availability\nsection and the responses table), the all/yes filter binding, and the\nResponses section. Extracted into lib/organizer/: OrganizerGate (signed-out\nstate), OrganizerRail (stats, tallies, late passes), AvailabilitySection\n(heatmap, windows, roster drawer — owns the filter via $bindable),\nAllowlistSection, WaitlistSection. Styles moved verbatim with their markup;\nsection-head rules duplicated per component per codebase precedent. The\nLocations tally still follows the all/yes toggle as before. No behavior\nchange.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 9
+  },
+  {
+    "hash": "99c3dd7ddc4f66109df5f1740e210b34945c7526",
+    "short_hash": "99c3dd7",
+    "author": "Bryan Guffey",
+    "date": "2026-09-06T12:42:23-07:00",
+    "message": "refactor(auth): split HandleTypeahead out of SignInSheet\n\nSignInSheet.svelte (548 → 296) keeps the sheet: welcome-back state, the\n/api/invited pre-flight check, login(), and modal focus restore.\nHandleTypeahead.svelte (298) owns the combobox + typeahead.waow.tech search\nwith a $bindable value, mirrored dropdownOpen, and exported focus() /\ninvalidateSearch(). onDestroy(invalidateSearch) in the child preserves the\noriginal 'stale debounce reopens dropdown after close' guard, which the\nparent can no longer reach at teardown time. Rendered DOM and ARIA ids are\nunchanged; no behavior change.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 5
+  },
+  {
+    "hash": "fa5b0a6430258412514d476bb6a35153ec795942",
+    "short_hash": "fa5b0a6",
+    "author": "Bryan Guffey",
+    "date": "2026-09-06T12:41:12-07:00",
+    "message": "refactor(survey): split DatesItem into grid, range editor, typed form\n\nDatesItem.svelte (731 → 394) stays the orchestrator: it owns survey.ranges\nmutations, anchor/drag/hover selection state, and the live-region messages.\nCalendarGrid.svelte renders the months and day cells and exposes focusDay()\nfor the roving tabindex; RangeEditor.svelte edits one committed range;\nTypedRangeForm.svelte is the no-pointer fallback. grid.ts holds the shared\nCellState type and weekday headers. Props and import path of DatesItem are\nunchanged; no behavior change.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 8
+  },
+  {
+    "hash": "d95fd89a0422664945f1d46f38fe1c0683e83a42",
+    "short_hash": "d95fd89",
+    "author": "Bryan Guffey",
+    "date": "2026-09-06T12:39:33-07:00",
+    "message": "refactor(organizer): split page.server into page-data + preview modules\n\nRoute file keeps load + actions (304 lines). Shared view types, EMPTY,\nrequireOrganizer and broadcastMessage move to lib/server/organizer/page-data.ts;\nthe dev-only synthetic dataset moves to lib/server/organizer/preview.ts.\nNo behavior change.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 6
+  },
+  {
+    "hash": "965f817bfce7c5c851e6e4d99e6339b83ef84d19",
+    "short_hash": "965f817",
+    "author": "Bryan Guffey",
+    "date": "2026-09-06T12:33:11-07:00",
+    "message": "refactor: relocate lib into feature folders (ui, survey, auth, registration, organizer, server/{email,organizer})\n\nPure moves plus import rewrites — no file contents changed beyond\nspecifiers. Sets up the per-folder AGENTS.md and the oversized-file\nsplits that follow.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 87
+  },
+  {
+    "hash": "8eb924ee50661255c148c8900d93ecd123c14c39",
+    "short_hash": "8eb924e",
+    "author": "Bryan Guffey",
+    "date": "2026-09-02T15:57:06-07:00",
+    "message": "feat: dusk hero photograph behind email header\n\nKicker + headline now sit over the site's hero-landscape photography,\npre-scrimmed so its bottom edge fades to the ground color (baked-in\ngradient — email clients can't layer CSS scrims). center bottom / cover\npins the faded edge to the cell bottom for a seamless handoff; blocked\nimages degrade to the flat ground via bgcolor. 57KB derivative served\nfrom /media.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 7
+  },
+  {
+    "hash": "23c7be4334968968c0ba323f7ecff64cdb16f1fa",
+    "short_hash": "23c7be4",
+    "author": "Bryan Guffey",
+    "date": "2026-09-02T15:54:11-07:00",
+    "message": "feat: contender location photos in branded emails\n\nTwo-up labeled image row (Palm Springs / Coachella Valley) under the\nfacts ledger in broadcasts and the registration confirmation.\nEmail-weight 3:2 crops (44KB/121KB) of the already-credited site\nphotography, served from /media. locationImages() is the single swap\npoint for the booked house once the venue locks.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 8
+  },
+  {
+    "hash": "580dd0b4f29e0a91b084f1ee11ed75bbf9f98adf",
+    "short_hash": "580dd0b",
+    "author": "Bryan Guffey",
+    "date": "2026-09-02T15:47:56-07:00",
+    "message": "feat: branded HTML email template (Dusk Feed) for broadcasts + confirmation\n\nServer-side brandedEmail() renderer: table layout, inline styles, solid\nhex stand-ins for ink opacity steps, Arial Narrow display fallback.\nBroadcasts wrap the organizer's subject/body; the registration\nconfirmation gets a You're-in headline with the retreat ledger. Text\nversion stays the author's untouched plain text.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YS7dro4fFpSEXJ9WtXmaBX",
+    "files_changed": 6
+  },
+  {
+    "hash": "05fbf8078d0e145b51d930a8bb4c6304f317b499",
+    "short_hash": "05fbf80",
+    "author": "Bryan Guffey",
+    "date": "2026-08-29T16:17:37-07:00",
+    "message": "fix: single Edit per section on the registered summary; band min-height parity; preview accessibility text\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01RwSQjGei7n9wVRMcqcMAga",
+    "files_changed": 3
+  },
+  {
+    "hash": "ab82711c9c8ae61fe023bdc62489ff3fa66cd52e",
+    "short_hash": "ab82711",
+    "author": "chaos gremlin",
+    "date": "2026-08-20T16:19:55-07:00",
+    "message": "feat: email sending via comail.at (transport + organizer broadcast) (#23)\n\n* docs: spec for email sending via comail.at (transport + organizer broadcast)\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01RwSQjGei7n9wVRMcqcMAga\n\n* docs: implementation plan for comail email sending\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01RwSQjGei7n9wVRMcqcMAga\n\n* chore: add vitest + comail env plumbing\n\n* feat: comail.at email transport module\n\n* feat: broadcast schema and data layer\n\n* feat: broadcast run loop with stop-on-retryable resume semantics\n\n* feat: organizer email actions — test send, broadcast, retry\n\n* feat: organizer email panel — compose, test send, broadcast, history\n\n* fix: scope organizer page styles locally in EmailPanel\n\nCSS classes used in EmailPanel.svelte (.warn, .section-head,\n.section-title, .section-sub, .compose .kicker) had their rules\ndefined only in +page.svelte's scoped <style> block, so they never\napplied inside the component. Duplicate the needed rule bodies\nlocally, following the precedent set by ResponsesTable/Heatmap.\n\n* fix: handle comail rejected recipients, degrade missing broadcasts table, guard retry double-submit\n\n- email.ts: a 200 response with an empty accepted array but a rejected\n  entry (e.g. suppressed broadcast recipients) now returns a non-retryable\n  REJECTED result instead of falling through to retryable BAD_RESPONSE,\n  which previously made runBroadcast stop and retry the same recipient\n  forever. BAD_RESPONSE stays for the truly empty accepted+rejected case.\n- +page.server.ts: listBroadcasts(db) now follows the listAnchors\n  precedent and catches into an empty array, so a pre-migration-0005\n  deploy degrades the email history panel instead of 500ing the whole\n  organizer page.\n- EmailPanel.svelte: the retry form now guards against double-submit with\n  a per-broadcast SvelteSet, disabling the Retry button while its\n  emailRetry action is in flight.\n\n* fix: address CodeRabbit review — rejected[].error field, send timeout, trimmed dedupe emails\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01RwSQjGei7n9wVRMcqcMAga\n\n---------\n\nCo-authored-by: Bryan Guffey <bryan.guffey@grytlabs.com>\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+    "files_changed": 17
+  },
+  {
+    "hash": "93b0cc99884618ce2a428c891d4e46af24d98375",
+    "short_hash": "93b0cc9",
+    "author": "Bryan Guffey",
+    "date": "2026-08-17T17:13:33-07:00",
+    "message": "fix: handle comail rejected recipients, degrade missing broadcasts table, guard retry double-submit\n\n- email.ts: a 200 response with an empty accepted array but a rejected\n  entry (e.g. suppressed broadcast recipients) now returns a non-retryable\n  REJECTED result instead of falling through to retryable BAD_RESPONSE,\n  which previously made runBroadcast stop and retry the same recipient\n  forever. BAD_RESPONSE stays for the truly empty accepted+rejected case.\n- +page.server.ts: listBroadcasts(db) now follows the listAnchors\n  precedent and catches into an empty array, so a pre-migration-0005\n  deploy degrades the email history panel instead of 500ing the whole\n  organizer page.\n- EmailPanel.svelte: the retry form now guards against double-submit with\n  a per-broadcast SvelteSet, disabling the Retry button while its\n  emailRetry action is in flight.",
+    "files_changed": 5
+  },
+  {
+    "hash": "a25dd903119fdc2fe9f52cd59c8198af5aa2ded6",
+    "short_hash": "a25dd90",
+    "author": "Bryan Guffey",
+    "date": "2026-08-17T14:02:38-07:00",
+    "message": "docs: changelog entry for the scenario planner (#90)\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01RwSQjGei7n9wVRMcqcMAga",
+    "files_changed": 2
+  },
+  {
+    "hash": "8b0fe0945446ad388087d8f53c990638e45d65bf",
+    "short_hash": "8b0fe09",
+    "author": "chaos gremlin",
+    "date": "2026-08-16T17:54:24-07:00",
+    "message": "docs: backfill CHANGELOG Unreleased with shipped work (#18)",
+    "files_changed": 2
+  },
+  {
+    "hash": "ff4051a6e35b9162013cef44e982ad914ed60b73",
+    "short_hash": "ff4051a",
+    "author": "Bryan Guffey",
+    "date": "2026-08-08T18:00:32-07:00",
+    "message": "feat: anchor-people scenario mode in the organizer view\n\nToggle a ring next to any respondent to anchor them; the view answers\n'when can THESE people make it' in place:\n\n- Heatmap outlines every day all anchors share — full-cell ring for\n  full days, half-cell ring for a shared half, echoing the split-cell\n  language. Legend gains an 'all anchored people available' key.\n- Each of the 5 best windows gets an n/n anchors marker: bright filled\n  dot when every anchor fits, dim ring otherwise, tooltip explains.\n- A scenario line above the heatmap names the anchors, counts the full\n  days they all share, and clears with one click.\n- Anchors are independent of the all/yes filter; respondents with no\n  dates can't be anchored (disabled ring, explanatory title).\n\nPure client state over the existing aggregate slot-set math; bestWindows\nrefactored onto a shared windowSlots() so the window shape has one\ndefinition. Verified in-browser against ?preview fixtures: rings render\nfor solo and paired anchors, chips count 0/2 and 1/2 correctly, clear\nrestores the neutral view; no console errors.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_014GrGCvMtG1jntmgmLjWmvh",
+    "files_changed": 7
+  },
+  {
+    "hash": "b216045c703d57c8634d91f32f46dca10adae7af",
+    "short_hash": "b216045",
+    "author": "Bryan Guffey",
+    "date": "2026-08-08T17:46:27-07:00",
+    "message": "fix: bestWindows no longer requires availability on the departure morning\n\nTwo compounding problems made the ranking miss real candidates:\n\n1. The window shape required a day-3 first-half slot — a 4th calendar\n   day of availability for a 3-night stay. The survey's end-portion\n   semantics ('full' vs 'leaving midday') already encode the last\n   night, so anyone who entered exactly the weekend they meant\n   (Fri-Sun) matched zero windows. Verified against prod data: one\n   respondent's six weekend ranges all counted for nothing.\n2. The top list allowed overlapping windows, so shifted copies of one\n   peak crowded out distinct alternatives. The list is now greedily\n   de-clustered (non-overlapping), and the organizer view shows 5.\n\nOn today's data this surfaces Fri Oct 23-26 as the true best window\n(11 of 16, previously invisible) and puts Fri Oct 2-5 (10 of 16) on\nthe board — it previously ranked 8th at 9 and never displayed.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_014GrGCvMtG1jntmgmLjWmvh",
+    "files_changed": 5
+  },
+  {
+    "hash": "a1818a332698addc947ae45715863a2bca31cf3d",
+    "short_hash": "a1818a3",
+    "author": "Bryan Guffey",
+    "date": "2026-08-07T17:57:52-07:00",
+    "message": "feat: bits-ui style tap-tap range selection in the dates calendar\n\nAdopt the RangeCalendar interaction model from bits-ui while keeping\nmulti-range, half-day portions, and the existing visual language:\n\n- Tap first day to anchor, tap last day to fill in the range (either\n  direction); same day twice = single-day range. Pending state shows a\n  hint row with a cancel button; Escape also cancels.\n- Live preview of the prospective range on hover/focus (ink-35 mid-step\n  between hover and committed).\n- Touch no longer blocks scrolling: day cells use touch-action pan-y\n  and selection is tap-tap on touch; drag-to-select stays for mouse.\n- Roving tabindex + Arrow/Home/End keyboard navigation across months;\n  Enter/Space shares the tap flow; aria-live announcements throughout.\n- Hover no longer repaints selected/preview cells (sticky-hover on iOS\n  grayed out the anchored day).\n\nVerified with Playwright against a dev harness: touch tap-tap commit,\nbackward selection, editor auto-open, half-day editing, multi-range,\nscroll-while-touching-days, mouse drag, hover preview, Escape cancel,\nand keyboard Enter-arrow-Enter flow all pass with no console errors.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_014GrGCvMtG1jntmgmLjWmvh",
+    "files_changed": 6
+  },
+  {
+    "hash": "7c466659008028303bbffdd7130be7904992905f",
+    "short_hash": "7c46665",
+    "author": "chaos gremlin",
+    "date": "2026-08-07T17:03:06-07:00",
+    "message": "fix: organizer sign-in returns to /organizer, not the survey (#6)",
+    "files_changed": 4
+  },
+  {
+    "hash": "777caa9afec9f77ffea255ea809aa430e8dfd823",
+    "short_hash": "777caa9",
+    "author": "Bryan Guffey",
+    "date": "2026-08-07T10:55:10-07:00",
+    "message": "docs: DESIGN.md records the organizer surface; regenerate sidecar\n\nThe Dusk world now documents both surfaces: the survey feed and the\norganizer command rail. New recorded devices: computed-ink heatmap rule,\nheight-interpolated stat step, surface-conditional grain, switch and\nsegmented-filter components. Sidecar regenerated wholesale.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_014GrGCvMtG1jntmgmLjWmvh",
+    "files_changed": 5
+  },
+  {
+    "hash": "d39c6dd4fd742a156d1fd28cf16b88ea04714a59",
+    "short_hash": "d39c6dd",
+    "author": "Bryan Guffey",
+    "date": "2026-08-07T10:46:49-07:00",
+    "message": "fix: finish-review batch — rail fit, gate copy, preview marker, mobile table\n\nStat numerals interpolate by viewport height so overrides + export fit\nthe first viewport; gate eyebrow removed per craft-floor ban; synthetic\npreview data labeled on-surface; location tallies on the comp's shared\nbaseline; grain switched to screen blend (overlay vanishes on flat\nnear-black); phone table rows collapse to two lines; tally bars animate\nvia transform, not width.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_014GrGCvMtG1jntmgmLjWmvh",
+    "files_changed": 6
+  },
+  {
+    "hash": "4469f497da4dc46e3bc3cec891ed2a52584acd87",
+    "short_hash": "4469f49",
+    "author": "Bryan Guffey",
+    "date": "2026-08-07T10:38:59-07:00",
+    "message": "feat: /organizer surface — command rail, heatmap, table, allowlist\n\nThe Dusk world at Operate density: solid ground + grain, one white ink,\nhairline ledgers, no photography. Fixed left rail (display-numeral stats,\nlocation tally, deadline overrides, docked export); content carries the\navailability heatmap (half-day split cells, intensity = white opacity),\nbest 3-night windows, responses table with expandable detail, and\nallowlist management. Approved comp org-b recorded with sidecar.\nCSV export hardened against spreadsheet formula injection.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_014GrGCvMtG1jntmgmLjWmvh",
+    "files_changed": 14
+  },
+  {
+    "hash": "e42d0bf7b339d5befad8edab5727f2a5c63eb707",
+    "short_hash": "e42d0bf",
+    "author": "Bryan Guffey",
+    "date": "2026-08-07T10:29:39-07:00",
+    "message": "feat: organizer server layer — overrides, aggregates, CSV export\n\nMigration 0002 adds settings (global reopen switch) and late_passes.\nsurveyGate() is now the single deadline authority for respondent writes:\nDEADLINE, overridden by the organizer's reopen switch for everyone or a\nlate pass for one respondent. /organizer route gated by ORGANIZER_DIDS\n(404 for non-organizers), with form actions for allowlist and override\nmanagement and CSV endpoints for responses + availability ranges.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_014GrGCvMtG1jntmgmLjWmvh",
+    "files_changed": 14
+  },
+  {
+    "hash": "77b57673333ab963a73952d0c175763777eaca12",
+    "short_hash": "77b5767",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T20:09:18-07:00",
+    "message": "chore: CodeRabbit round 6 — six small cleanups\n\n- allowlist checks are one D1 round trip (count + match combined;\n  semantics verified against production data)\n- error logs carry truncated DIDs, not full identifiers\n- loadDraft dedupes ranking ids before the three-slot limit\n- 403 messages interpolate retreat.organizerHandle\n- explicit type=button on the sheet's two pill buttons\n- CHANGELOG #19 entry describes the shipped OAuth fix, not the\n  diagnostic work\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 9
+  },
+  {
+    "hash": "99af46d2b08acfc1c629733dcdf4899251ba8ee4",
+    "short_hash": "99af46d",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T20:00:40-07:00",
+    "message": "fix: CodeRabbit round 5 — draft ranking filter, unthrottleable-oracle non-answer, sheet reset\n\n- loadDraft only restores ranking ids that are real locations (or the\n  no-preference sentinel) — junk in localStorage can't fake completion\n  past server validation\n- /api/invited: if the per-IP throttle can't run (no KV, no client IP,\n  KV error), the oracle answers the non-answer instead of proceeding\n  unthrottled; sign-in still proceeds normally\n- sign-in sheet resets to a clean state on close (welcome-back branch,\n  errors) while deliberately keeping the typed handle\n- identity-cookie comment references the DEADLINE binding, not a\n  hardcoded date\n\nSkipped with reasons (posted on the PR): shot.mjs --no-sandbox (dev-only\nscript for the sandboxed local env), backdrop-as-button (adds a phantom\ntab stop; Escape + labeled close serve keyboard/AT), 180d cookie revert\n(contradicts round 3; 30d covers the window), un-inerting YouItem's\nsign-out when closed (sign-out stays available on hero + review).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 7
+  },
+  {
+    "hash": "199f93fd3a47ffd42132e51a4cf9fc810572edfb",
+    "short_hash": "199f93f",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T19:51:38-07:00",
+    "message": "fix: CodeRabbit round 4 — modal focus, search invalidation, pre-check timeout\n\n- SignInSheet is a real modal now: background (feed + rail/dots) goes\n  inert while open, the primary control gets focus in both branches, and\n  focus returns to the trigger on close\n- one invalidateSearch() helper kills pending debounce AND in-flight\n  typeahead responses on input change, Escape, go(), and sheet close —\n  stale results can no longer reopen the dropdown or misdirect a pick;\n  first ArrowUp from the unset state lands on the last result\n- the sheet's /api/invited pre-check gets a 3s timeout so a stalled\n  endpoint can't freeze the Continue button (still fails open to login)\n- Enter on a still-unranked place card keeps native activation (keyboard\n  users can rank 2nd/3rd choices); a ranked one advances instead of\n  un-ranking\n- 'Update my answers' disabled while the draft is invalid\n- allowlist queries bind NULL (not '') for a missing handle; rate-limit\n  keys store a truncated SHA-256 of the IP instead of the raw address;\n  redirect target built by assigning path/search onto the ORIGIN URL;\n  svelte floor raised to ^5.51.5 (lockfile already at 5.56.8)\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 10
+  },
+  {
+    "hash": "3d5d5db394aa6ee4aa24c5b80e6fe56fcdb308da",
+    "short_hash": "3d5d5db",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T19:37:03-07:00",
+    "message": "fix: CodeRabbit round 3 — no-path routing, closed-state seal, misc hardening\n\n- 'not interested' respondents now route straight to review from the\n  interest question (Enter, arrows, and the Next chip all share the same\n  nextAfter() logic) — they never owed travel/dates/location\n- editable sections (you→location) go inert after the deadline; review\n  stays live for the closure notice and sign-out\n- sheet close invalidates in-flight typeahead responses (searchSeq++),\n  and the typeahead fetch gets a 3s timeout\n- workers.dev redirect joins paths via the URL constructor (no // when\n  ORIGIN has a trailing slash); NextChip is explicitly type=button;\n  invited-endpoint doc block reattached to the GET handler\n- identity-hint cookie retention cut 180d → 30d (still covers the whole\n  survey window); PRODUCT.md 'one organizer' wording reconciled with the\n  Bluesky partnership\n\nDeliberately skipped: CodeRabbit's suggestion to not start OAuth on\ntypeahead selection — one-tap sign-in from the picked account is the\nintended interaction, consistent with the welcome-back flow.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 10
+  },
+  {
+    "hash": "34989517aec5a93d5f1ca90b8ba17acf099e6759",
+    "short_hash": "3498951",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T18:57:12-07:00",
+    "message": "fix: CodeRabbit round 2 — ZIP lookup robustness, IME-safe Enter\n\n- 5s AbortSignal.timeout on the zippopotam.us fetch (a stall no longer\n  leaves 'Looking up that ZIP…' forever)\n- transport failures get their own 'error' state and message; 'notfound'\n  is reserved for an actual 404\n- zipSeq bumps on every edit, so ZIP→ZIP changes also invalidate\n  in-flight lookups\n- fieldEnter ignores Enter while an IME composition is committing\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 4
+  },
+  {
+    "hash": "ed35e07b8d859d6e66ccfcb3e39aa99d990a2131",
+    "short_hash": "ed35e07",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T18:50:38-07:00",
+    "message": "fix: address CodeRabbit review — all 10 comments\n\nActionable:\n- /api/invited: per-IP fixed-window rate limit (20/min on PROFILE_CACHE\n  KV, exhausted budget answers the invited:true non-answer) + 3s timeout\n  on the appview resolver fetch\n- SignInSheet: pending search debounce cleared when the sheet closes so\n  it can't reopen the dropdown; combobox a11y — options are real\n  role=option elements with ids (no nested interactive button),\n  aria-activedescendant on the input, arrow keys scroll the highlighted\n  option into view\n- YouItem: leaving the ZIP shape invalidates in-flight lookups (seq bump\n  + status reset); lookup status messages are a role=status live region\n\nNitpicks:\n- KnownUser type moved to $lib/types (route module decoupled from client\n  component)\n- deadlineStatus() shared helper — page and response API can no longer\n  disagree about closed-ness or the displayed date\n- canonicalize redirects with 308 (PUT keeps method+body) and guards\n  ORIGIN with URL.canParse\n- vite ssr conditions keep Vite's defaults behind workerd/worker;\n  verified the bundle still resolves @atcute workerd builds (no bare\n  Buffer internals present)\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 12
+  },
+  {
+    "hash": "fd365f2b7eea08fee449f1f559b28ac001d11af7",
+    "short_hash": "fd365f2",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T13:42:05-07:00",
+    "message": "fix: code-review findings — invited-endpoint hardening, Enter semantics, sealed-feed inert, ZIP race\n\n- /api/invited resolves handles via public.api.bsky.app only (actorToDid\n  would fetch https://<caller-string>/.well-known/atproto-did — an open\n  request-forgery primitive on an unauthenticated endpoint) and validates\n  handle/DID shape before touching anything\n- Enter now advances from focused answer controls (place cards, radios)\n  instead of re-activating them — Enter on a just-ranked location was\n  un-ranking it while the chip promised 'press Enter'; also makes the\n  affordance real on interest/travel where radio focus swallowed it\n- sealed feed gets inert on non-hero items: overflow:hidden alone still\n  let Tab-focus scroll the feed and screen readers read everything\n- ZIP lookup debounced 400ms with staleness + sequence guards — no more\n  clobbering a ZIP+4 mid-keystroke; retyping the same ZIP works again\n- abr_known cookie only set for allowed users, strict shape/length checks\n  on read (it renders in the sheet and seeds login())\n- typeahead results deduped by handle (keyed each crashed on dupes);\n  dropdown closes on focusout and resets when the sheet closes, so a\n  stale dropdown can't block window Escape\n- response API's closed message derives its date from the DEADLINE\n  binding instead of hardcoding August 15\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 10
+  },
+  {
+    "hash": "1a4180cad77cf9e66c780573e4b4a49b44ffe6ce",
+    "short_hash": "1a4180c",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T13:39:27-07:00",
+    "message": "fix: review findings — never falsely deny invited users, log swallowed errors\n\nSilent-failure review of the branch found that infrastructure hiccups\ncould masquerade as 'you're not on the list':\n- page gate now fails OPEN on D1 errors or unresolved identity (the\n  response API re-enforces authoritatively on write) and logs every\n  swallowed error to Workers observability\n- /api/invited answers the non-answer (invited:true) when handle\n  resolution fails, instead of a confident wrong denial from a\n  handle-only match against a possibly-stale stored handle\n- restoreLocal's catch uses clearLocal so a storage SecurityError can't\n  rethrow and abort onMount (killing scroll-spy + keyboard nav)\n\nData-side (already live): all 19 allowlist rows now have DIDs pre-pinned,\nso DID-only matching works even when profile/handle resolution is down.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 7
+  },
+  {
+    "hash": "8b92cb7f2c60b601e046513a9474e43eeb5bf440",
+    "short_hash": "8b92cb7",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T13:17:15-07:00",
+    "message": "feat: 'Answers updated!' confirmation + sign-out at end of review\n\nRe-submitting an existing response flips the update button to 'Answers\nupdated!' (aria-live, 4s flash) so repeat submitters know it took. The\nreview item ends with an 'All set — sign out' affordance for submitted or\nclosed states, so nobody has to scroll back to the hero to log out.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 5
+  },
+  {
+    "hash": "27c33137c3e29b58dd4cc818e7daf4322a12fd76",
+    "short_hash": "27c3313",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T13:08:22-07:00",
+    "message": "feat: location no-preference option for folks who don't know the spots\n\nA 'no-preference' sentinel travels in the existing ranking array (and the\nlocation_ranking JSON column — no migration). It's mutually exclusive with\na real ranking: picking it clears ranks, ranking a place clears it, and\nthe server rejects a mixed payload. Dashed-border toggle under the place\nlist; review page shows 'No preference'.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 8
+  },
+  {
+    "hash": "ab01054c5870f5fcd1849323b64e633a3cb04c9e",
+    "short_hash": "ab01054",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T10:46:44-07:00",
+    "message": "feat: linkify organizer mentions via aturi.to profile waypoint\n\nEvery 'DM @chaosgreml.in' mention (hero invite-only + closed notes, sign-in\nsheet denial, review closed note) and the hero author line now link to\nhttps://aturi.to/profile/<did> — no cross-client DM deep link exists, so\nthe aturi.to landing lets each visitor open the profile (Message one tap\naway) in their own Atmosphere client. DID not handle so the link survives\nhandle changes. The sheet's denial message became a structured snippet so\nthe mention could be a real anchor.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 7
+  },
+  {
+    "hash": "adc0c532fb2f7856dce46777fc317dbf2dd7ade6",
+    "short_hash": "adc0c53",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T10:23:09-07:00",
+    "message": "feat: pre-flight invite check on handle submit — uninvited handles learn before the PDS auth dance\n\nNew GET /api/invited?handle= resolves the handle to a DID (so pinned DIDs\nstill match after handle changes) and peeks the allowlist read-only. The\nsign-in sheet calls it before login(); an uninvited handle gets the polite\ninvite-only note inline instead of a full OAuth round-trip. Every failure\nmode (endpoint down, resolution failed, no DB) fails open — real\nenforcement stays server-side after auth.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 6
+  },
+  {
+    "hash": "3b49b971c4b3c6c73c3624b71beb26b260425550",
+    "short_hash": "3b49b97",
+    "author": "Bryan Guffey",
+    "date": "2026-08-06T06:12:20-07:00",
+    "message": "fix: enforce allowlist at sign-in, not just submit\n\nA non-invited account (e.g. atproto.la) could sign in and browse the whole\nsurvey, only hitting the allowlist 403 at final submit. The page load now\nchecks the allowlist too: non-invited sign-ins keep the feed sealed and see\nthe polite invite-only note on the hero (with sign-out). The API still\nenforces on write as defense in depth.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01KvMrEJy2nWjYvgkPqQ26eD",
+    "files_changed": 5
+  },
+  {
+    "hash": "4ae0d7de5e31428c9f4adc880d97451dc0dcce13",
+    "short_hash": "4ae0d7d",
+    "author": "Bryan Guffey",
+    "date": "2026-08-05T18:06:00-07:00",
+    "message": "feat: respond-by deadline — Aug 15 2026 11:59:59 PM PT\n\nDEADLINE var drives everything: fifth ledger row on the hero, close-date\nnotes at the submit button, warm closed states on hero and review, and the\nresponse API rejecting writes after the deadline.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01XFGCtqAaDnhNsZDkybtFRB",
+    "files_changed": 8
+  },
+  {
+    "hash": "b93d14c4ced9c042d90d0293c278cfc1e8ad2858",
+    "short_hash": "b93d14c",
+    "author": "Bryan Guffey",
+    "date": "2026-08-05T16:29:23-07:00",
+    "message": "feat: smoke-test feedback round — locked pre-auth feed, next affordances, ZIP lookup, handle typeahead, welcome-back, numeric-globe favicon\n\n1. Signed-out feed is sealed at the hero: no scroll, rail dimmed to a faint\n   map, dots hidden; everything unlocks at sign-in.\n2. Every question grows a Next chip when answered; Enter advances (fields\n   chain name→email→location→next).\n3. Location field resolves 5-digit ZIPs to 'City, ST' via zippopotam.us,\n   graceful fallback to free text.\n4. Sign-in handle field is a typeahead (typeahead.waow.tech, debounced,\n   keyboard-navigable, opens upward from the bottom sheet; degrades to a\n   plain input if the experimental service is down). A 180-day identity-hint\n   cookie greets returning visitors — 'Hey, it's you' — with one-tap\n   continue, surviving logout.\n5. Favicon: original numeric-globe homage to atproto.com's ASCII Earth.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01XFGCtqAaDnhNsZDkybtFRB",
+    "files_changed": 12
+  },
+  {
+    "hash": "c60faa5c13e5c5a797e6731b5b56abaa7cb7f386",
+    "short_hash": "c60faa5",
+    "author": "Bryan Guffey",
+    "date": "2026-08-05T16:05:55-07:00",
+    "message": "fix: resolve workerd export conditions in Vite SSR build\n\nVite's SSR resolver defaults to node conditions, baking @atcute's\nnode-flavored builds (bare Buffer.prototype.base64urlSlice.call) into the\nworker bundle; workerd's stricter Buffer polyfill throws 'The \"start\"\nargument must be of type number' on every OAuth login. Resolve with\nworkerd/worker conditions so the packages' own pure-JS web builds ship.\n\nRoot-caused from Bryan's smoke-test HAR + local workerd repro.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01XFGCtqAaDnhNsZDkybtFRB",
+    "files_changed": 2
+  },
+  {
+    "hash": "c847a8e154e2a700eead8f4aa11aa2dd75334105",
+    "short_hash": "c847a8e",
+    "author": "Bryan Guffey",
+    "date": "2026-08-04T19:06:10-07:00",
+    "message": "chore: changelog updates from issue tracking\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01XFGCtqAaDnhNsZDkybtFRB",
+    "files_changed": 2
+  }
+]
