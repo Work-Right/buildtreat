@@ -14,7 +14,7 @@ export const GET: RequestHandler = async ({ params, locals, platform, url }) => 
 	// Appview-verified handle only: a PDS-claimed handle must not unlock
 	// invited photos (null → the tier matches by DID alone).
 	const handle = locals.did ? await verifiedHandle(locals.did, platform.env.PROFILE_CACHE) : null;
-	const actual = await viewerTier(db, platform.env.ORGANIZER_DIDS, locals.did ? { did: locals.did, handle } : null);
+	const actual = await viewerTier(db, platform.env.ORGANIZER_DIDS, locals.did ? { did: locals.did, handle } : null, platform.env.DEVELOPER_DIDS);
 	// `dev` is compile-time false in production builds: there, ?preview is ignored.
 	const tier = photoTier(actual, { dev, preview: url.searchParams.has('preview') });
 	return servePhoto(db, bucket, params.id, tier);

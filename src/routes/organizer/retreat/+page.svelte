@@ -58,7 +58,12 @@
 <div class="page">
 	<aside class="rail">
 		<div class="rail-top">
-			<a class="quiet back" href="/organizer"><Icon name="arrow-left" size={13} /> Console</a>
+			<!-- Developers edit content only: no console, no who's-coming (registrants). -->
+			{#if data.organizer}
+				<a class="quiet back" href="/organizer"><Icon name="arrow-left" size={13} /> Console</a>
+			{:else}
+				<a class="quiet back" href="/"><Icon name="arrow-left" size={13} /> Retreat home</a>
+			{/if}
 			<h1 class="display rail-title"><span>Retreat</span><span>info.</span></h1>
 			{#if data.preview}
 				<p class="preview-flag">Synthetic preview data</p>
@@ -76,7 +81,9 @@
 		<SectionList sections={listed} updates={listedUpdates} selected={current?.id ?? null} {hrefFor} />
 
 		<div class="rail-end">
-			<a class="quiet" href={data.preview ? '/organizer/retreat/attendees?preview' : '/organizer/retreat/attendees'}>Who’s coming <Icon name="arrow-right" size={13} /></a>
+			{#if data.organizer}
+				<a class="quiet" href={data.preview ? '/organizer/retreat/attendees?preview' : '/organizer/retreat/attendees'}>Who’s coming <Icon name="arrow-right" size={13} /></a>
+			{/if}
 			<a class="quiet" href="/?as=public" target="_blank" rel="noopener">View as public <Icon name="arrow-right" size={13} /></a>
 			<a class="quiet" href="/?as=invited" target="_blank" rel="noopener">View as invited <Icon name="arrow-right" size={13} /></a>
 		</div>

@@ -1,5 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import {
+	isDeveloper,
 	isOrganizer,
 	type AllowlistEntry,
 	type LatePass,
@@ -108,6 +109,21 @@ export function requireOrganizer(locals: App.Locals, platform: App.Platform | un
 export function requireOrganizerOrGate(locals: App.Locals, platform: App.Platform | undefined): string {
 	if (!locals.did) redirect(303, '/organizer');
 	if (!isOrganizer(platform?.env?.ORGANIZER_DIDS, locals.did)) error(404, { message: 'Not found' });
+	return locals.did;
+}
+
+/**
+ * For the retreat info editor (`/organizer/retreat`) only: organizers and
+ * developers (DEVELOPER_DIDS). Same responses as `requireOrganizerOrGate`.
+ * Nothing behind this may read registrant data — who's-coming curation, the
+ * console and per-attendee pages keep `requireOrganizerOrGate`.
+ */
+export function requireEditorOrGate(locals: App.Locals, platform: App.Platform | undefined): string {
+	if (!locals.did) redirect(303, '/organizer');
+	const env = platform?.env;
+	if (!isOrganizer(env?.ORGANIZER_DIDS, locals.did) && !isDeveloper(env?.DEVELOPER_DIDS, locals.did)) {
+		error(404, { message: 'Not found' });
+	}
 	return locals.did;
 }
 

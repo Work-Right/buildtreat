@@ -8,14 +8,28 @@ import { deadlineStatus } from '$lib/server/deadline';
  * All queries are parameterized. Schema: migrations/0002_organizer.sql.
  */
 
-/** Comma-separated DID list from the ORGANIZER_DIDS binding. */
-export function isOrganizer(organizerDids: string | undefined, did: string | null): boolean {
-	if (!did || !organizerDids) return false;
-	return organizerDids
+function inDidList(list: string | undefined, did: string | null): boolean {
+	if (!did || !list) return false;
+	return list
 		.split(',')
 		.map((s) => s.trim())
 		.filter(Boolean)
 		.includes(did);
+}
+
+/** Comma-separated DID list from the ORGANIZER_DIDS binding. */
+export function isOrganizer(organizerDids: string | undefined, did: string | null): boolean {
+	return inDidList(organizerDids, did);
+}
+
+/**
+ * Comma-separated DID list from the DEVELOPER_DIDS binding. Developers edit
+ * retreat content (/organizer/retreat) and see every visibility tier on `/`,
+ * but never reach registrant data: the console, who's-coming curation,
+ * per-attendee edits, CSVs and broadcasts all stay `isOrganizer`-only.
+ */
+export function isDeveloper(developerDids: string | undefined, did: string | null): boolean {
+	return inDidList(developerDids, did);
 }
 
 export interface OrganizerResponse {

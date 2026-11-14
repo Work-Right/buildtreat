@@ -1,7 +1,8 @@
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { dev } from '$app/environment';
-import { requireOrganizerOrGate } from '$lib/server/organizer/page-data';
+import { requireEditorOrGate } from '$lib/server/organizer/page-data';
+import { isOrganizer } from '$lib/server/organizer/admin';
 import {
 	createSection,
 	listSections,
@@ -46,9 +47,10 @@ import { consolePreview } from '$lib/server/site/console-preview';
 
 /**
  * /organizer/retreat — edit the retreat home's sections, updates, photos
- * and the Bluesky posts in the stream. Same
- * access policy as /organizer (requireOrganizerOrGate): signed out → the
- * gate, non-organizer → 404.
+ * and the Bluesky posts in the stream. Organizers and developers
+ * (requireEditorOrGate): signed out → the gate, anyone else → 404. Content
+ * only — nothing here reads registrant data; `organizer` tells the page
+ * whether to offer the organizer-only pages (console, who's coming).
  */
 
 const sectionId = (form: FormData) => {
@@ -62,7 +64,7 @@ export const load: PageServerLoad = async ({ locals, platform, url }) => {
 	// in production builds, so this path (and its skipped auth) cannot ship.
 	// Actions still require an organizer.
 	if (dev && url.searchParams.has('preview')) return { ...consolePreview(), preview: true };
-	requireOrganizerOrGate(locals, platform);
+	const by = requireEditorOrGate(locals, platform);
 	const db = platform?.env?.DB;
 	if (!db) error(503, { message: 'Storage is not available right now' });
 	const [sections, updates, uris] = await Promise.all([listSections(db), listUpdates(db), listBskyPostUris(db)]);
@@ -80,13 +82,14 @@ export const load: PageServerLoad = async ({ locals, platform, url }) => {
 		today: retreatToday(),
 		bskyPosts: consoleItems(uris, views),
 		mediaConfigured: Boolean(platform?.env?.SITE_MEDIA),
+		organizer: isOrganizer(platform?.env?.ORGANIZER_DIDS, by),
 		preview: false
 	};
 };
 
 export const actions: Actions = {
 	create: async ({ locals, platform, request }) => {
-		const by = requireOrganizerOrGate(locals, platform);
+		const by = requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
 		const asUpdate = (await request.formData()).get('kind') === 'update';
@@ -101,7 +104,7 @@ export const actions: Actions = {
 	},
 
 	save: async ({ locals, platform, request }) => {
-		const by = requireOrganizerOrGate(locals, platform);
+		const by = requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
 		const form = await request.formData();
@@ -122,7 +125,7 @@ export const actions: Actions = {
 	},
 
 	move: async ({ locals, platform, request }) => {
-		requireOrganizerOrGate(locals, platform);
+		requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
 		const form = await request.formData();
@@ -134,7 +137,7 @@ export const actions: Actions = {
 	},
 
 	delete: async ({ locals, platform, request }) => {
-		requireOrganizerOrGate(locals, platform);
+		requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		const bucket = platform?.env?.SITE_MEDIA;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
@@ -154,7 +157,7 @@ export const actions: Actions = {
 	},
 
 	upload: async ({ locals, platform, request }) => {
-		requireOrganizerOrGate(locals, platform);
+		requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		const bucket = platform?.env?.SITE_MEDIA;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
@@ -216,7 +219,7 @@ export const actions: Actions = {
 	},
 
 	bskyAdd: async ({ locals, platform, request }) => {
-		const by = requireOrganizerOrGate(locals, platform);
+		const by = requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { message: 'Storage is not available right now', bsky: true });
 		const raw = String((await request.formData()).get('url') ?? '');
@@ -242,7 +245,7 @@ export const actions: Actions = {
 	},
 
 	bskyRemove: async ({ locals, platform, request }) => {
-		requireOrganizerOrGate(locals, platform);
+		requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { message: 'Storage is not available right now', bsky: true });
 		const uri = String((await request.formData()).get('uri') ?? '');
@@ -252,7 +255,7 @@ export const actions: Actions = {
 	},
 
 	photoAlt: async ({ locals, platform, request }) => {
-		requireOrganizerOrGate(locals, platform);
+		requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
 		const form = await request.formData();
@@ -262,7 +265,7 @@ export const actions: Actions = {
 	},
 
 	photoMove: async ({ locals, platform, request }) => {
-		requireOrganizerOrGate(locals, platform);
+		requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });
 		const form = await request.formData();
@@ -273,7 +276,7 @@ export const actions: Actions = {
 	},
 
 	photoDelete: async ({ locals, platform, request }) => {
-		requireOrganizerOrGate(locals, platform);
+		requireEditorOrGate(locals, platform);
 		const db = platform?.env?.DB;
 		const bucket = platform?.env?.SITE_MEDIA;
 		if (!db) return fail(503, { message: 'Storage is not available right now' });

@@ -1,5 +1,5 @@
 import type { D1Database } from '@cloudflare/workers-types';
-import { isOrganizer } from '$lib/server/organizer/admin';
+import { isDeveloper, isOrganizer } from '$lib/server/organizer/admin';
 
 export const VISIBILITIES = ['public', 'invited', 'hidden'] as const;
 export type Visibility = (typeof VISIBILITIES)[number];
@@ -9,7 +9,11 @@ export function isVisibility(value: string): value is Visibility {
 	return (VISIBILITIES as readonly string[]).includes(value);
 }
 
-/** The single visibility rule. Hidden is organizer-only, everywhere. */
+/**
+ * The single visibility rule. Hidden is organizer-only, everywhere. The
+ * 'organizer' tier is about content, not people: developers (DEVELOPER_DIDS)
+ * get it too, and it never unlocks registrant data on its own.
+ */
 export function canSee(tier: ViewerTier, visibility: Visibility): boolean {
 	if (visibility === 'public') return true;
 	if (visibility === 'invited') return tier !== 'public';
@@ -37,7 +41,8 @@ async function isMember(
 }
 
 /**
- * Who is looking. Organizers come from ORGANIZER_DIDS; "invited" means strict
+ * Who is looking. Organizers come from ORGANIZER_DIDS and developers from
+ * DEVELOPER_DIDS (both are the 'organizer' content tier); "invited" means strict
  * membership of the allowlist or late passes: an empty allowlist invites
  * nobody, and a handle only matches rows not yet pinned to a DID. Lookups are
  * read-only (no DID pinning on a page view). Unlike the courtesy gate on `/`,
@@ -47,10 +52,11 @@ async function isMember(
 export async function viewerTier(
 	db: D1Database | undefined,
 	organizerDids: string | undefined,
-	who: { did: string; handle: string | null } | null
+	who: { did: string; handle: string | null } | null,
+	developerDids?: string
 ): Promise<ViewerTier> {
 	if (!who) return 'public';
-	if (isOrganizer(organizerDids, who.did)) return 'organizer';
+	if (isOrganizer(organizerDids, who.did) || isDeveloper(developerDids, who.did)) return 'organizer';
 	if (!db) return 'public';
 	try {
 		if (await isMember(db, 'allowlist', who)) return 'invited';

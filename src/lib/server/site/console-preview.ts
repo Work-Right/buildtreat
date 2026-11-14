@@ -17,6 +17,8 @@ export function consolePreview(): {
 	today: string;
 	bskyPosts: BskyConsoleItem[];
 	mediaConfigured: boolean;
+	/** Full organizer (console + who's coming links) vs developer. */
+	organizer: boolean;
 } {
 	const at = '2026-10-30T18:20:00.000Z';
 	const by = 'did:plc:preview';
@@ -31,6 +33,7 @@ export function consolePreview(): {
 	});
 	return {
 		mediaConfigured: true,
+		organizer: true,
 		sections: [
 			{
 				id: 1,

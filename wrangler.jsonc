@@ -25,6 +25,10 @@
 		// DIDs allowed into /organizer (comma-separated).
 		// Bryan (@chaosgreml.in), Alex (@alex.bsky.team).
 		"ORGANIZER_DIDS": "did:plc:h3wpawnrlptr4534chevddo6,did:plc:vmt7o7y6titkqzzxav247zrn",
+		// DIDs allowed to edit retreat content only (comma-separated): the
+		// /organizer/retreat editor and every visibility tier on `/`, never
+		// registrant data (console, who's coming, CSVs, broadcasts).
+		"DEVELOPER_DIDS": "",
 		// Email sending via comail.at (HTTP Send API). The DID is the comail
 		// account identity (Bryan's — already public in ORGANIZER_DIDS).
 		"EMAIL_FROM": "hello@buildersretre.at",
