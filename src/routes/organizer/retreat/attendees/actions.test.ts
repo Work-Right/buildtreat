@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { D1Database } from '@cloudflare/workers-types';
 import { sqliteD1 } from '$lib/server/test/sqlite-d1';
-import { event, type EventInit } from '$lib/server/test/event';
+import { DEVELOPER, event, type EventInit } from '$lib/server/test/event';
 import { listConsoleAttendees, shownAttendees } from '$lib/server/site/featured';
 import { actions, load } from './+page.server';
 
@@ -62,6 +62,16 @@ describe('auth', () => {
 		const form = { did: 'did:plc:a', shown: '1', blurb: 'x', direction: 'up' };
 		await expect(run(name, { db, did: null, form })).rejects.toMatchObject({ status: 303, location: '/organizer' });
 		await expect(run(name, { db, did: 'did:plc:someone', form })).rejects.toMatchObject({ status: 404 });
+		expect(await shownAttendees(db)).toEqual([]);
+	});
+
+	it('developers are refused: it lists registrants', async () => {
+		const db = await seeded();
+		await expect(runLoad({ db, did: DEVELOPER })).rejects.toMatchObject({ status: 404 });
+		for (const name of ['toggle', 'blurb', 'move'] as ActionName[]) {
+			const form = { did: 'did:plc:a', shown: '1', blurb: 'x', direction: 'up' };
+			await expect(run(name, { db, did: DEVELOPER, form })).rejects.toMatchObject({ status: 404 });
+		}
 		expect(await shownAttendees(db)).toEqual([]);
 	});
 });

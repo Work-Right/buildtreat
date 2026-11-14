@@ -1,4 +1,4 @@
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { dev } from '$app/environment';
 import { deadlineStatus } from '$lib/server/deadline';
@@ -7,6 +7,8 @@ import {
 	clearAllAnchors,
 	getAllResponses,
 	grantLatePass,
+	isDeveloper,
+	isOrganizer,
 	isReopened,
 	listAllowlist,
 	listAnchors,
@@ -44,6 +46,8 @@ import { broadcastActions } from '$lib/server/organizer/broadcast-actions';
 /**
  * /organizer — Bryan's side of the survey. Access policy:
  *  - signed out → minimal sign-in state (no data leaves the server)
+ *  - developer (DEVELOPER_DIDS) → redirected to /organizer/retreat, the only
+ *    page they may use (this is where the shared sign-in gate lands them)
  *  - signed in, not in ORGANIZER_DIDS → 404, indistinguishable from no route
  *  - organizer → everything
  */
@@ -63,6 +67,9 @@ export const load: PageServerLoad = async ({ locals, platform, url }): Promise<O
 
 	if (!locals.did) {
 		return { authState: 'signed-out', ...EMPTY };
+	}
+	if (!isOrganizer(platform?.env?.ORGANIZER_DIDS, locals.did) && isDeveloper(platform?.env?.DEVELOPER_DIDS, locals.did)) {
+		redirect(303, '/organizer/retreat');
 	}
 	requireOrganizer(locals, platform);
 

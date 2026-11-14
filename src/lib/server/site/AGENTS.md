@@ -8,7 +8,7 @@ parameterized.
 
 | File | Migration | Owns |
 |---|---|---|
-| `tier.ts` | — | `viewerTier` (organizer / invited / public; **fails closed**: any lookup error → public), `canSee` (the one visibility rule), `pageTier` (`?as=` honoured for organizers only). |
+| `tier.ts` | — | `viewerTier` (organizer / invited / public — developers in `DEVELOPER_DIDS` get the organizer *content* tier; **fails closed**: any lookup error → public), `canSee` (the one visibility rule), `pageTier` (`?as=` honoured for organizers only). |
 | `sections.ts` | `0010`, `0011` | Section/update rows (`kind` `'section' \| 'update'`, `published_at` for updates): `listSections` (page sections by position), `listUpdates` (newest publish date first), `validateSection` (an update requires a calendar publish date), `visibleTo`, `createSection`, optimistic `updateSection` (`'ok' \| 'conflict' \| 'missing'` on a stale `updatedAt`), `moveSection`, `retreatToday` (Pacific date). |
 | `photos.ts` | `0010` | Photo validation (JPEG/PNG/WebP, ≤ 8 MB), R2 writes/deletes (`SITE_MEDIA`, keyed by row id), alt text, ordering, `deleteSection` (photos first) / `deleteSectionWithoutMedia` (R2 unbound → only photo-less sections), `servePhoto` (404 unless the parent section is visible; photos without alt are organizer-only). |
 | `strip-metadata.ts` | — | `stripMetadata` / `stripReason`: keeps only an allowlist of structural JPEG/PNG/WebP parts (EXIF/GPS, XMP, IPTC, comments, text chunks, trailing data dropped) before bytes reach R2; unreadable or animated → refused. No decode/re-encode. |

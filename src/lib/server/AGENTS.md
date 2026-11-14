@@ -34,7 +34,7 @@ sync with what's applied — see the repo memory notes before running one.
   organizer load: a failed anchor read sets `anchorsUnavailable` and disables
   Clear, rather than rendering an empty list that a click could "clear".
 - **Env access goes through `platform.env`.** `DB`, `KV`, `SITE_MEDIA` (R2,
-  optional until provisioned), `DEADLINE`, `REG_DEADLINE`, `ORGANIZER_DIDS`,
+  optional until provisioned), `DEADLINE`, `REG_DEADLINE`, `ORGANIZER_DIDS`, `DEVELOPER_DIDS`,
   `COMAIL_*`, `BSKY_DM_*`. Secrets are
   write-only wrangler secrets; code checks presence (`emailConfigured`,
   `dmConfigured`) and never logs values.

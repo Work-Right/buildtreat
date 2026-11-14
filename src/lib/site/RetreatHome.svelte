@@ -56,7 +56,7 @@
 
 <div class="retreat-home" style:--rail-top={headH ? `${headH}px` : null}>
 	<div bind:clientHeight={headH}>
-		<HomeHero compact={site.tier === 'invited'} showSignIn={!data.user} organizer={site.organizer} {onsignin} />
+		<HomeHero compact={site.tier === 'invited'} showSignIn={!data.user} editor={site.editor} {onsignin} />
 		<StatusStrip
 			signedIn={data.user !== null}
 			invited={(site.tier === 'invited' && data.allowed) || site.organizer}

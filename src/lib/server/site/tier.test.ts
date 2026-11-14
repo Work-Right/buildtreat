@@ -46,6 +46,12 @@ describe('viewerTier', () => {
 	it('organizer DIDs are organizers even without D1', async () => {
 		expect(await viewerTier(undefined, ORGANIZERS, { did: 'did:plc:org2', handle: null })).toBe('organizer');
 	});
+	it('developer DIDs get the organizer content tier; other DIDs do not', async () => {
+		const devs = 'did:plc:dev1';
+		expect(await viewerTier(undefined, ORGANIZERS, { did: 'did:plc:dev1', handle: null }, devs)).toBe('organizer');
+		expect(await viewerTier(undefined, ORGANIZERS, { did: 'did:plc:dev1', handle: null })).toBe('public');
+		expect(await viewerTier(await seeded(), ORGANIZERS, { did: 'did:plc:other', handle: null }, devs)).toBe('public');
+	});
 	it('allowlisted by DID or handle is invited', async () => {
 		const db = await seeded();
 		expect(await viewerTier(db, ORGANIZERS, { did: 'did:plc:inv', handle: null })).toBe('invited');

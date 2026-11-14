@@ -7,6 +7,8 @@ import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
  * expects.
  */
 export const ORGANIZER = 'did:plc:org1';
+/** In DEVELOPER_DIDS: edits retreat content, never sees registrant data. */
+export const DEVELOPER = 'did:plc:dev1';
 
 export interface EventInit {
 	did?: string | null;
@@ -29,7 +31,7 @@ export function event<T>(init: EventInit): T {
 	return {
 		locals: { did: init.did === undefined ? ORGANIZER : init.did, session: null, client: null },
 		platform: {
-			env: { DB: init.db, SITE_MEDIA: init.media, ORGANIZER_DIDS: ORGANIZER, PROFILE_CACHE: undefined }
+			env: { DB: init.db, SITE_MEDIA: init.media, ORGANIZER_DIDS: ORGANIZER, DEVELOPER_DIDS: DEVELOPER, PROFILE_CACHE: undefined }
 		},
 		request: init.method === 'GET' ? new Request(url) : new Request(url, { method: 'POST', body }),
 		url,

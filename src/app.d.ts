@@ -18,6 +18,7 @@ declare global {
 				DEADLINE?: string;
 				REG_DEADLINE?: string;
 				ORGANIZER_DIDS?: string;
+				DEVELOPER_DIDS?: string;
 				EMAIL_FROM?: string;
 				COMAIL_DID?: string;
 				COMAIL_API_KEY?: string;

@@ -1,6 +1,7 @@
 import type { D1Database } from '@cloudflare/workers-types';
 import { renderMarkdown } from '$lib/markdown/render';
 import { retreat, siteHome } from '$lib/content';
+import { isOrganizer } from '$lib/server/organizer/admin';
 import { pageTier, viewerTier } from './tier';
 import { listSections, listUpdates, retreatToday, visibleTo, type Section } from './sections';
 import { photosFor, type Photo } from './photos';
@@ -39,8 +40,10 @@ export type SitePostView = (PostBase & { kind: 'update'; update: SiteSectionView
 
 export interface SiteData {
 	tier: 'public' | 'invited';
-	/** True for organizers — the page shows "Edit retreat info" and preview links. */
+	/** True for organizers (ORGANIZER_DIDS) only. */
 	organizer: boolean;
+	/** Organizers and developers: the page shows "Edit retreat info". */
+	editor: boolean;
 	sections: SiteSectionView[];
 	/** Who's coming: curated, still-confirmed registrants. Public at every tier. */
 	attendees: AttendeeView[];
@@ -146,6 +149,8 @@ async function loadPosts(
 export async function loadSite(input: {
 	db: D1Database | undefined;
 	organizerDids: string | undefined;
+	/** DEVELOPER_DIDS: the editor's content tier, never organizer data. */
+	developerDids?: string;
 	origin: string;
 	who: { did: string; handle: string | null } | null;
 	asParam: string | null;
@@ -154,11 +159,12 @@ export async function loadSite(input: {
 	/** Fixed-host Bluesky fetcher + KV cache for the stream; omitted → updates only. */
 	bsky?: { fetch: FetchLike; kv?: KvLike };
 }): Promise<SiteData> {
-	const actual = await viewerTier(input.db, input.organizerDids, input.who);
+	const actual = await viewerTier(input.db, input.organizerDids, input.who, input.developerDids);
 	const tier = pageTier(actual, input.asParam);
-	const organizer = actual === 'organizer';
+	const editor = actual === 'organizer';
+	const organizer = isOrganizer(input.organizerDids, input.who?.did ?? null);
 	const empty = { title: retreat.name, description: siteHome.fallbackDescription, image: `${input.origin}/media/hero-landscape.png` };
-	if (!input.db) return { tier, organizer, sections: [], attendees: [], posts: [], unavailable: true, preview: empty };
+	if (!input.db) return { tier, organizer, editor, sections: [], attendees: [], posts: [], unavailable: true, preview: empty };
 	// Started now, awaited below: the appview calls overlap the section reads.
 	const attendeesP = loadAttendees(input.db, input.profiles);
 	const postsP = loadPosts(input.db, tier, input.bsky);
@@ -173,6 +179,7 @@ export async function loadSite(input: {
 		return {
 			tier,
 			organizer,
+			editor,
 			attendees,
 			posts,
 			unavailable: false,
@@ -181,6 +188,6 @@ export async function loadSite(input: {
 		};
 	} catch (e) {
 		console.error('site sections load failed', e);
-		return { tier, organizer, sections: [], attendees: await attendeesP, posts: await postsP, unavailable: true, preview: empty };
+		return { tier, organizer, editor, sections: [], attendees: await attendeesP, posts: await postsP, unavailable: true, preview: empty };
 	}
 }
