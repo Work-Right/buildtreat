@@ -33,6 +33,14 @@ workers.dev host to the canonical domain, patch the OAuth `returnTo` cookie
   signed in but not in `ORGANIZER_DIDS` → 404 (indistinguishable from no
   route); organizer → everything. `requireOrganizer` enforces this at the
   top of `load` and every action.
+- **Two roles.** Organizers (`ORGANIZER_DIDS`) get everything. Developers
+  (`DEVELOPER_DIDS`) get only the retreat info editor (`organizer/retreat/`,
+  via `requireEditorOrGate`) and the organizer content tier on `/`; the
+  console load redirects them there. Anything that reads registrant data —
+  the console and its actions, who's coming curation, per-attendee edits,
+  the CSVs — stays `requireOrganizer` / `requireOrganizerOrGate` /
+  `isOrganizer`. `organizer/developer-access.test.ts` pins this; extend it
+  when adding an organizer-only route.
 - **Every action starts the same way:** auth check, `platform?.env?.DB`
   guard returning `fail(503, …)`, then parse `formData`. Match the pattern.
 - **Return shapes are contracts.** Pages read `form?.message`,

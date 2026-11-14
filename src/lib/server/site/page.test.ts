@@ -42,6 +42,20 @@ describe('loadSite', () => {
 		expect(JSON.stringify(asPublic)).not.toContain('secret');
 	});
 
+	it('developers are editors (all content tiers, ?as previews) but not organizers', async () => {
+		const d = await db();
+		const dev = { did: 'did:plc:dev1', handle: null };
+		const site = await loadSite({ ...base, developerDids: 'did:plc:dev1', db: d, who: dev });
+		expect(site).toMatchObject({ tier: 'invited', organizer: false, editor: true });
+		expect(site.sections.map((s) => s.title)).toContain('The house');
+		const asPublic = await loadSite({ ...base, developerDids: 'did:plc:dev1', db: d, asParam: 'public', who: dev });
+		expect(asPublic.tier).toBe('public');
+		const org = await loadSite({ ...base, developerDids: 'did:plc:dev1', db: d, who: { did: 'did:plc:org1', handle: null } });
+		expect(org).toMatchObject({ organizer: true, editor: true });
+		const invited = await loadSite({ ...base, db: d, who: { did: 'did:plc:inv', handle: null } });
+		expect(invited).toMatchObject({ organizer: false, editor: false });
+	});
+
 	it('link preview uses public content only, with an absolute image url', async () => {
 		const site = await loadSite({ ...base, db: await db(), who: { did: 'did:plc:inv', handle: null } });
 		expect(site.preview.description).toContain('December 4–7, 2026');

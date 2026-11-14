@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { D1Database } from '@cloudflare/workers-types';
 import { sqliteD1 } from '$lib/server/test/sqlite-d1';
 import { fakeR2 } from '$lib/server/test/fake-r2';
-import { event, type EventInit } from '$lib/server/test/event';
+import { DEVELOPER, event, type EventInit } from '$lib/server/test/event';
 import { getSection, listSections, listUpdates } from '$lib/server/site/sections';
 import { photosFor } from '$lib/server/site/photos';
 import { listBskyPostUris } from '$lib/server/site/bsky-posts';
@@ -92,7 +92,24 @@ describe('auth', () => {
 		expect(sections).toHaveLength(seeded + 1);
 		expect(sections.at(-1)).toMatchObject({ id, photos: [] });
 		expect(data.mediaConfigured).toBe(false);
+		expect(data.organizer).toBe(true);
 		expect(data.preview).toBe(false);
+	});
+
+	it('a developer can load and edit, and the page is told they are not an organizer', async () => {
+		const db = sqliteD1();
+		const data = await runLoad({ db, did: DEVELOPER });
+		expect(data.organizer).toBe(false);
+		const created = await run('create', { db, did: DEVELOPER, form: {} });
+		const id = created.sectionId as number;
+		expect(await getSection(db, id)).toMatchObject({ title: 'New section', visibility: 'hidden' });
+		const before = (await getSection(db, id))!;
+		await run('save', {
+			db,
+			did: DEVELOPER,
+			form: { id: String(id), title: 'Getting there', body: 'Fly into PSP.', visibility: 'invited', updatedAt: before.updatedAt }
+		});
+		expect(await getSection(db, id)).toMatchObject({ title: 'Getting there', visibility: 'invited' });
 	});
 });
 

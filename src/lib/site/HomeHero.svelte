@@ -5,9 +5,9 @@
 	let {
 		compact,
 		showSignIn,
-		organizer,
+		editor,
 		onsignin
-	}: { compact: boolean; showSignIn: boolean; organizer: boolean; onsignin: () => void } = $props();
+	}: { compact: boolean; showSignIn: boolean; editor: boolean; onsignin: () => void } = $props();
 
 	const fact = (label: string) => retreat.facts.find((f) => f.label === label)?.value ?? '';
 </script>
@@ -23,7 +23,7 @@
 	<div class="scrim"></div>
 	<div class="hero-top over">
 		<p class="kicker">{retreat.kicker}</p>
-		{#if organizer}
+		{#if editor}
 			<p class="tools">
 				<a href="/organizer/retreat">{siteHome.editInfo}</a>
 				<a href="/?as=public">{siteHome.viewAsPublic}</a>

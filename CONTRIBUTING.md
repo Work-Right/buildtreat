@@ -150,8 +150,18 @@ ORGANIZER_DIDS="did:plc:your-did-here"
 ```
 
 `.dev.vars` overrides the settings in `wrangler.jsonc` on your machine
-only. Never edit `ORGANIZER_DIDS` in `wrangler.jsonc` to give yourself
-local access, because that file is the production config.
+only. Never edit `ORGANIZER_DIDS` or `DEVELOPER_DIDS` in `wrangler.jsonc`
+to give yourself local access, because that file is the production config.
+
+**There are two roles on the live site.** Organizers (`ORGANIZER_DIDS`)
+can use everything. Developers (`DEVELOPER_DIDS`) can only use the
+retreat info editor and see every version of the home page. They never
+see registrant data: the console, who's-coming curation, CSV exports and
+broadcasts all stay organizer-only. To try the developer view locally, put
+your DID in `DEVELOPER_DIDS` in `.dev.vars` instead. If you add a page or
+action that shows anyone's personal details, guard it with the
+organizer-only check and add it to
+`src/routes/organizer/developer-access.test.ts`.
 
 Organizers can also preview the home page as other people would see it,
 at `/?as=public` and `/?as=invited`.

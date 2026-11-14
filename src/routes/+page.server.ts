@@ -114,6 +114,7 @@ export const load: PageServerLoad = async ({ locals, platform, url, cookies, set
 		loadSite({
 			db,
 			organizerDids: platform?.env?.ORGANIZER_DIDS,
+			developerDids: platform?.env?.DEVELOPER_DIDS,
 			origin,
 			who,
 			asParam: url.searchParams.get('as'),
