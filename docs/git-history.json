@@ -1,10 +1,10 @@
 [
   {
-    "hash": "790a040550aece4bb255ded88a8c276654e80c3a",
-    "short_hash": "790a040",
+    "hash": "15a0b68b2c495e4822231cd6e93202d1f8e8b4dd",
+    "short_hash": "15a0b68",
     "author": "Bryan Guffey",
-    "date": "2026-11-13T12:18:09-08:00",
-    "message": "docs: add CONTRIBUTING.md; pin pnpm 10 via packageManager (#54)\n\n* docs: add CONTRIBUTING.md; pin pnpm 10 via packageManager\n\nCONTRIBUTING.md walks a human web developer through setup, local\nsign-in and data, code layout, conventions, checks, migrations and the\nPR-to-deploy path, plus the public-repo/venue rules.\n\npackageManager pins pnpm@10.33.0: pnpm 12 no longer reads the\n\"pnpm.overrides\" field in package.json and refuses to run scripts here\n(ERR_PNPM_VERIFY_DEPS_BEFORE_RUN). With the pin, newer pnpm installs\nswitch to 10.33.0 automatically, matching the pnpm 10 that Workers\nBuilds uses.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n* docs: clone URL points at Work-Right/buildtreat\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+    "date": "2026-11-13T12:25:15-08:00",
+    "message": "ci: run pnpm check, test and build on every PR (#55)\n\n* docs: add CONTRIBUTING.md; pin pnpm 10 via packageManager\n\nCONTRIBUTING.md walks a human web developer through setup, local\nsign-in and data, code layout, conventions, checks, migrations and the\nPR-to-deploy path, plus the public-repo/venue rules.\n\npackageManager pins pnpm@10.33.0: pnpm 12 no longer reads the\n\"pnpm.overrides\" field in package.json and refuses to run scripts here\n(ERR_PNPM_VERIFY_DEPS_BEFORE_RUN). With the pin, newer pnpm installs\nswitch to 10.33.0 automatically, matching the pnpm 10 that Workers\nBuilds uses.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n* docs: clone URL points at Work-Right/buildtreat\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n* ci: run pnpm check, test and build on every PR and on main\n\nFrozen-lockfile install (like Workers Builds), Node 24, pnpm from the\npackageManager pin. Read-only token; plain pull_request trigger, so fork\nPRs run without secrets. CONTRIBUTING.md now points at the CI check.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
     "files_changed": 3
   },
   {

@@ -28,7 +28,8 @@
 		// DIDs allowed to edit retreat content only (comma-separated): the
 		// /organizer/retreat editor and every visibility tier on `/`, never
 		// registrant data (console, who's coming, CSVs, broadcasts).
-		"DEVELOPER_DIDS": "",
+		// Tyler Lawson (@tyler.fun).
+		"DEVELOPER_DIDS": "did:plc:4gt3dbmp4pydjiemob4konzm",
 		// Email sending via comail.at (HTTP Send API). The DID is the comail
 		// account identity (Bryan's — already public in ORGANIZER_DIDS).
 		"EMAIL_FROM": "hello@buildersretre.at",
