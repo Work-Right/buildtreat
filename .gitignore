@@ -7,6 +7,11 @@
 !.env.example
 # Test-only environment for the pre-push hook (see scripts/install-hooks.sh).
 .hookenv
+# Cloudflare Workers local secrets (cf dev / wrangler dev). Here, not in
+# .gitignore.local, because that file is per-clone: a fresh clone would
+# otherwise not ignore them and could commit a secret.
+.dev.vars*
+!.dev.vars.example
 
 # ── Per-project ignore extensions ──────────────────────────────────
 # `.gitignore.local` is the extension point for project-specific ignore
