@@ -105,11 +105,16 @@ jobs:
           config.model: "anthropic/claude-haiku-5-5"
           # PR-Agent's default fallback is an OpenAI model; there's no OpenAI key.
           config.fallback_models: "[]"
-          # PR-Agent's request budget (diff + its prompt + the reply reserve,
-          # ~20k of overhead) defaults to 32k and clips the diff past it, so
-          # large PRs were reviewed in part (soot#24 skipped whole files).
-          # Haiku 5.5 takes 1M; 128k fits a ~100k-token diff, ~$0.013/review.
-          config.max_model_tokens: "128000"
+          # PR-Agent's request budget (diff + its prompt + the reply reserve)
+          # defaults to 32k and clips the diff past it, so large PRs were
+          # reviewed in part (soot#24 skipped whole files). The reply reserve
+          # is config.max_output_tokens below, so raise this with it: 144k is
+          # the old 128k plus the 16k cap, room for a ~100k-token diff in one
+          # call (project-template#77). Haiku 5.5 takes 1M; ~$0.015/review at that size.
+          # Files that still don't fit are listed in the review's coverage
+          # footer; pr_reviewer.enable_large_pr_chunking is the next step if
+          # that starts happening.
+          config.max_model_tokens: "144000"
           # Reply cap. Unset, litellm sends Anthropic's 4,096, and reviews of
           # bigger diffs (~3.4k tokens on a ~50k diff) ran past it: PR-Agent
           # drops a truncated reply, so the check failed with an empty
