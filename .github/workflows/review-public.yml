@@ -110,6 +110,11 @@ jobs:
           # large PRs were reviewed in part (soot#24 skipped whole files).
           # Haiku 5.5 takes 1M; 128k fits a ~100k-token diff, ~$0.013/review.
           config.max_model_tokens: "128000"
+          # Reply cap. Unset, litellm sends Anthropic's 4,096, and reviews of
+          # bigger diffs (~3.4k tokens on a ~50k diff) ran past it: PR-Agent
+          # drops a truncated reply, so the check failed with an empty
+          # "finish_reason: length" (message-me#1). Billed per token used.
+          config.max_output_tokens: "16000"
           # Review only. describe would rewrite the PR description and improve
           # adds a second model call per PR; turn them on here if wanted.
           github_action_config.auto_review: "true"
