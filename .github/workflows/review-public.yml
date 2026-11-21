@@ -100,26 +100,55 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANTHROPIC__KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          # Haiku 5.5: caught the same planted bugs as Sonnet 5.5 in testing, at
-          # ~1/15 of the cost (~$0.0025 per review of a ~15k-token diff).
+          # Haiku 5.5. On real PRs replayed through PR-Agent (2026-11), Haiku with
+          # the review settings below beat DeepSeek V4.1 Flash and GLM-5.3-Flash.
+          # Retuning the settings mattered more than the model choice
+          # (project-template docs/research/2026-11-18-review-model-options.md).
           config.model: "anthropic/claude-haiku-5-5"
           # PR-Agent's default fallback is an OpenAI model; there's no OpenAI key.
           config.fallback_models: "[]"
           # PR-Agent's request budget (diff + its prompt + the reply reserve)
           # defaults to 32k and clips the diff past it, so large PRs were
           # reviewed in part (soot#24 skipped whole files). The reply reserve
-          # is config.max_output_tokens below, so raise this with it: 144k is
-          # the old 128k plus the 16k cap, room for a ~100k-token diff in one
-          # call (project-template#77). Haiku 5.5 takes 1M; ~$0.015/review at that size.
-          # Files that still don't fit are listed in the review's coverage
-          # footer; pr_reviewer.enable_large_pr_chunking is the next step if
-          # that starts happening.
-          config.max_model_tokens: "144000"
-          # Reply cap. Unset, litellm sends Anthropic's 4,096, and reviews of
-          # bigger diffs (~3.4k tokens on a ~50k diff) ran past it: PR-Agent
-          # drops a truncated reply, so the check failed with an empty
-          # "finish_reason: length" (message-me#1). Billed per token used.
-          config.max_output_tokens: "16000"
+          # is config.max_output_tokens below, so raise this with it: 160k is
+          # 128k of diff room plus the 32k reply cap (project-template#77).
+          # Cost: Haiku 5.5 is $0.10/$0.50 per MTok, but a request whose prompt
+          # passes 100k tokens bills entirely at 5x. PR-Agent's count runs about
+          # 1.5x under Anthropic's (58,890 counted vs 88,727 billed), so a diff
+          # it counts above ~65k is billed at the higher rate. Measured with
+          # these settings: ~$0.003 on a ~20k-token diff and ~$0.015 on a ~90k
+          # one. A diff filling the budget costs ~$0.13. Rare enough to accept:
+          # a smaller budget forces chunking, which cost the reviews cross-file
+          # context and produced false findings.
+          config.max_model_tokens: "160000"
+          # Reply cap. Unset, litellm sends Anthropic's 4,096, and PR-Agent drops
+          # a truncated reply, so the check failed with an empty
+          # "finish_reason: length" (message-me#1). With thinking on, a
+          # large review used ~13k (thinking included), so this leaves headroom.
+          # Billed per token used, not per token allowed.
+          config.max_output_tokens: "32000"
+          # Overflow only: if a diff still doesn't fit the budget, review it in
+          # up to 3 calls and merge the results, rather than skipping files.
+          pr_reviewer.enable_large_pr_chunking: "true"
+          # PR-Agent's default of 3 findings capped every review, so a big PR
+          # got the same 3 at most. With 8, reviews aren't padded: most still
+          # report 1-4 findings.
+          pr_reviewer.num_max_findings: "8"
+          # Adaptive thinking, at PR-Agent's default effort (medium). Off by
+          # default in PR-Agent.
+          config.enable_claude_adaptive_thinking: "true"
+          # Topics the review should check. In testing these did most of the
+          # work: 6 real bugs found, against 1 without them, with 80% of
+          # findings real.
+          pr_reviewer.extra_instructions: >-
+            Also check, where the diff touches them: shell quoting and word
+            splitting, set -e/-u pitfalls, inverted or off-by-one conditions,
+            checks that should fail closed but fail open, GitHub Actions
+            trigger/permission/secret exposure, authorization checks that test
+            the wrong thing, data or privacy leaks to the wrong audience, races
+            and concurrency, and docs or comments that contradict the code.
+            Report each distinct real problem; do not merge unrelated problems
+            into one finding.
           # Review only. describe would rewrite the PR description and improve
           # adds a second model call per PR; turn them on here if wanted.
           github_action_config.auto_review: "true"
